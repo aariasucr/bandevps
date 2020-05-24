@@ -1,5 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -12,18 +13,21 @@ import {environment} from '../environments/environment';
 
 import {UserService} from './shared/user.service';
 import {HomeComponent} from './home/home.component';
+import {LoginComponent} from './login/login.component';
+import {RouteGuard} from './shared/route-guard';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    FormsModule
   ],
-  providers: [UserService],
+  providers: [UserService, RouteGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
