@@ -1,9 +1,8 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-  <span class="navbar-brand">The Iron Bank</span>
-
+  <span class="navbar-brand">{{ getTitle() }}</span>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" *ngIf="getIsLoggedIn()">
     <span class="navbar-toggler-icon"></span>
   </button>
 
@@ -11,7 +10,7 @@
     <ul class="navbar-nav w-100"></ul>
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" (click)="logout()">Logout</a>
+        <a class="nav-link" (click)="logout()">Salir</a>
       </li>
     </ul>
   </div>

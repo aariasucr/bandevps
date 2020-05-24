@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {UserService} from '../shared/user.service';
+import {APP_TITLE} from '../app.component';
 
 @Component({
   selector: 'app-header',
@@ -9,11 +10,10 @@ import {UserService} from '../shared/user.service';
 export class HeaderComponent implements OnInit {
   private isLoggedIn = false;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, @Inject(APP_TITLE) private title: string) {}
 
   ngOnInit() {
     this.userService.statusChange.subscribe(userData => {
-      
       if (userData) {
         this.isLoggedIn = true;
       } else {
@@ -28,5 +28,9 @@ export class HeaderComponent implements OnInit {
 
   getIsLoggedIn() {
     return this.isLoggedIn;
+  }
+
+  getTitle() {
+    return this.title;
   }
 }
