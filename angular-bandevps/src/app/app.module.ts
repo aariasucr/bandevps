@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
+import {AppComponent, APP_TITLE} from './app.component';
 
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
@@ -28,7 +28,7 @@ import {HeaderComponent} from './header/header.component';
     AngularFireStorageModule,
     FormsModule
   ],
-  providers: [UserService, RouteGuard],
+  providers: [UserService, RouteGuard, {provide: APP_TITLE, useValue: 'The Iron Bank'}],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
