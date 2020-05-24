@@ -15,7 +15,7 @@ import {UserService} from './shared/user.service';
 import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
 import {RouteGuard} from './shared/route-guard';
-import { HeaderComponent } from './header/header.component';
+import {HeaderComponent} from './header/header.component';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, LoginComponent, HeaderComponent],
