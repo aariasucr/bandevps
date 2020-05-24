@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent, APP_TITLE} from './app.component';
@@ -34,7 +34,8 @@ import {LoggedInUserRouteGuard} from './shared/logged-in-user-route-guard';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     UserService,
