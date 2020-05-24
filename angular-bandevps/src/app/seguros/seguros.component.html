@@ -1,3 +1,7 @@
 <p>seguros works!</p>
-
-<button onclick="obtieneSeguros()">recupera seguros</button>
+<li *ngFor="let item of items | async">
+  {{ item[0] | json }}
+  {{ item[1] | json }}
+  {{ item[2].beneficios | json }}
+</li>
+<button (click)="obtieneSeguros()" type="button">recupera seguros</button>
