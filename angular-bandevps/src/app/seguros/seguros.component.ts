@@ -9,10 +9,12 @@ import {Observable} from 'rxjs';
 })
 export class SegurosComponent implements OnInit {
   items: Observable<any[]>;
-  constructor(private seguroService: SegurosService) {}
+  constructor(private seguroService: SegurosService) {
+   
+      this.items = this.seguroService.getCustomersList();
+    
+  }
 
   ngOnInit() {}
-  obtieneSeguros() {
-    this.items = this.seguroService.getCustomersList();
-  }
+  
 }
