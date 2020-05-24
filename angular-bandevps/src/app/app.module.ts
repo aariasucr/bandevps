@@ -12,9 +12,11 @@ import {environment} from '../environments/environment';
 
 import {UserService} from './shared/user.service';
 import {HomeComponent} from './home/home.component';
+import { SegurosComponent } from './seguros/seguros.component';
+import { SegurosService } from './shared/seguros.service';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, SegurosComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -23,7 +25,7 @@ import {HomeComponent} from './home/home.component';
     AngularFireAuthModule,
     AngularFireStorageModule
   ],
-  providers: [UserService],
+  providers: [UserService,SegurosService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
