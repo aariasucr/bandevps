@@ -16,9 +16,17 @@ import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
 import {RouteGuard} from './shared/route-guard';
 import {HeaderComponent} from './header/header.component';
+import {RegisterUserComponent} from './register-user/register-user.component';
+import {LoggedInUserRouteGuard} from './shared/logged-in-user-route-guard';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, HeaderComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+    HeaderComponent,
+    RegisterUserComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,7 +36,12 @@ import {HeaderComponent} from './header/header.component';
     AngularFireStorageModule,
     FormsModule
   ],
-  providers: [UserService, RouteGuard, {provide: APP_TITLE, useValue: 'The Iron Bank'}],
+  providers: [
+    UserService,
+    RouteGuard,
+    {provide: APP_TITLE, useValue: 'The Iron Bank'},
+    LoggedInUserRouteGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
