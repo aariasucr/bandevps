@@ -17,13 +17,13 @@ jobs:
       #   working-directory: angular-bandevps/src/environments
       #   run: echo -n -e "${{secrets.FIREBASE_CONFIG}}" > firebase.environment.ts
 
-      - name: Ejecutar Pruebas de Unidad
-        working-directory: angular-bandevps
-        run: npm run ci:test
-
       - name: Instalar Dependencias
         working-directory: angular-bandevps
         run: npm install
+
+      - name: Ejecutar Pruebas de Unidad
+        working-directory: angular-bandevps
+        run: npm run ci:test
       
       - name: Crear Build
         working-directory: angular-bandevps
