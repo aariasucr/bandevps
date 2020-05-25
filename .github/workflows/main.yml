@@ -13,9 +13,9 @@ jobs:
         with:
           node-version: 12
 
-      # - name: Generar archivo de configuracion de firebase
-      #   working-directory: angular-bandevps/src/environments
-      #   run: echo -n -e "${{secrets.FIREBASE_CONFIG}}" > firebase.environment.ts
+      - name: Generar archivo de configuracion de firebase
+        working-directory: angular-bandevps/src/environments
+        run: echo -n -e "${{secrets.FIREBASE_CONFIG}}" > firebase.environment.ts
 
       - name: Instalar Dependencias
         working-directory: angular-bandevps
