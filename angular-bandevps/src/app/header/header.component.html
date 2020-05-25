@@ -10,7 +10,7 @@
     <ul class="navbar-nav w-100"></ul>
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" (click)="logout()">Salir</a>
+        <a class="nav-link" (click)="logout()">{{ this.getLogoutString() }}</a>
       </li>
     </ul>
   </div>
