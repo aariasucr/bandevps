@@ -11,8 +11,16 @@ jobs:
       - name: Configurar Node
         uses: actions/setup-node@v1
         with:
-          node-version: 12 
-      
+          node-version: 12
+
+      # - name: Generar archivo de configuracion de firebase
+      #   working-directory: angular-bandevps/src/environments
+      #   run: echo -n -e "${{secrets.FIREBASE_CONFIG}}" > firebase.environment.ts
+
+      - name: Ejecutar Pruebas de Unidad
+        working-directory: angular-bandevps
+        run: npm run ci:test
+
       - name: Instalar Dependencias
         working-directory: angular-bandevps
         run: npm install
