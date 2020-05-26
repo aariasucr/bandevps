@@ -18,10 +18,27 @@ export class UserService {
 
   performLogin(signInResult, userDataResult) {
     this.isLoggedIn = true;
-    console.log(signInResult);
+
     const userData: UserData = userDataResult.val();
     this.statusChange.emit(userData);
-    //console.log(userData)
+
+    console.log('userDataResult en performLogin', userDataResult);
+    console.log('signInResult en performLogin', signInResult);
+  }
+
+  performLoginUid(uid: string) {
+    this.getUserDataFromFirebase(uid).then(result => {
+      console.log('result.val() en performLoginUid', result.val());
+      this.isLoggedIn = true;
+      const userData: UserData = result.val();
+      this.statusChange.emit(userData);
+    });
+  }
+
+  performLogout() {
+    this.firebaseAuth.signOut().then(() => {
+      this.statusChange.emit(null);
+    });
   }
 
   getUserDataFromFirebase(uid: string) {
