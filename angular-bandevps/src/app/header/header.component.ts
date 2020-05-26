@@ -9,11 +9,12 @@ import {APP_TITLE} from '../app.component';
 })
 export class HeaderComponent implements OnInit {
   private isLoggedIn = false;
+  private logoutString = 'Salir';
 
   constructor(private userService: UserService, @Inject(APP_TITLE) private title: string) {}
 
   ngOnInit() {
-    this.userService.statusChange.subscribe(userData => {
+    this.userService.statusChange.subscribe((userData) => {
       if (userData) {
         this.isLoggedIn = true;
       } else {
@@ -32,5 +33,9 @@ export class HeaderComponent implements OnInit {
 
   getTitle() {
     return this.title;
+  }
+
+  getLogoutString() {
+    return this.logoutString;
   }
 }

@@ -10,8 +10,8 @@ Describir los cambios realizados.
 
 ## Lista de Chequeo
 
-- [x] Opción seleccionada
-- [ ] Opción 2
-- [ ] Opción 3
+- [ ] Sin fallos en github actions
+- [ ] Historia done en Jira 
+- [ ] Revisados los criterios de aceptación
 - [ ] Ejemplo de un [link](https://gatitolabs.atlassian.net/projects).
 - [ ] Otras cosas
