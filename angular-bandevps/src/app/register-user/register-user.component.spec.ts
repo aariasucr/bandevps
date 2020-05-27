@@ -1,6 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RegisterUserComponent } from './register-user.component';
+import {RegisterUserComponent} from './register-user.component';
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {UserPasswordEditorComponent} from '../user-password-editor/user-password-editor.component';
+import {UserDataEditorComponent} from '../user-data-editor/user-data-editor.component';
 
 describe('RegisterUserComponent', () => {
   let component: RegisterUserComponent;
@@ -8,9 +11,9 @@ describe('RegisterUserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegisterUserComponent ]
-    })
-    .compileComponents();
+      imports: [ReactiveFormsModule, FormsModule],
+      declarations: [UserPasswordEditorComponent, UserDataEditorComponent, RegisterUserComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

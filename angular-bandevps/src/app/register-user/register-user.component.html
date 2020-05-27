@@ -11,7 +11,7 @@
   <div class="row">
     <div class="col-md-2 col-sm-1"></div>
     <div class="col-md-8 col-sm-10">
-      <form [formGroup]="userIdForm" (ngSubmit)="onSubmitId()">
+      <form [formGroup]="userIdForm" (ngSubmit)="onSubmitUserIdForm()">
 
         <div class="form-group">
           <div class="row">
@@ -36,7 +36,8 @@
             </button>
           </div>
           <div class="col-3">
-            <button class="btn btn-primary btn-block" [disabled]="userIdForm.invalid" (click)="resetUserIdForm(); this.userCanRegister = false;">
+            <button class="btn btn-primary btn-block" [disabled]="userIdForm.invalid"
+              (click)="resetUserIdForm(); this.userCanRegister = false;">
               Limpiar datos
             </button>
           </div>
@@ -48,49 +49,21 @@
 
   <br />
 
-  <div class="row" *ngIf="this.userCanRegister">
+  <div class="row" [hidden]="!this.userCanRegister">
     <div class="col-md-2 col-sm-1"></div>
     <div class="col-md-8 col-sm-10">
-      <form [formGroup]="userRegistrationForm" (ngSubmit)="onSubmit()">
-
+      <form [formGroup]="userRegistrationForm"(ngSubmit)="onSubmitUserRegistrationForm()">
+        <h3>Usuario</h3>
+        <br />
         <div class="form-group">
           <div class="row">
 
             <div class="col-5">
-              <label for="contraseña">Contraseña</label>
+              <label for="name">Nombre</label>
             </div>
 
             <div class="col-7">
-              <input class="form-control" formControlName="password" type="password" id="contraseña" name="password"
-                placeholder="Contraseña" required />
-            </div>
-
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="row">
-            <div class="col-5">
-              <label for="confirmación contraseña">Confirmación de la contraseña</label>
-            </div>
-
-            <div class="col-7">
-              <input class="form-control" formControlName="passwordConf" type="password" id="confirmación contraseña"
-                name="password-conf" placeholder="Contraseña" required />
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="row">
-
-            <div class="col-5">
-              <label for="teléfono">Teléfono</label>
-            </div>
-
-            <div class="col-7">
-              <input class="form-control" formControlName="phoneNumber" id="teléfono" name="phoneNumber"
-                placeholder="Teléfono" required />
+              <input class="form-control" formControlName="name" id="nombre" name="name" required />
             </div>
 
           </div>
@@ -100,31 +73,17 @@
           <div class="row">
 
             <div class="col-5">
-              <label for="dirección">Dirección</label>
+              <label for="email">E-mail</label>
             </div>
 
             <div class="col-7">
-              <textarea class="form-control" formControlName="address" id="dirección" name="address"
-                placeholder="Dirección" required></textarea>
+              <input class="form-control" formControlName="email" id="email" name="email" required />
             </div>
 
           </div>
         </div>
-
-        <div class="form-group">
-          <div class="row">
-
-            <div class="col-5">
-              <label for="ocupación">Ocupación</label>
-            </div>
-
-            <div class="col-7">
-              <textarea class="form-control" formControlName="occupation" id="ocupación" name="occupation"
-                placeholder="Ocupación" required></textarea>
-            </div>
-
-          </div>
-        </div>
+        <app-user-password-editor [form]="userRegistrationForm"></app-user-password-editor>
+        <app-user-data-editor [form]="userRegistrationForm"></app-user-data-editor>
 
         <div class="row">
           <div class="col-5"></div>
@@ -134,9 +93,10 @@
             </button>
           </div>
         </div>
-
-
       </form>
     </div>
   </div>
+
+  <br />
+
 </div>

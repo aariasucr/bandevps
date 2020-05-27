@@ -18,6 +18,8 @@ import {RouteGuard} from './shared/route-guard';
 import {HeaderComponent} from './header/header.component';
 import {RegisterUserComponent} from './register-user/register-user.component';
 import {LoggedInUserRouteGuard} from './shared/logged-in-user-route-guard';
+import {UserDataEditorComponent} from './user-data-editor/user-data-editor.component';
+import {UserPasswordEditorComponent} from './user-password-editor/user-password-editor.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import {LoggedInUserRouteGuard} from './shared/logged-in-user-route-guard';
     HomeComponent,
     LoginComponent,
     HeaderComponent,
-    RegisterUserComponent
+    RegisterUserComponent,
+    UserDataEditorComponent,
+    UserPasswordEditorComponent
   ],
   imports: [
     BrowserModule,
