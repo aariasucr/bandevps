@@ -25,7 +25,11 @@ export class TimerService implements OnDestroy {
     this.store.dispatch(new ApplicationActions.LogIn());
   }
 
-  extendLogout(){
+  stop() {
+    this.store.dispatch(new ApplicationActions.LogOut());
+  }
+
+  extendLogout() {
     this.store.dispatch(new ApplicationActions.ExtendLogoutTimer());
   }
 

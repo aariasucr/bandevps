@@ -1,8 +1,7 @@
-import {Component, OnInit, InjectionToken, Inject, OnDestroy} from '@angular/core';
+import {Component, OnInit, InjectionToken, Inject, ViewChild} from '@angular/core';
 import {UserService} from './shared/user.service';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {TimerService} from './shared/timer.service';
-import {Subscription} from 'rxjs';
+// import {TimerComponent} from './timer/timer.component';
 
 export const APP_TITLE = new InjectionToken<string>('AppTitle');
 
@@ -11,13 +10,12 @@ export const APP_TITLE = new InjectionToken<string>('AppTitle');
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
-  private subscription: Subscription;
+export class AppComponent implements OnInit {
+  // @ViewChild(TimerComponent, {static: true}) timer: TimerComponent;
 
   constructor(
     private userService: UserService,
     private firebaseAuth: AngularFireAuth,
-    private timerService: TimerService,
     @Inject(APP_TITLE) public title: string
   ) {}
 
@@ -28,19 +26,9 @@ export class AppComponent implements OnInit, OnDestroy {
       console.log('user en init de AppComponent', user);
       if (user) {
         this.userService.performLoginUid(user.uid);
-        this.timerService.start();
       } else {
         this.userService.performLogout();
       }
     });
-
-    this.subscription = this.timerService.timeout.subscribe(() => {
-      alert('La sesión ha expirado');
-      this.userService.performLogout();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 }
