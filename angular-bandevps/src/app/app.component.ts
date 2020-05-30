@@ -1,6 +1,7 @@
-import {Component, OnInit, InjectionToken, Inject} from '@angular/core';
+import {Component, OnInit, InjectionToken, Inject, ViewChild} from '@angular/core';
 import {UserService} from './shared/user.service';
 import {AngularFireAuth} from '@angular/fire/auth';
+// import {TimerComponent} from './timer/timer.component';
 
 export const APP_TITLE = new InjectionToken<string>('AppTitle');
 
@@ -10,6 +11,8 @@ export const APP_TITLE = new InjectionToken<string>('AppTitle');
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  // @ViewChild(TimerComponent, {static: true}) timer: TimerComponent;
+
   constructor(
     private userService: UserService,
     private firebaseAuth: AngularFireAuth,

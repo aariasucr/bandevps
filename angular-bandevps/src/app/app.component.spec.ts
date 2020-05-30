@@ -6,6 +6,9 @@ import {AngularFireModule} from '@angular/fire';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from '../environments/environment';
+import {TimerComponent} from './timer/timer.component';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from './state/reducers';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -14,9 +17,10 @@ describe('AppComponent', () => {
         RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireDatabaseModule,
-        AngularFireAuthModule
+        AngularFireAuthModule,
+        StoreModule.forRoot(reducers)
       ],
-      declarations: [AppComponent, HeaderComponent],
+      declarations: [AppComponent, HeaderComponent, TimerComponent],
       providers: [{provide: APP_TITLE, useValue: 'The Iron Bank'}]
     }).compileComponents();
   }));
