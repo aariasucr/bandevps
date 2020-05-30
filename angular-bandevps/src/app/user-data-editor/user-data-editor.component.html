@@ -1,0 +1,48 @@
+<form [formGroup]="form">
+  <h3>Datos personales</h3>
+  <br />
+  <div class="form-group">
+    <div class="row">
+
+      <div class="col-5">
+        <label for="teléfono">Teléfono</label>
+      </div>
+
+      <div class="col-7">
+        <input class="form-control" formControlName="phoneNumber" id="teléfono" name="phoneNumber"
+          placeholder="Teléfono" required />
+      </div>
+
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="row">
+
+      <div class="col-5">
+        <label for="dirección">Dirección</label>
+      </div>
+
+      <div class="col-7">
+        <textarea class="form-control" formControlName="address" id="dirección" name="address" placeholder="Dirección"
+          required></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="row">
+
+      <div class="col-5">
+        <label for="ocupación">Ocupación</label>
+      </div>
+
+      <div class="col-7">
+        <textarea class="form-control" formControlName="occupation" id="ocupación" name="occupation"
+          placeholder="Ocupación" required></textarea>
+      </div>
+
+    </div>
+  </div>
+</form>
