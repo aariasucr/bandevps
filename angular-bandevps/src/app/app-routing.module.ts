@@ -6,7 +6,7 @@ import {RouteGuard} from './shared/route-guard';
 import {RegisterUserComponent} from './register-user/register-user.component';
 import {LoggedInUserRouteGuard} from './shared/logged-in-user-route-guard';
 
-const routes: Routes = [
+export const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [RouteGuard]},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},

@@ -1,31 +1,30 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {LoginComponent} from './login.component';
+import {TimerComponent} from './timer.component';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from '../state/reducers';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from '../../environments/environment';
-import {NgForm} from '@angular/forms';
-import {RouterTestingModule} from '@angular/router/testing';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+describe('TimerComponent', () => {
+  let component: TimerComponent;
+  let fixture: ComponentFixture<TimerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        StoreModule.forRoot(reducers),
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireDatabaseModule,
-        AngularFireAuthModule,
-        RouterTestingModule
+        AngularFireAuthModule
       ],
-      declarations: [LoginComponent, NgForm]
+      declarations: [TimerComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LoginComponent);
+    fixture = TestBed.createComponent(TimerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

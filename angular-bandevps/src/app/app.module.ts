@@ -18,15 +18,20 @@ import {RouteGuard} from './shared/route-guard';
 import {HeaderComponent} from './header/header.component';
 import {RegisterUserComponent} from './register-user/register-user.component';
 import {LoggedInUserRouteGuard} from './shared/logged-in-user-route-guard';
+import {TimerService} from './shared/timer.service';
+import {NotificationService} from './shared/notification.service';
+import {TimerComponent} from './timer/timer.component';
+
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {reducers} from './state/reducers';
+import {ApplicationEffects} from './state/application/effects';
+
+
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LoginComponent,
-    HeaderComponent,
-    RegisterUserComponent
-  ],
+  declarations: [AppComponent, HomeComponent, LoginComponent, HeaderComponent, TimerComponent,RegisterUserComponent
+],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -35,13 +40,17 @@ import {LoggedInUserRouteGuard} from './shared/logged-in-user-route-guard';
     AngularFireAuthModule,
     AngularFireStorageModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([ApplicationEffects])
   ],
   providers: [
     UserService,
     RouteGuard,
     {provide: APP_TITLE, useValue: 'The Iron Bank'},
-    LoggedInUserRouteGuard
+    LoggedInUserRouteGuard,
+    TimerService,
+    NotificationService
   ],
   bootstrap: [AppComponent]
 })

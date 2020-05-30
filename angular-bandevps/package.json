@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "ci:test": "ng test --code-coverage --progress false --watch false --browsers=ChromeHeadlessCustom",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -20,6 +21,8 @@
     "@angular/platform-browser": "~8.1.0",
     "@angular/platform-browser-dynamic": "~8.1.0",
     "@angular/router": "~8.1.0",
+    "@ngrx/effects": "^9.1.2",
+    "@ngrx/store": "^9.1.2",
     "bootstrap": "^4.4.1",
     "firebase": "^7.14.1",
     "jquery": "^3.4.1",
