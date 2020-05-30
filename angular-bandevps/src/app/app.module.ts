@@ -16,9 +16,17 @@ import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
 import {RouteGuard} from './shared/route-guard';
 import {HeaderComponent} from './header/header.component';
+import {TimerService} from './shared/timer.service';
+import {NotificationService} from './shared/notification.service';
+import {TimerComponent} from './timer/timer.component';
+
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {reducers} from './state/reducers';
+import {ApplicationEffects} from './state/application/effects';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, HeaderComponent],
+  declarations: [AppComponent, HomeComponent, LoginComponent, HeaderComponent, TimerComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -26,9 +34,17 @@ import {HeaderComponent} from './header/header.component';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([ApplicationEffects])
   ],
-  providers: [UserService, RouteGuard, {provide: APP_TITLE, useValue: 'The Iron Bank'}],
+  providers: [
+    UserService,
+    RouteGuard,
+    TimerService,
+    NotificationService,
+    {provide: APP_TITLE, useValue: 'The Iron Bank'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
