@@ -1,13 +1,11 @@
-import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
-
-import {AngularFireDatabase} from '@angular/fire/database';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SegurosComponent} from './seguros.component';
 import { SegurosService } from '../shared/seguros.service';
-//import {async as _async} from "rxjs/scheduler/async";
 import { asyncScheduler, of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 
-fdescribe('SegurosComponent', () => {
+describe('SegurosComponent', () => {
   let component: SegurosComponent;
   let fixture: ComponentFixture<SegurosComponent>;
 
@@ -71,18 +69,7 @@ fdescribe('SegurosComponent', () => {
         name: 'Seguro de vida'
       }
     ];
-  
 
-  // Mock de la base de datos
-  const mockDatabase: any = {
-    list() {
-      return {
-        valueChanges() {
-          return Promise.resolve(datosSeguros);
-        }
-      };
-    }
-  };
 
   const mockSeguroService: any = {
     getInsuranceList(){
@@ -92,13 +79,8 @@ fdescribe('SegurosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        // AngularFireModule.initializeApp(environment.firebaseConfig),
-        // AngularFireDatabaseModule,
-        // AngularFireAuthModule
-      ],
       declarations: [SegurosComponent],
-      providers: [{provide: AngularFireDatabase, useValue: mockDatabase},{provide: SegurosService, useValue: mockSeguroService}]
+      providers: [{provide: SegurosService, useValue: mockSeguroService}]
     }).compileComponents();
   }));
 
@@ -112,17 +94,24 @@ fdescribe('SegurosComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render insurances titles in h2 tag', fakeAsync(async() => {
-    component.ngOnInit();
-    tick(100);
-    console.log(component.items)
-    await fixture.whenStable();
-    //expect(component.items).toBeTruthy();
+  it('should render insurances titles in h2 tag', async(() => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    console.log(compiled.querySelector('h2'))
-    expect(compiled.querySelector('h2').textContent).toContain('Seguro médico');
-    expect(compiled.querySelector('h2').textContent).toContain('Seguro viajero');
-    expect(compiled.querySelector('h2').textContent).toContain('Seguro de vida');
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+
+      // With nativeElement
+      const h2 = compiled.querySelector('h2');
+      expect(h2.textContent).toContain('Seguro viajero');
+
+      // With debugElement
+      const h2TestElems = fixture.debugElement.queryAll(By.css('h2'));
+      const viajero = h2TestElems[0].nativeElement;
+      const medico = h2TestElems[1].nativeElement;
+      const vida = h2TestElems[2].nativeElement;
+      expect(viajero.textContent).toContain('Seguro viajero');
+      expect(medico.textContent).toContain('Seguro médico');
+      expect(vida.textContent).toContain('Seguro de vida');
+    });
   }));
 });

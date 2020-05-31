@@ -9,7 +9,7 @@ export const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [RouteGuard]},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'seguros', component: SegurosComponent}
+  {path: 'insurances', component: SegurosComponent,canActivate: [RouteGuard]}
 ];
 
 @NgModule({
