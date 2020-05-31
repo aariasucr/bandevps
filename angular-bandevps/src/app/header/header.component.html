@@ -13,8 +13,8 @@
   >
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <div class="dropdown" *ngIf="getIsLoggedIn()">
+  <div class="collapse navbar-collapse " id="navbarSupportedContent" >
+    <div class="dropdown flex-grow-0 text-right ml-auto" *ngIf="getIsLoggedIn()">
       <button
         class="btn btn-default"
         type="button"
@@ -25,7 +25,7 @@
         Opciones
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+      <ul class="dropdown-menu " role="menu" aria-labelledby="dropdownMenu1">
         <li role="presentation">
           <a class="nav-link" routerLink="/editInformation"> Editar información</a>
         </li>
