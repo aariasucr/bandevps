@@ -1,17 +1,36 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light">
   <span class="navbar-brand">{{ getTitle() }}</span>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" *ngIf="getIsLoggedIn()">
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarsExampleDefault"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+    *ngIf="getIsLoggedIn()"
+  >
     <span class="navbar-toggler-icon"></span>
   </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent" *ngIf="getIsLoggedIn()">
-    <ul class="navbar-nav w-100"></ul>
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="dropdown" *ngIf="getIsLoggedIn()" >
+    <button
+      class="btn btn-default"
+      type="button"
+      id="dropdownMenu1"
+      data-toggle="dropdown"
+      aria-expanded="true"
+    >
+      Opciones
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+      <li role="presentation"><a href=""> Editar información</a></li>
+      <li role="presentation">
         <a class="nav-link" (click)="logout()">{{ this.getLogoutString() }}</a>
       </li>
     </ul>
   </div>
+</div>
 </nav>
