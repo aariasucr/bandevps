@@ -8,6 +8,7 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 import {SpinnerService} from '../shared/spinner.service';
 import {UserService} from '../shared/user.service';
 import {AngularFireAuth} from '@angular/fire/auth';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('RegisterUserComponent', () => {
   let component: RegisterUserComponent;
@@ -18,7 +19,7 @@ describe('RegisterUserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FormsModule, NgxSpinnerModule],
+      imports: [ReactiveFormsModule, FormsModule, NgxSpinnerModule, RouterTestingModule],
       declarations: [UserPasswordEditorComponent, UserDataEditorComponent, RegisterUserComponent],
       providers: [
         SpinnerService,
