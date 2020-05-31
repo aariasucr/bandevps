@@ -1,0 +1,35 @@
+<br />
+<h1>Seguros</h1>
+<br />
+<br />
+<div *ngFor="let item of items | async">
+  <div class="borde">
+    <div class="segurosDivGen">
+      <div class="segViajesheader">
+        <h2>{{ item.name }}</h2>
+        <br />
+        <p>
+          {{ item.description }}
+        </p>
+        <h3>Beneficios</h3>
+        <div *ngFor="let benefit of item.benefits">
+          <ul class="benef">
+            <li>
+              <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+              <img src="assets/{{ benefit.icon }}.ico" alt="" />
+              <h6>{{ benefit.description }}</h6>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <br />
+      <div class="divImg">
+        <img
+          src="assets/images/{{ item.image }}.jpg"
+          alt=""
+        />
+      </div>
+    </div>
+  </div>
+  <br />
+</div>
