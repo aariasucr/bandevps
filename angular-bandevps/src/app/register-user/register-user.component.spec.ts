@@ -7,18 +7,24 @@ import {UserDataEditorComponent} from '../user-data-editor/user-data-editor.comp
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {SpinnerService} from '../shared/spinner.service';
 import {UserService} from '../shared/user.service';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 describe('RegisterUserComponent', () => {
   let component: RegisterUserComponent;
   let fixture: ComponentFixture<RegisterUserComponent>;
 
+  const mockAngularFireAuth: any = {};
   const mockUserService: any = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, FormsModule, NgxSpinnerModule],
       declarations: [UserPasswordEditorComponent, UserDataEditorComponent, RegisterUserComponent],
-      providers: [SpinnerService, {provide: UserService, useValue: mockUserService}]
+      providers: [
+        SpinnerService,
+        {provide: UserService, useValue: mockUserService},
+        {provide: AngularFireAuth, useValue: mockAngularFireAuth}
+      ]
     }).compileComponents();
   }));
 
