@@ -14,23 +14,25 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-  <div class="dropdown" *ngIf="getIsLoggedIn()" >
-    <button
-      class="btn btn-default"
-      type="button"
-      id="dropdownMenu1"
-      data-toggle="dropdown"
-      aria-expanded="true"
-    >
-      Opciones
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-      <li role="presentation"><a href=""> Editar información</a></li>
-      <li role="presentation">
-        <a class="nav-link" (click)="logout()">{{ this.getLogoutString() }}</a>
-      </li>
-    </ul>
+    <div class="dropdown" *ngIf="getIsLoggedIn()">
+      <button
+        class="btn btn-default"
+        type="button"
+        id="dropdownMenu1"
+        data-toggle="dropdown"
+        aria-expanded="true"
+      >
+        Opciones
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation">
+          <a class="nav-link" routerLink="/editInformation"> Editar información</a>
+        </li>
+        <li role="presentation">
+          <a class="nav-link" (click)="logout()">{{ this.getLogoutString() }}</a>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
 </nav>
