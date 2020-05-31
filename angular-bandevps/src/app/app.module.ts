@@ -23,6 +23,9 @@ import {UserPasswordEditorComponent} from './user-password-editor/user-password-
 import {TimerService} from './shared/timer.service';
 import {NotificationService} from './shared/notification.service';
 import {TimerComponent} from './timer/timer.component';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import {SpinnerService} from './shared/spinner.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
@@ -49,6 +52,8 @@ import {ApplicationEffects} from './state/application/effects';
     AngularFireStorageModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
+    BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([ApplicationEffects])
   ],
@@ -58,7 +63,8 @@ import {ApplicationEffects} from './state/application/effects';
     {provide: APP_TITLE, useValue: 'The Iron Bank'},
     LoggedInUserRouteGuard,
     TimerService,
-    NotificationService
+    NotificationService,
+    SpinnerService
   ],
   bootstrap: [AppComponent]
 })
