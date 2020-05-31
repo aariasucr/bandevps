@@ -49,7 +49,12 @@ describe('RegisterUserComponent', () => {
   // Mocks de forms
   let mockUserIdForm: FormGroup;
 
-  const userRegistrationFormHidden = (compiled) => {
+  const userRegistrationFormHidden = (mockUserIdFormForCase) => {
+    component.userIdForm = mockUserIdFormForCase;
+    component.onSubmitUserIdForm();
+    tick();
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
     const hidden = compiled.querySelector('[hidden]');
     expect(hidden.textContent).toContain('Contraseña');
     expect(hidden.textContent).toContain('Teléfono');
@@ -95,37 +100,14 @@ describe('RegisterUserComponent', () => {
     mockUserIdForm = new FormGroup({
       id: new FormControl('1')
     });
-    component.userIdForm = mockUserIdForm;
-    component.onSubmitUserIdForm();
-    tick();
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    userRegistrationFormHidden(compiled);
-    // const hidden = compiled.querySelector('[hidden]');
-    // userRegistrationFormHidden(hidden);
-    // expect(hidden.textContent).toContain('Contraseña');
-    // expect(hidden.textContent).toContain('Teléfono');
-    // expect(hidden.textContent).toContain('Ocupación');
-    // expect(hidden.textContent).toContain('Dirección');
-    // expect(hidden.textContent).toContain('Registrar');
+    userRegistrationFormHidden(mockUserIdForm);
   }));
 
   it('should keep user registration form hidden for registered user', fakeAsync(() => {
     mockUserIdForm = new FormGroup({
       id: new FormControl('102340567')
     });
-    component.userIdForm = mockUserIdForm;
-    component.onSubmitUserIdForm();
-    tick();
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    userRegistrationFormHidden(compiled);
-    // const hidden = compiled.querySelector('[hidden]');
-    // expect(hidden.textContent).toContain('Contraseña');
-    // expect(hidden.textContent).toContain('Teléfono');
-    // expect(hidden.textContent).toContain('Ocupación');
-    // expect(hidden.textContent).toContain('Dirección');
-    // expect(hidden.textContent).toContain('Registrar');
+    userRegistrationFormHidden(mockUserIdForm);
   }));
 
   it('should not hide user registration form hidden when id is valid', fakeAsync(() => {
