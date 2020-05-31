@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent, APP_TITLE} from './app.component';
@@ -18,9 +18,31 @@ import {SegurosService} from './shared/seguros.service';
 import {LoginComponent} from './login/login.component';
 import {RouteGuard} from './shared/route-guard';
 import {HeaderComponent} from './header/header.component';
+import {RegisterUserComponent} from './register-user/register-user.component';
+import {LoggedInUserRouteGuard} from './shared/logged-in-user-route-guard';
+import {UserDataEditorComponent} from './user-data-editor/user-data-editor.component';
+import {UserPasswordEditorComponent} from './user-password-editor/user-password-editor.component';
+import {TimerService} from './shared/timer.service';
+import {NotificationService} from './shared/notification.service';
+import {TimerComponent} from './timer/timer.component';
+
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {reducers} from './state/reducers';
+import {ApplicationEffects} from './state/application/effects';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, HeaderComponent, SegurosComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+    HeaderComponent,
+    TimerComponent,
+    RegisterUserComponent,
+    UserDataEditorComponent,
+    UserPasswordEditorComponent,
+    SegurosComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,12 +50,18 @@ import {HeaderComponent} from './header/header.component';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([ApplicationEffects])
   ],
   providers: [
     UserService,
     RouteGuard,
     {provide: APP_TITLE, useValue: 'The Iron Bank'},
+    LoggedInUserRouteGuard,
+    TimerService,
+    NotificationService,
     SegurosService
   ],
   bootstrap: [AppComponent]
