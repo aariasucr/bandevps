@@ -60,7 +60,7 @@ export class UserService {
             };
             resolve(userData);
           } else {
-            reject('invalid/email');
+            reject('INVALID_EMAIL');
           }
         })
         .catch((error) => {
@@ -87,7 +87,7 @@ export class UserService {
             };
             resolve(userData);
           } else {
-            reject('invalid/id');
+            reject('INVALID_ID');
           }
         })
         .catch((error) => {

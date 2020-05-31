@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 
 import {RegisterUserComponent} from './register-user.component';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {ReactiveFormsModule, FormsModule, FormGroup, FormControl} from '@angular/forms';
 import {UserPasswordEditorComponent} from '../user-password-editor/user-password-editor.component';
 import {UserDataEditorComponent} from '../user-data-editor/user-data-editor.component';
 import {NgxSpinnerModule} from 'ngx-spinner';
@@ -14,8 +14,40 @@ describe('RegisterUserComponent', () => {
   let component: RegisterUserComponent;
   let fixture: ComponentFixture<RegisterUserComponent>;
 
+  const mockUserDataNoRegistrado = {
+    created: 0,
+    creationDate: 'date',
+    registered: false,
+    email: 'test@test.com',
+    fullName: 'Nombre Apellido Apellido',
+    id: '999999999'
+  };
+
+  const mockUserDataRegistrado = {
+    registered: true,
+    id: '102340567'
+  };
+
   const mockAngularFireAuth: any = {};
-  const mockUserService: any = {};
+  const mockUserService: any = {
+    getUserDataFromFirebaseWithId(id) {
+      console.log(id);
+      if (id === '1') {
+        return Promise.reject('INVALID_ID');
+      } else if (id === '102340567') {
+        return Promise.resolve(mockUserDataRegistrado);
+      } else {
+        return Promise.resolve(mockUserDataNoRegistrado);
+      }
+    }
+  };
+
+  // Spies para SpinnerService
+  let spinnerService: SpinnerService;
+  let spinnerSpy: jasmine.Spy;
+
+  // Mocks de forms
+  let mockUserIdForm: FormGroup;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -33,9 +65,79 @@ describe('RegisterUserComponent', () => {
     fixture = TestBed.createComponent(RegisterUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    spinnerService = fixture.debugElement.injector.get(SpinnerService);
+    spinnerSpy = spyOn(spinnerService, 'showMainSpinner');
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should not hide user id form field', () => {
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    const hidden = compiled.querySelector('[hidden]');
+    expect(hidden.textContent).not.toContain('Identificación');
+    expect(hidden.textContent).not.toContain('Buscar');
+  });
+
+  it('should keep user registration form hidden when id is invalid', fakeAsync(() => {
+    mockUserIdForm = new FormGroup({
+      id: new FormControl('1')
+    });
+    component.userIdForm = mockUserIdForm;
+    component.onSubmitUserIdForm();
+    tick();
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    const hidden = compiled.querySelector('[hidden]');
+    expect(hidden.textContent).toContain('Contraseña');
+    expect(hidden.textContent).toContain('Teléfono');
+    expect(hidden.textContent).toContain('Ocupación');
+    expect(hidden.textContent).toContain('Dirección');
+    expect(hidden.textContent).toContain('Registrar');
+  }));
+
+  it('should keep user registration form hidden for registered user', fakeAsync(() => {
+    mockUserIdForm = new FormGroup({
+      id: new FormControl('102340567')
+    });
+    component.userIdForm = mockUserIdForm;
+    component.onSubmitUserIdForm();
+    tick();
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    const hidden = compiled.querySelector('[hidden]');
+    expect(hidden.textContent).toContain('Contraseña');
+    expect(hidden.textContent).toContain('Teléfono');
+    expect(hidden.textContent).toContain('Ocupación');
+    expect(hidden.textContent).toContain('Dirección');
+    expect(hidden.textContent).toContain('Registrar');
+  }));
+
+  it('should not hide user registration form hidden when id is valid', fakeAsync(() => {
+    mockUserIdForm = new FormGroup({
+      id: new FormControl('999999999')
+    });
+    component.userIdForm = mockUserIdForm;
+    component.onSubmitUserIdForm();
+    tick();
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    const hidden = compiled.querySelector('[hidden]');
+    expect(hidden).toBeFalsy();
+  }));
+
+  it('should submit user id form', () => {
+    mockUserIdForm = new FormGroup({
+      id: new FormControl('1')
+    });
+
+    component.userIdForm = mockUserIdForm;
+
+    component.onSubmitUserIdForm();
+    expect(spinnerSpy).toHaveBeenCalled();
+    expect(spinnerSpy.calls.all().length).toEqual(1);
   });
 });

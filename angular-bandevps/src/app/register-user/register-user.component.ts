@@ -64,7 +64,7 @@ export class RegisterUserComponent implements OnInit {
 
   onSubmitUserIdForm() {
     this.spinnerService.showMainSpinner();
-
+    let errorMessage;
     this.checkUserCanRegister()
       .then((userData: UserData) => {
         this.userData = userData;
@@ -77,24 +77,42 @@ export class RegisterUserComponent implements OnInit {
         this.userRegistrationForm.get('email').disable();
       })
       .catch((error) => {
-        console.log('error', error);
+        if (error === RegistrationError.INVALID_CLIENT) {
+          errorMessage =
+            'No se encontró ningún cliente para el número de identificación ingresado.';
+        } else if (error === RegistrationError.ALREADY_REGISTERED) {
+          errorMessage =
+            'Ya existe una cuenta de usuario para el número de identificación ingresado.';
+        } else {
+          errorMessage = 'Ha ocurrido un error. Por favor intente de nuevo.';
+        }
       })
       .finally(() => {
+        if (!!errorMessage) {
+          this.notificationService.showInfoMessageWithConfirmation(errorMessage);
+        }
         this.spinnerService.hideMainSpinner();
       });
   }
 
   onSubmitUserRegistrationForm() {
     this.spinnerService.showMainSpinner();
-
+    let errorMessage;
     this.registerUser()
       .then(() => {
         this.router.navigate(['/home']);
       })
       .catch((error) => {
-        console.log('error', error);
+        if (error === RegistrationError.INVALID_PASSWORD) {
+          errorMessage = 'La contraseña debe ser más segura. Incluya al menos seis caracteres.';
+        } else {
+          errorMessage = 'Ha ocurrido un error. Por favor intente de nuevo.';
+        }
       })
       .finally(() => {
+        if (!!errorMessage) {
+          this.notificationService.showInfoMessageWithConfirmation(errorMessage);
+        }
         this.spinnerService.hideMainSpinner();
       });
   }
@@ -128,9 +146,13 @@ export class RegisterUserComponent implements OnInit {
           }
         })
         .catch((error) => {
-          console.log('error', error);
-          // Usuario no se encuentra en colección de users => usuario que no es cliente del banco => no continuar registro
-          reject(RegistrationError.INVALID_CLIENT);
+          if (error === 'INVALID_ID') {
+            // Usuario no se encuentra en colección de users => usuario que no es cliente del banco => no continuar registro
+            reject(RegistrationError.INVALID_CLIENT);
+          } else {
+            // Otro tipo de error
+            reject(error);
+          }
         });
     });
   }
@@ -157,15 +179,15 @@ export class RegisterUserComponent implements OnInit {
           resolve();
         })
         .catch((error) => {
+          console.log('error', error);
+
           let registrationError;
-          switch (error.code) {
-            case 'auth/weak-password':
-              registrationError = RegistrationError.INVALID_PASSWORD;
-              break;
-            default:
-              registrationError = RegistrationError.ERROR;
-              break;
+          if (!!error.code && error.code === 'auth/weak-password') {
+            registrationError = RegistrationError.INVALID_PASSWORD;
+          } else {
+            registrationError = RegistrationError.ERROR;
           }
+
           if (firstStepCompleted) {
             this.userService.invalidateUser(this.userData);
           }
