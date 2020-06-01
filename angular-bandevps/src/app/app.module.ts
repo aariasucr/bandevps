@@ -13,6 +13,8 @@ import {environment} from '../environments/environment';
 
 import {UserService} from './shared/user.service';
 import {HomeComponent} from './home/home.component';
+import {SegurosComponent} from './seguros/seguros.component';
+import {SegurosService} from './shared/seguros.service';
 import {LoginComponent} from './login/login.component';
 import {RouteGuard} from './shared/route-guard';
 import {HeaderComponent} from './header/header.component';
@@ -41,7 +43,8 @@ import {ApplicationEffects} from './state/application/effects';
     TimerComponent,
     RegisterUserComponent,
     UserDataEditorComponent,
-    UserPasswordEditorComponent
+    UserPasswordEditorComponent,
+    SegurosComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +67,8 @@ import {ApplicationEffects} from './state/application/effects';
     LoggedInUserRouteGuard,
     TimerService,
     NotificationService,
-    SpinnerService
+    SpinnerService,
+    SegurosService
   ],
   bootstrap: [AppComponent]
 })
