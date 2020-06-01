@@ -13,6 +13,8 @@ import {environment} from '../environments/environment';
 
 import {UserService} from './shared/user.service';
 import {HomeComponent} from './home/home.component';
+import {SegurosComponent} from './seguros/seguros.component';
+import {SegurosService} from './shared/seguros.service';
 import {LoginComponent} from './login/login.component';
 import {RouteGuard} from './shared/route-guard';
 import {HeaderComponent} from './header/header.component';
@@ -23,6 +25,9 @@ import {UserPasswordEditorComponent} from './user-password-editor/user-password-
 import {TimerService} from './shared/timer.service';
 import {NotificationService} from './shared/notification.service';
 import {TimerComponent} from './timer/timer.component';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import {SpinnerService} from './shared/spinner.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
@@ -40,7 +45,8 @@ import { EditInformationComponent } from './edit-information/edit-information.co
     RegisterUserComponent,
     UserDataEditorComponent,
     UserPasswordEditorComponent,
-    EditInformationComponent
+    EditInformationComponent,
+    SegurosComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +57,8 @@ import { EditInformationComponent } from './edit-information/edit-information.co
     AngularFireStorageModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
+    BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([ApplicationEffects])
   ],
@@ -60,7 +68,9 @@ import { EditInformationComponent } from './edit-information/edit-information.co
     {provide: APP_TITLE, useValue: 'The Iron Bank'},
     LoggedInUserRouteGuard,
     TimerService,
-    NotificationService
+    NotificationService,
+    SpinnerService,
+    SegurosService
   ],
   bootstrap: [AppComponent]
 })

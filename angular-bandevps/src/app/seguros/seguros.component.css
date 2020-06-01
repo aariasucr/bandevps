@@ -1,0 +1,95 @@
+
+
+.benef {
+    list-style: none;
+    margin-bottom: 30px;
+    margin-left: 0;
+}
+.benef .icon{
+    flex: 0 0 40px;
+    margin-right: 20px;
+     max-height: 25px; 
+     max-width: 25px;
+}
+
+
+ul {
+    list-style-type: disc;
+    line-height: 150%;
+    font-size: 1em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+.borde{
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+svg {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.benef li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.segViajesheader {
+    display: flex;
+    flex-direction: column;
+    order: 1;
+    padding: 25px 25px 20px;
+    width: 37%;
+}
+.divImg img {
+    object-fit: cover;
+    width: 100%;
+    max-height: 60%;
+}
+
+.divImg{
+    order: 0;
+    width: 45%;
+   
+
+}
+
+.segurosDivGen{
+    display: -webkit-inline-box;  
+}
+
+@media only screen and (max-width: 700px) {
+    .segurosDivGen{
+    display: flex; 
+    flex-direction: column;}
+
+    .segViajesheader {
+    display: flex;
+    flex-direction: column;
+    order: 1;
+    padding: 25px 25px 20px;
+    
+}
+.divImg{
+    order: 0;
+   
+}
+.divImg img {
+  max-height: 200px;
+}
+.borde{
+  border-width: none;
+  border-style: none;
+  border-color: white;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+}

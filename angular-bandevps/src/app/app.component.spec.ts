@@ -9,6 +9,8 @@ import {environment} from '../environments/environment';
 import {TimerComponent} from './timer/timer.component';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from './state/reducers';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import {SpinnerService} from './shared/spinner.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -18,10 +20,11 @@ describe('AppComponent', () => {
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
-        StoreModule.forRoot(reducers)
+        StoreModule.forRoot(reducers),
+        NgxSpinnerModule
       ],
       declarations: [AppComponent, HeaderComponent, TimerComponent],
-      providers: [{provide: APP_TITLE, useValue: 'The Iron Bank'}]
+      providers: [{provide: APP_TITLE, useValue: 'The Iron Bank'}, SpinnerService]
     }).compileComponents();
   }));
 
