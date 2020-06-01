@@ -197,9 +197,9 @@ export class RegisterUserComponent implements OnInit {
   }
 
   getMaskedEmail(email) {
-    const regexp = /(?<first>[\w-])(?<middle>[\w-]+)(?<last>@[\w-]+\.+[\w-]+)/;
+    const regexp = /(?<first>[^@])(?<middle>[^@]+)(?<last>@[\w-]+\.+[\w-]+)/;
     const {first, middle, last} = email.match(regexp).groups;
-    const mask = middle.replace(/[\w-]/gi, '*');
+    const mask = middle.replace(/[^@]/gi, '*');
     return `${first}${mask}${last}`;
   }
 }
