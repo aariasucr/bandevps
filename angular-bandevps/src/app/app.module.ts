@@ -33,6 +33,7 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {reducers} from './state/reducers';
 import {ApplicationEffects} from './state/application/effects';
+import { EditInformationComponent } from './edit-information/edit-information.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {ApplicationEffects} from './state/application/effects';
     RegisterUserComponent,
     UserDataEditorComponent,
     UserPasswordEditorComponent,
+    EditInformationComponent,
     SegurosComponent
   ],
   imports: [

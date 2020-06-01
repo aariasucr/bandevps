@@ -46,29 +46,22 @@ describe('HeaderComponent', () => {
     expect(header.title).toEqual('The Iron Bank');
   });
 
-  it(`should have as logoutString 'Salir'`, () => {
-    const header = fixture.debugElement.componentInstance;
-    expect(header.logoutString).toEqual('Salir');
-  });
-
-  it('should render logoutString in an anchor element if user is logged in', fakeAsync(() => {
+  it('should render Options in an anchor element if user is logged in', fakeAsync(() => {
     component.ngOnInit();
     mockStatusChange.emit(mockUserData);
     console.log('isLoggedIn value in header component', component.getIsLoggedIn());
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('a').textContent).toContain('Salir');
+    console.log(compiled.querySelector('button[id="dropdownMenu1"]'));
+    expect(compiled.querySelector('button[id="dropdownMenu1"]').textContent).toContain('Opciones');
   }));
 
-  it('should not render logoutString in an anchor element if user is not logged in', () => {
+  it('should not render Options in an anchor element if user is not logged in', () => {
     component.ngOnInit();
     mockStatusChange.emit(null);
     console.log('isLoggedIn value in header component', component.getIsLoggedIn());
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    // En este caso no debe haber ningún elemento anchor en el componente
-    // Si se tienen que incoporar más elementos anchor al componente y lo anterior ya no se cumple,
-    // la prueba podría ser expect(compiled.querySelector('a').textContent).not.toContain('Salir');
-    expect(compiled.querySelector('a')).not.toBeTruthy();
+    expect(compiled.querySelector('button[id="dropdownMenu1"]')).toBeFalsy();
   });
 });

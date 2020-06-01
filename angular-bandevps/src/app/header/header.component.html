@@ -1,17 +1,44 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light">
+<nav class="navbar navbar-expand-md  navbar-dark bg-primary">
+ 
+ 
   <span class="navbar-brand">{{ getTitle() }}</span>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" *ngIf="getIsLoggedIn()">
-    <span class="navbar-toggler-icon"></span>
+  <button  type="button" class="btn btn-primary" *ngIf="getIsLoggedIn() ">
+    <a class="nav-link" routerLink="/home" style="color: white;">Home</a>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent" *ngIf="getIsLoggedIn()">
-    <ul class="navbar-nav w-100"></ul>
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" (click)="logout()">{{ this.getLogoutString() }}</a>
-      </li>
-    </ul>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarsExampleDefault"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+    *ngIf="getIsLoggedIn()"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse " id="navbarSupportedContent" >
+    <div class="dropdown flex-grow-0 text-right ml-auto" *ngIf="getIsLoggedIn()">
+      <button
+      style="color: white;"
+        class="btn btn-default"
+        type="button"
+        id="dropdownMenu1"
+        data-toggle="dropdown"
+        aria-expanded="true"
+      >Opciones
+        
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu " role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation">
+          <a class="nav-link" routerLink="/editInformation"> Editar información</a>
+        </li>
+        <li role="presentation">
+          <a class="nav-link" (click)="logout()">{{ this.getLogoutString() }}</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
