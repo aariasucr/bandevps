@@ -6,6 +6,7 @@ import {UserService} from '../shared/user.service';
 import {UserDataEditorComponent} from '../user-data-editor/user-data-editor.component';
 import {ReactiveFormsModule, FormGroup, FormControl} from '@angular/forms';
 import {SpinnerService} from '../shared/spinner.service';
+import { ToastrModule } from 'ngx-toastr';
 
 describe('EditInformationComponent', () => {
   let component: EditInformationComponent;
@@ -44,7 +45,7 @@ describe('EditInformationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, ToastrModule.forRoot()],
       declarations: [EditInformationComponent, UserDataEditorComponent],
       providers: [{provide: UserService, useValue: mockUserService}, SpinnerService]
     }).compileComponents();

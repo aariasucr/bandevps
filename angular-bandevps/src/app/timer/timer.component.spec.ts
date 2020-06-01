@@ -6,6 +6,7 @@ import {AngularFireModule} from '@angular/fire';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from '../../environments/environment';
+import {ToastrModule} from 'ngx-toastr';
 
 describe('TimerComponent', () => {
   let component: TimerComponent;
@@ -17,7 +18,8 @@ describe('TimerComponent', () => {
         StoreModule.forRoot(reducers),
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireDatabaseModule,
-        AngularFireAuthModule
+        AngularFireAuthModule,
+        ToastrModule.forRoot()
       ],
       declarations: [TimerComponent]
     }).compileComponents();

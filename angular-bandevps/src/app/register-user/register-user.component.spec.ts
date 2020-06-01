@@ -10,6 +10,7 @@ import {UserService} from '../shared/user.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {RouterTestingModule} from '@angular/router/testing';
 import {By} from '@angular/platform-browser';
+import {ToastrModule} from 'ngx-toastr';
 
 describe('RegisterUserComponent', () => {
   let component: RegisterUserComponent;
@@ -66,7 +67,13 @@ describe('RegisterUserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FormsModule, NgxSpinnerModule, RouterTestingModule],
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        NgxSpinnerModule,
+        RouterTestingModule,
+        ToastrModule.forRoot()
+      ],
       declarations: [UserPasswordEditorComponent, UserDataEditorComponent, RegisterUserComponent],
       providers: [
         SpinnerService,
