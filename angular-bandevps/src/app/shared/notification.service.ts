@@ -6,6 +6,7 @@ import {Subject} from 'rxjs';
   providedIn: 'root'
 })
 export class NotificationService {
+
   private mySubject = new Subject<any>();
 
   public emmitter = this.mySubject.asObservable();
@@ -28,5 +29,9 @@ export class NotificationService {
   // banners
   displayBanner(type: string, message: string) {
     this.mySubject.next({type, message});
+  }
+
+  showInfoMessageWithConfirmation(message: string) {
+    alert(message);
   }
 }

@@ -1,0 +1,12 @@
+<br>
+<br>
+<form [formGroup]="userInfoForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-7">
+      <app-user-data-editor [form]="userInfoForm"> </app-user-data-editor>
+      <button type="submit"  class="btn btn-primary"   [disabled]="userInfoForm.invalid" >Actualizar</button>
+    </div>
+  </div>
+ 
+</form>

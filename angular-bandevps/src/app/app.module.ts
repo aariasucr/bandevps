@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent, APP_TITLE} from './app.component';
@@ -13,16 +13,42 @@ import {environment} from '../environments/environment';
 
 import {UserService} from './shared/user.service';
 import {HomeComponent} from './home/home.component';
+import {SegurosComponent} from './seguros/seguros.component';
+import {SegurosService} from './shared/seguros.service';
 import {LoginComponent} from './login/login.component';
 import {RouteGuard} from './shared/route-guard';
 import {HeaderComponent} from './header/header.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
- 
-import { ToastrModule } from 'ngx-toastr';
-import { NotificationService } from './shared/notification.service';
+import {RegisterUserComponent} from './register-user/register-user.component';
+import {LoggedInUserRouteGuard} from './shared/logged-in-user-route-guard';
+import {UserDataEditorComponent} from './user-data-editor/user-data-editor.component';
+import {UserPasswordEditorComponent} from './user-password-editor/user-password-editor.component';
+import {TimerService} from './shared/timer.service';
+import {NotificationService} from './shared/notification.service';
+import {TimerComponent} from './timer/timer.component';
+import {ToastrModule} from 'ngx-toastr';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import {SpinnerService} from './shared/spinner.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {EditInformationComponent} from './edit-information/edit-information.component';
+
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {reducers} from './state/reducers';
+import {ApplicationEffects} from './state/application/effects';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, HeaderComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+    HeaderComponent,
+    TimerComponent,
+    RegisterUserComponent,
+    UserDataEditorComponent,
+    UserPasswordEditorComponent,
+    EditInformationComponent,
+    SegurosComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -31,10 +57,23 @@ import { NotificationService } from './shared/notification.service';
     AngularFireAuthModule,
     AngularFireStorageModule,
     FormsModule,
-    BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot() // ToastrModule added
+    ReactiveFormsModule,
+    NgxSpinnerModule,
+    BrowserAnimationsModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([ApplicationEffects]),
+    ToastrModule.forRoot()
   ],
-  providers: [UserService, RouteGuard, {provide: APP_TITLE, useValue: 'The Iron Bank'},NotificationService],
+  providers: [
+    UserService,
+    RouteGuard,
+    {provide: APP_TITLE, useValue: 'The Iron Bank'},
+    LoggedInUserRouteGuard,
+    TimerService,
+    NotificationService,
+    SpinnerService,
+    SegurosService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

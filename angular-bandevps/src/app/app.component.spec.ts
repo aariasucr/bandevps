@@ -6,6 +6,11 @@ import {AngularFireModule} from '@angular/fire';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from '../environments/environment';
+import {TimerComponent} from './timer/timer.component';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from './state/reducers';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import {SpinnerService} from './shared/spinner.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -14,10 +19,12 @@ describe('AppComponent', () => {
         RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireDatabaseModule,
-        AngularFireAuthModule
+        AngularFireAuthModule,
+        StoreModule.forRoot(reducers),
+        NgxSpinnerModule
       ],
-      declarations: [AppComponent, HeaderComponent],
-      providers: [{provide: APP_TITLE, useValue: 'The Iron Bank'}]
+      declarations: [AppComponent, HeaderComponent, TimerComponent],
+      providers: [{provide: APP_TITLE, useValue: 'The Iron Bank'}, SpinnerService]
     }).compileComponents();
   }));
 

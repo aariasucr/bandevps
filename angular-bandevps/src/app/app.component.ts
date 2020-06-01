@@ -10,6 +10,7 @@ export const APP_TITLE = new InjectionToken<string>('AppTitle');
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
   constructor(
     private userService: UserService,
     private firebaseAuth: AngularFireAuth,
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit {
     this.firebaseAuth.onAuthStateChanged((user) => {
       console.log('user en init de AppComponent', user);
       if (user) {
-        this.userService.performLoginUid(user.uid);
+        this.userService.performLoginEmail(user.email);
       } else {
         this.userService.performLogout();
       }
