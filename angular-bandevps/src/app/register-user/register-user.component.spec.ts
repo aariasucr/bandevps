@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, fakeAsync, tick, flushMicrotasks, flush, discardPeriodicTasks} from '@angular/core/testing';
 
 import {RegisterUserComponent} from './register-user.component';
 import {ReactiveFormsModule, FormsModule, FormGroup, FormControl} from '@angular/forms';
@@ -9,8 +9,8 @@ import {SpinnerService} from '../shared/spinner.service';
 import {UserService} from '../shared/user.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {RouterTestingModule} from '@angular/router/testing';
-import {By} from '@angular/platform-browser';
 import {ToastrModule} from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('RegisterUserComponent', () => {
   let component: RegisterUserComponent;
@@ -63,6 +63,7 @@ describe('RegisterUserComponent', () => {
     expect(hidden.textContent).toContain('Ocupación');
     expect(hidden.textContent).toContain('Dirección');
     expect(hidden.textContent).toContain('Registrar');
+    tick(10000);
   };
 
   beforeEach(async(() => {
@@ -72,7 +73,8 @@ describe('RegisterUserComponent', () => {
         FormsModule,
         NgxSpinnerModule,
         RouterTestingModule,
-        ToastrModule.forRoot()
+        ToastrModule.forRoot(),
+        BrowserAnimationsModule
       ],
       declarations: [UserPasswordEditorComponent, UserDataEditorComponent, RegisterUserComponent],
       providers: [

@@ -96,13 +96,13 @@ export class UserService {
     });
   }
 
-  insertUserInfoAndSetUserRegistered(userData: UserData, userInfo: UserInformation) {
+  insertUserInfoAndSetUserRegistered(id: string, userInfo: UserInformation) {
     return new Promise((resolve, reject) => {
       this.firebaseDatabase.database
-        .ref(`users_info/${userData.id}`)
+        .ref(`users_info/${id}`)
         .set(userInfo)
         .then(() => {
-          return this.firebaseDatabase.database.ref(`users/${userData.id}`).update({
+          return this.firebaseDatabase.database.ref(`users/${id}`).update({
             registered: true
           });
         })
@@ -115,16 +115,16 @@ export class UserService {
     });
   }
 
-  invalidateUser(userData: UserData) {
-    this.firebaseDatabase.database.ref(`users/${userData.id}`).update({
+  invalidateUser(id: string) {
+    this.firebaseDatabase.database.ref(`users/${id}`).update({
       registered: false
     });
   }
 
-  updateUserInfo(userData: UserData, userInfo: UserInformation) {
+  updateUserInfo(id: string, userInfo: UserInformation) {
     return new Promise((resolve, reject) => {
       this.firebaseDatabase.database
-        .ref(`users_info/${userData.id}`)
+        .ref(`users_info/${id}`)
         .set(userInfo)
         .then(() => {
           resolve();

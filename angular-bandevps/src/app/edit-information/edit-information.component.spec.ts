@@ -6,7 +6,8 @@ import {UserService} from '../shared/user.service';
 import {UserDataEditorComponent} from '../user-data-editor/user-data-editor.component';
 import {ReactiveFormsModule, FormGroup, FormControl} from '@angular/forms';
 import {SpinnerService} from '../shared/spinner.service';
-import { ToastrModule } from 'ngx-toastr';
+import {ToastrModule} from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('EditInformationComponent', () => {
   let component: EditInformationComponent;
@@ -31,8 +32,8 @@ describe('EditInformationComponent', () => {
         return Promise.resolve(mockUserInformation);
       }
     },
-    updateUserInfo(userData, userInfo) {
-      if (userData.id === '102340567') {
+    updateUserInfo(id, userInfo) {
+      if (id === '102340567') {
         return Promise.resolve();
       }
     }
@@ -45,7 +46,7 @@ describe('EditInformationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, ToastrModule.forRoot()],
+      imports: [ReactiveFormsModule, ToastrModule.forRoot(), BrowserAnimationsModule],
       declarations: [EditInformationComponent, UserDataEditorComponent],
       providers: [{provide: UserService, useValue: mockUserService}, SpinnerService]
     }).compileComponents();
@@ -86,8 +87,8 @@ describe('EditInformationComponent', () => {
     mockUserService.statusChange.emit(mockUserDataRegistrado);
     tick();
     component.onSubmit();
-    tick();
     expect(spinnerSpy).toHaveBeenCalled();
     expect(spinnerSpy.calls.all().length).toEqual(2);
+    tick(10000);
   }));
 });

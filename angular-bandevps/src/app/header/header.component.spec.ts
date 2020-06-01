@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed, fakeAsync} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import {HeaderComponent} from './header.component';
 import {APP_TITLE} from '../app.component';
 import {UserService} from '../shared/user.service';
@@ -47,21 +47,20 @@ describe('HeaderComponent', () => {
   });
 
   it('should render Options in an anchor element if user is logged in', fakeAsync(() => {
-    component.ngOnInit();
-    mockStatusChange.emit(mockUserData);
+    mockUserService.statusChange.emit(mockUserData);
+    tick();
     console.log('isLoggedIn value in header component', component.getIsLoggedIn());
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    console.log(compiled.querySelector('button[id="dropdownMenu1"]'));
     expect(compiled.querySelector('button[id="dropdownMenu1"]').textContent).toContain('Opciones');
   }));
 
-  it('should not render Options in an anchor element if user is not logged in', () => {
-    component.ngOnInit();
-    mockStatusChange.emit(null);
+  it('should not render Options in an anchor element if user is not logged in', fakeAsync(() => {
+    mockUserService.statusChange.emit(null);
+    tick();
     console.log('isLoggedIn value in header component', component.getIsLoggedIn());
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('button[id="dropdownMenu1"]')).toBeFalsy();
-  });
+  }));
 });

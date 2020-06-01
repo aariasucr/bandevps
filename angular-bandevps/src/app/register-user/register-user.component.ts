@@ -84,12 +84,12 @@ export class RegisterUserComponent implements OnInit {
           errorMessage =
             'Ya existe una cuenta de usuario para el número de identificación ingresado.';
         } else {
-          errorMessage = 'Ha ocurrido un error. Por favor intente de nuevo.';
+          errorMessage = 'Ha ocurrido un error. Por favor verifique los datos e intente de nuevo.';
         }
       })
       .finally(() => {
         if (!!errorMessage) {
-          this.notificationService.showInfoMessageWithConfirmation(errorMessage);
+          this.notificationService.showErrorMessage('Error al recuperar los datos del usuario', errorMessage);
         }
         this.spinnerService.hideMainSpinner();
       });
@@ -106,12 +106,12 @@ export class RegisterUserComponent implements OnInit {
         if (error === RegistrationError.INVALID_PASSWORD) {
           errorMessage = 'La contraseña debe ser más segura. Incluya al menos seis caracteres.';
         } else {
-          errorMessage = 'Ha ocurrido un error. Por favor intente de nuevo.';
+          errorMessage = 'Ha ocurrido un error. Por favor verifique los datos e intente de nuevo.';
         }
       })
       .finally(() => {
         if (!!errorMessage) {
-          this.notificationService.showInfoMessageWithConfirmation(errorMessage);
+          this.notificationService.showErrorMessage('Error al crear al crear la cuenta de usuario', errorMessage);
         }
         this.spinnerService.hideMainSpinner();
       });
@@ -169,7 +169,7 @@ export class RegisterUserComponent implements OnInit {
 
     return new Promise((resolve, reject) => {
       this.userService
-        .insertUserInfoAndSetUserRegistered(this.userData, userInfo)
+        .insertUserInfoAndSetUserRegistered(this.userData.id, userInfo)
         .then(() => {
           firstStepCompleted = true;
           return this.firebaseAuth.createUserWithEmailAndPassword(email, password);
@@ -189,7 +189,7 @@ export class RegisterUserComponent implements OnInit {
           }
 
           if (firstStepCompleted) {
-            this.userService.invalidateUser(this.userData);
+            this.userService.invalidateUser(this.userData.id);
           }
           reject(registrationError);
         });
