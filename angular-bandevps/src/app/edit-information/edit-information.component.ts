@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterContentChecked, ChangeDetectorRef} from '@angular/core';
 import {FormGroup, FormControl} from '@angular/forms';
 import {NotificationService} from '../shared/notification.service';
 import {UserService} from '../shared/user.service';
@@ -6,20 +6,20 @@ import {Subscription} from 'rxjs';
 import {UserData, UserInformation} from '../shared/models';
 import {SpinnerService} from '../shared/spinner.service';
 
-
 @Component({
   selector: 'app-edit-information',
   templateUrl: './edit-information.component.html',
   styleUrls: ['./edit-information.component.css']
 })
-export class EditInformationComponent implements OnInit, OnDestroy {
+export class EditInformationComponent implements OnInit, OnDestroy, AfterContentChecked {
   userInfoForm: FormGroup;
   private subscription: Subscription;
   private userData: UserData;
   constructor(
     private notificationService: NotificationService,
     private spinnerService: SpinnerService,
-    private userService: UserService
+    private userService: UserService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -49,6 +49,10 @@ export class EditInformationComponent implements OnInit, OnDestroy {
           });
       }
     });
+  }
+
+  ngAfterContentChecked(): void {
+    this.cdRef.detectChanges();
   }
 
   onSubmit() {
