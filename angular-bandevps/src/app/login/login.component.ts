@@ -15,7 +15,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private userService: UserService,
     private firebaseAuth: AngularFireAuth,
-    private router: Router,private notificationService: NotificationService
+    private router: Router,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {}
@@ -34,12 +35,12 @@ export class LoginComponent implements OnInit {
       .then((signInResult) => {
         console.log('signInResult', signInResult);
         this.userService.performLogin(signInResult, userDataResult);
-        this.notificationService.showSuccessMessage("Sesión iniciada","Bienvenido")
+        this.notificationService.showSuccessMessage('Sesión iniciada', 'Bienvenido');
         this.router.navigate(['/home']);
       })
       .catch((error) => {
         console.log('error', error);
-        this.notificationService.showErrorMessage("Error al iniciar sesión",error.message);
+        this.notificationService.showErrorMessage('Error al iniciar sesión', error.message);
       });
   }
 }

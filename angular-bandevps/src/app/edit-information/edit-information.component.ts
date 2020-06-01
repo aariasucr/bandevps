@@ -44,7 +44,10 @@ export class EditInformationComponent implements OnInit, OnDestroy, AfterContent
             this.spinnerService.hideMainSpinner();
           })
           .catch((error) => {
-            this.notificationService.showInfoMessageWithConfirmation(error);
+            this.notificationService.showErrorMessage(
+              'Error al recuperar los datos del usuario',
+              error
+            );
             this.spinnerService.hideMainSpinner();
           });
       }
@@ -63,10 +66,11 @@ export class EditInformationComponent implements OnInit, OnDestroy, AfterContent
     };
     this.spinnerService.showMainSpinner();
     this.userService
-      .updateUserInfo(this.userData, userInfo)
+      .updateUserInfo(this.userData.id, userInfo)
       .then(() => {
-        this.notificationService.showInfoMessageWithConfirmation(
-          'Se actualizo la información correctamente'
+        this.notificationService.showSuccessMessage(
+          'Actualización completada',
+          'Se actualizó la información del usuario correctamente.'
         );
         this.spinnerService.hideMainSpinner();
       })
