@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, AfterContentChecked, ChangeDetectorRef} from '@angular/core';
 import {FormGroup, FormControl, ValidatorFn, ValidationErrors} from '@angular/forms';
 import {SpinnerService} from '../shared/spinner.service';
 import {UserService} from '../shared/user.service';
@@ -30,7 +30,7 @@ export const differentPasswordsValidator: ValidatorFn = (
   templateUrl: './register-user.component.html',
   styleUrls: ['./register-user.component.css']
 })
-export class RegisterUserComponent implements OnInit {
+export class RegisterUserComponent implements OnInit, AfterContentChecked {
   userIdForm: FormGroup;
   userRegistrationForm: FormGroup;
   userCanRegister = false;
@@ -41,7 +41,8 @@ export class RegisterUserComponent implements OnInit {
     private userService: UserService,
     private firebaseAuth: AngularFireAuth,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -60,6 +61,10 @@ export class RegisterUserComponent implements OnInit {
       },
       {validators: differentPasswordsValidator}
     );
+  }
+
+  ngAfterContentChecked(): void {
+    this.cdRef.detectChanges();
   }
 
   onSubmitUserIdForm() {
@@ -197,9 +202,9 @@ export class RegisterUserComponent implements OnInit {
   }
 
   getMaskedEmail(email) {
-    const regexp = /(?<first>[\w-])(?<middle>[\w-]+)(?<last>@[\w-]+\.+[\w-]+)/;
+    const regexp = /(?<first>[^@])(?<middle>[^@]+)(?<last>@[\w-]+\.+[\w-]+)/;
     const {first, middle, last} = email.match(regexp).groups;
-    const mask = middle.replace(/[\w-]/gi, '*');
+    const mask = middle.replace(/[^@]/gi, '*');
     return `${first}${mask}${last}`;
   }
 }

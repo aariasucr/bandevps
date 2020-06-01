@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
   private isLoggedIn = false;
   private logoutString = 'Salir';
-  private subscription: Subscription;
+  private subscription: Subscription = null;
 
   constructor(private userService: UserService, @Inject(APP_TITLE) private title: string) {}
 

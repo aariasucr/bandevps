@@ -13,7 +13,7 @@ import {SpinnerService} from '../shared/spinner.service';
 })
 export class EditInformationComponent implements OnInit, OnDestroy, AfterContentChecked {
   userInfoForm: FormGroup;
-  private subscription: Subscription;
+  private subscription: Subscription = null;
   private userData: UserData;
   constructor(
     private notificationService: NotificationService,
@@ -81,6 +81,8 @@ export class EditInformationComponent implements OnInit, OnDestroy, AfterContent
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

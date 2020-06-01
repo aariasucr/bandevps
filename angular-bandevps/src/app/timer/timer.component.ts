@@ -11,8 +11,8 @@ import {NotificationService} from '../shared/notification.service';
 })
 export class TimerComponent implements OnInit, OnDestroy {
   private isLoggedIn = false;
-  private timerSubscription: Subscription;
-  private userSubscription: Subscription;
+  private timerSubscription: Subscription = null;
+  private userSubscription: Subscription = null;
 
   constructor(
     private userService: UserService,

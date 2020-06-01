@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed, fakeAsync, tick, flushMicrotasks, flush, discardPeriodicTasks} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 
 import {RegisterUserComponent} from './register-user.component';
 import {ReactiveFormsModule, FormsModule, FormGroup, FormControl} from '@angular/forms';
@@ -20,7 +20,7 @@ describe('RegisterUserComponent', () => {
     created: 0,
     creationDate: 'date',
     registered: false,
-    email: 'test@test.com',
+    email: 'nombre.apellido.1234@test.com',
     fullName: 'Nombre Apellido Apellido',
     id: '999999999'
   };
@@ -50,6 +50,7 @@ describe('RegisterUserComponent', () => {
 
   // Mocks de forms
   let mockUserIdForm: FormGroup;
+  let mockUserRegistrationForm: FormGroup;
 
   const userRegistrationFormHidden = (mockUserIdFormForCase) => {
     component.userIdForm = mockUserIdFormForCase;
@@ -150,6 +151,27 @@ describe('RegisterUserComponent', () => {
     expect(disabledEmail).toBeTruthy();
     expect(disabledPhoneNumber).toBeFalsy();
     expect(disabledOccupation).toBeFalsy();
+  }));
+
+  it('should hide email field characters', fakeAsync(() => {
+    mockUserIdForm = new FormGroup({
+      id: new FormControl('999999999')
+    });
+    mockUserRegistrationForm = new FormGroup({
+      name: new FormControl(''),
+      email: new FormControl(''),
+      password: new FormControl(''),
+      passwordConf: new FormControl(''),
+      phoneNumber: new FormControl(''),
+      address: new FormControl(''),
+      occupation: new FormControl('')
+    });
+    component.userIdForm = mockUserIdForm;
+    component.userRegistrationForm = mockUserRegistrationForm;
+    component.onSubmitUserIdForm();
+    tick();
+    fixture.detectChanges();
+    expect(component.userRegistrationForm.get('email').value).toBe('n*******************@test.com');
   }));
 
   it('should submit user id form', () => {
