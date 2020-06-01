@@ -9,6 +9,7 @@ import {SpinnerService} from '../shared/spinner.service';
 import {UserService} from '../shared/user.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {RouterTestingModule} from '@angular/router/testing';
+import {By} from '@angular/platform-browser';
 
 describe('RegisterUserComponent', () => {
   let component: RegisterUserComponent;
@@ -121,6 +122,25 @@ describe('RegisterUserComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     const hidden = compiled.querySelector('[hidden]');
     expect(hidden).toBeFalsy();
+  }));
+
+  it('name and email fields should be disabled for registration step', fakeAsync(() => {
+    mockUserIdForm = new FormGroup({
+      id: new FormControl('999999999')
+    });
+    component.userIdForm = mockUserIdForm;
+    component.onSubmitUserIdForm();
+    tick();
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    const disabledName = compiled.querySelector('input[name="name"][disabled=""]');
+    const disabledEmail = compiled.querySelector('input[name="email"][disabled=""]');
+    const disabledPhoneNumber = compiled.querySelector('input[name="phoneNumber"][disabled=""]');
+    const disabledOccupation = compiled.querySelector('input[name="occupation"][disabled=""]');
+    expect(disabledName).toBeTruthy();
+    expect(disabledEmail).toBeTruthy();
+    expect(disabledPhoneNumber).toBeFalsy();
+    expect(disabledOccupation).toBeFalsy();
   }));
 
   it('should submit user id form', () => {
