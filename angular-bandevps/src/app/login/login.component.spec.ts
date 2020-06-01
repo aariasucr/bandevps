@@ -7,6 +7,8 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from '../../environments/environment';
 import {NgForm} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
+import {ToastrModule} from 'ngx-toastr';
+import {NotificationService} from '../shared/notification.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -18,7 +20,8 @@ describe('LoginComponent', () => {
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
-        RouterTestingModule
+        RouterTestingModule,
+        ToastrModule.forRoot()
       ],
       declarations: [LoginComponent, NgForm]
     }).compileComponents();
