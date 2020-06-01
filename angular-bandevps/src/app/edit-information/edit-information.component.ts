@@ -38,9 +38,9 @@ export class EditInformationComponent implements OnInit, OnDestroy, AfterContent
           .getUserInfoFromFirebaseWithId(userData.id)
           .then((userInfo: UserInformation) => {
             console.log(userInfo);
-            this.userInfoForm.get('address').patchValue(userInfo.address),
-              this.userInfoForm.get('occupation').patchValue(userInfo.occupation),
-              this.userInfoForm.get('phoneNumber').patchValue(userInfo.phoneNumber);
+            this.userInfoForm.get('address').patchValue(userInfo.address);
+            this.userInfoForm.get('occupation').patchValue(userInfo.occupation);
+            this.userInfoForm.get('phoneNumber').patchValue(userInfo.phoneNumber);
             this.spinnerService.hideMainSpinner();
           })
           .catch((error) => {
