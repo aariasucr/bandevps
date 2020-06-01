@@ -1,15 +1,18 @@
 <br />
 <div class="row">
-  <div class="col-4"></div>
-  <div class="col-4">
+  <div class="col-3"></div>
+  <div class="col-6">
     <h2>Iniciar sesión</h2>
     <br />
     <form class="user" (ngSubmit)="onSubmit(f)" #f="ngForm">
       <div class="form-group">
-        <label for="identificación usuario">Identificación</label>
-        <div class="row">
-          <div class="col-1"></div>
-          <div class="col-9">
+        <div class="col-4">
+          <label for="identificación usuario">Identificación</label>
+        </div>
+     
+        
+          
+          <div class="col-6">
             <input
               class="form-control"
               id="identificación usuario"
@@ -18,14 +21,17 @@
               ngModel
               required
             />
-          </div>
+          
         </div>
       </div>
       <div class="form-group">
-        <label for="password">Contraseña</label>
-        <div class="row">
-          <div class="col-2"></div>
-          <div class="col-9">
+        <div class="col-4">
+          <label for="password">Contraseña</label>
+        </div>
+      
+       
+       
+          <div class="col-6">
             <input
               type="password"
               name="password"
@@ -37,11 +43,16 @@
             />
           </div>
         </div>
-      </div>
+      
 
+     <br>
       <button type="submit" class="btn btn-primary btn-block" [disabled]="!f.valid">
-        Iniciar sesión
+        Ingresar
       </button>
+      <br />
+    
     </form>
+    
+    <p>Para activar la cuenta de usuario <a routerLink="/register">ingrese aquí</a></p>
   </div>
 </div>

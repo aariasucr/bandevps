@@ -11,6 +11,8 @@ import {StoreModule} from '@ngrx/store';
 import {reducers} from './state/reducers';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {SpinnerService} from './shared/spinner.service';
+import {ToastrModule} from 'ngx-toastr';
+import {NotificationService} from './shared/notification.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -21,7 +23,8 @@ describe('AppComponent', () => {
         AngularFireDatabaseModule,
         AngularFireAuthModule,
         StoreModule.forRoot(reducers),
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        ToastrModule.forRoot()
       ],
       declarations: [AppComponent, HeaderComponent, TimerComponent],
       providers: [{provide: APP_TITLE, useValue: 'The Iron Bank'}, SpinnerService]

@@ -25,15 +25,16 @@ import {UserPasswordEditorComponent} from './user-password-editor/user-password-
 import {TimerService} from './shared/timer.service';
 import {NotificationService} from './shared/notification.service';
 import {TimerComponent} from './timer/timer.component';
+import {ToastrModule} from 'ngx-toastr';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {SpinnerService} from './shared/spinner.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {EditInformationComponent} from './edit-information/edit-information.component';
 
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {reducers} from './state/reducers';
 import {ApplicationEffects} from './state/application/effects';
-import { EditInformationComponent } from './edit-information/edit-information.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { EditInformationComponent } from './edit-information/edit-information.co
     NgxSpinnerModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([ApplicationEffects])
+    EffectsModule.forRoot([ApplicationEffects]),
+    ToastrModule.forRoot()
   ],
   providers: [
     UserService,
