@@ -12,7 +12,7 @@ export const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'insurances', component: SegurosComponent,canActivate: [RouteGuard]},
-  {path: 'register', component: RegisterUserComponent, canActivate: [LoggedInUserRouteGuard]}
+  {path: 'registerUser', component: RegisterUserComponent, canActivate: [LoggedInUserRouteGuard]}
 ];
 
 @NgModule({

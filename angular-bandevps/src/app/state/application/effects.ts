@@ -8,7 +8,7 @@ import * as ApplicationActions from './actions';
 
 @Injectable()
 export class ApplicationEffects {
-  APPLICATION_TIMEOUT_TIME = 1000 * 5;
+  APPLICATION_TIMEOUT_TIME = 1000 * 3600;
 
   constructor(private actions$: Actions) {}
 
