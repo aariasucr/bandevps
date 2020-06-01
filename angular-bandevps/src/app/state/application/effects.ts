@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Effect, Actions} from '@ngrx/effects';
-import {Action} from '@ngrx/store';
-
 import {map, switchMap} from 'rxjs/operators';
 import {timer} from 'rxjs';
 import * as ApplicationActions from './actions';

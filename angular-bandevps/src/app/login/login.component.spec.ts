@@ -8,7 +8,6 @@ import {environment} from '../../environments/environment';
 import {NgForm} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ToastrModule} from 'ngx-toastr';
-import {NotificationService} from '../shared/notification.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;

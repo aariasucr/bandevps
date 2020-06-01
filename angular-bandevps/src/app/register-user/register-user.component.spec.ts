@@ -9,7 +9,6 @@ import {SpinnerService} from '../shared/spinner.service';
 import {UserService} from '../shared/user.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {RouterTestingModule} from '@angular/router/testing';
-import {By} from '@angular/platform-browser';
 import {ToastrModule} from 'ngx-toastr';
 
 describe('RegisterUserComponent', () => {

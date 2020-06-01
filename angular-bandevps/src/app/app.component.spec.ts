@@ -12,7 +12,6 @@ import {reducers} from './state/reducers';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {SpinnerService} from './shared/spinner.service';
 import {ToastrModule} from 'ngx-toastr';
-import {NotificationService} from './shared/notification.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
