@@ -8,7 +8,7 @@ export interface UserData {
 }
 
 export interface UserInformation {
-  adress: string;
+  address: string;
   occupation: string;
   phoneNumber: string;
 }

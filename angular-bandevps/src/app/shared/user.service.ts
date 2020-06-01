@@ -120,4 +120,39 @@ export class UserService {
       registered: false
     });
   }
+
+  updateUserInfo(userData: UserData, userInfo: UserInformation) {
+    return new Promise((resolve, reject) => {
+      this.firebaseDatabase.database
+        .ref(`users_info/${userData.id}`)
+        .set(userInfo)
+        .then(() => {
+          resolve();
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  }
+
+  getUserInfoFromFirebaseWithId(id: string) {
+    return new Promise((resolve, reject) => {
+      this.firebaseDatabase.database
+        .ref('users_info')
+        .child(id)
+        .once('value')
+        .then((result) => {
+          if (!!result && !!result.val()) {
+            const userInfo: UserInformation = result.val();
+            resolve(userInfo);
+          } else {
+            reject('INVALID_ID');
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
 }

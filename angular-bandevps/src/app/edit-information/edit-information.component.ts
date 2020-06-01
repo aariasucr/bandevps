@@ -1,10 +1,11 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {NgForm, FormGroup, FormControl} from '@angular/forms';
+import {FormGroup, FormControl} from '@angular/forms';
 import {NotificationService} from '../shared/notification.service';
 import {UserService} from '../shared/user.service';
-import {AngularFireAuth} from '@angular/fire/auth';
 import {Subscription} from 'rxjs';
-import { UserData } from '../shared/models';
+import {UserData, UserInformation} from '../shared/models';
+import {SpinnerService} from '../shared/spinner.service';
+
 
 @Component({
   selector: 'app-edit-information',
@@ -14,12 +15,11 @@ import { UserData } from '../shared/models';
 export class EditInformationComponent implements OnInit, OnDestroy {
   userInfoForm: FormGroup;
   private subscription: Subscription;
-  private userData:UserData
+  private userData: UserData;
   constructor(
-    private notificationServie: NotificationService,
-    //private spinnerService: SpinnerService,
-    private userService: UserService,
-    private firebaseAuth: AngularFireAuth
+    private notificationService: NotificationService,
+    private spinnerService: SpinnerService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -28,18 +28,51 @@ export class EditInformationComponent implements OnInit, OnDestroy {
       address: new FormControl(''),
       occupation: new FormControl('')
     });
+
     this.subscription = this.userService.statusChange.subscribe((userData) => {
       if (userData) {
-        this.userData=userData;
+        this.userData = userData;
         console.log(userData);
+        this.spinnerService.showMainSpinner();
+        this.userService
+          .getUserInfoFromFirebaseWithId(userData.id)
+          .then((userInfo: UserInformation) => {
+            console.log(userInfo);
+            this.userInfoForm.get('address').patchValue(userInfo.address),
+              this.userInfoForm.get('occupation').patchValue(userInfo.occupation),
+              this.userInfoForm.get('phoneNumber').patchValue(userInfo.phoneNumber);
+            this.spinnerService.hideMainSpinner();
+          })
+          .catch((error) => {
+            this.notificationService.showInfoMessageWithConfirmation(error);
+            this.spinnerService.hideMainSpinner();
+          });
       }
     });
   }
 
+  onSubmit() {
+    const userInfo: UserInformation = {
+      address: this.userInfoForm.get('address').value,
+      occupation: this.userInfoForm.get('occupation').value,
+      phoneNumber: this.userInfoForm.get('phoneNumber').value
+    };
+    this.spinnerService.showMainSpinner();
+    this.userService
+      .updateUserInfo(this.userData, userInfo)
+      .then(() => {
+        this.notificationService.showInfoMessageWithConfirmation(
+          'Se actualizo la información correctamente'
+        );
+        this.spinnerService.hideMainSpinner();
+      })
+      .catch((error) => {
+        this.notificationService.showInfoMessageWithConfirmation(error);
+        this.spinnerService.hideMainSpinner();
+      });
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
-  onSubmitUserIdForm() {
-    console.log('userIdForm', this.userInfoForm.get('address').value);
   }
 }

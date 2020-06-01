@@ -161,7 +161,7 @@ export class RegisterUserComponent implements OnInit {
     const email = this.userData.email;
     const password = this.userRegistrationForm.get('password').value;
     const userInfo: UserInformation = {
-      adress: this.userRegistrationForm.get('address').value,
+      address: this.userRegistrationForm.get('address').value,
       occupation: this.userRegistrationForm.get('occupation').value,
       phoneNumber: this.userRegistrationForm.get('phoneNumber').value
     };
