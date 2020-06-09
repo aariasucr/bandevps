@@ -7,24 +7,37 @@ import {FormControl, FormGroup, Validators, FormBuilder} from '@angular/forms';
 })
 export class FormInsurancesComponent implements OnInit {
   public contactForm: FormGroup;
-  public seguroViaje: Boolean;
+  public seguroViaje: Boolean=false;
+  public seguroMedico:Boolean;
+  public seguroVida:Boolean;
+  public identificacion:Boolean;
+  numInt:number[]=[1,2,3,4];
+  seleccionado:number;
 
   constructor(public fb: FormBuilder) {
+
     this.contactForm = this.createFormTrav();
+
   }
+
+
   createFormTrav() {
     return new FormGroup({
       nombreDeSolicitante: new FormControl('', [Validators.required]),
       fechaDeSalida: new FormControl('', [Validators.required]),
       fechaDeRegreso: new FormControl('', [Validators.required]),
-      numViajeros: new FormControl('', [Validators.required])
+      numViajeros: new FormControl('', [Validators.required]),
+      cantDiasEst:new FormControl('', [Validators.required]),
+      identifi:new FormControl('', [Validators.required])
     });
   }
   resetForm() {
     this.contactForm.reset();
   }
   onSaveForm() {}
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 
   isSubmitted = false;
 
@@ -53,8 +66,19 @@ export class FormInsurancesComponent implements OnInit {
     if (!this.registrationForm.valid) {
       return false;
     } else {
-      this.seguroViaje = true;
-      alert(JSON.stringify(this.registrationForm.value));
+
+      alert(this.registrationForm.get('ins').value);
+      if(this.registrationForm.get('ins').value=="1: Viajero"){
+        this.seguroViaje = true;
+        this.seguroMedico=false;
+        this.seguroVida=false;
+      }else{
+        if(this.registrationForm.get('ins').value=="2: Medico"){
+          this.seguroViaje = false;
+          this.seguroMedico=true;
+          this.seguroVida=false;
+        }
+      }
     }
   }
 }

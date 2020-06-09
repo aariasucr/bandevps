@@ -47,17 +47,113 @@
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-danger btn-lg btn-block">Submit</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
           </form>
           <!-- Form ends -->
         </div>
       </div>
     </div>
+    <div [hidden]="!this.seguroViaje">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-2"></div>
+          <div class="col-2">
+            <label for="numViajeros">Cantidad de viajeros</label>
+          </div>
+          <div class="col-4">
+            <input
+              class="form-control"
+              formControlName="numViajeros"
+              id="numViajeros"
+              name="numViajeros"
+              required
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-2"></div>
+          <div class="col-2">
+            <label for="cantDiasEst">Cantidad de dias de estadia</label>
+          </div>
+          <div class="col-4">
+            <input
+              class="form-control"
+              formControlName="cantDiasEst"
+              id="cantDiasEst"
+              name="cantDiasEst"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <div class="row" [hidden]="!this.seguroViaje">
-      <div class="col-md-2"></div>
-      <br />
-      <div class="col-md-4"><h1>info de seguro</h1></div>
+    <div [hidden]="!this.seguroMedico">
+      <div class="form-group">
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2">
+          <label for="ident">Tipo de identificacion</label>
+        </div>
+        <div class="col-2">
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Identificacion utilizada
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item">Cedula nacional</a>
+            <a class="dropdown-item">pasaporte</a>
+            <a class="dropdown-item">cedula de residencia</a>
+          </div>
+        </div>
+        <div class="col-2">
+          <input
+            class="form-control"
+            formControlName="identifi"
+            id="ident"
+            name="identifi"
+            required
+          />
+        </div>
+      </div></div>
+<br>
+<select name="miselect" [(ngModel)]="seleccionado" [ngModelOptions]="{standalone: true}">
+  <option [ngValue]="objeto" *ngFor="let objeto of numInt">{{objeto}}</option>
+  </select>
+
+<div class="form-group">
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2">
+          <label for="cantBenf">Indique la cantidad de beneficiarios que desea</label>
+        </div>
+        <div class="col-2">
+
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            # beneficiarios
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item">1</a>
+            <a class="dropdown-item">2</a>
+            <a class="dropdown-item">3</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
     </div>
 
     <br />
