@@ -30,6 +30,8 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 import {SpinnerService} from './shared/spinner.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditInformationComponent} from './edit-information/edit-information.component';
+import {DataTablesModule} from 'angular-datatables';
+import {AccountsComponent} from './accounts/accounts.component';
 
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
@@ -39,8 +41,7 @@ import {MovementsComponent} from './movements/movements.component';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {AlertComponent} from './shared/modals/alert/alert.component';
 import {HttpClientModule} from '@angular/common/http';
-
-import {DataTablesModule} from 'angular-datatables';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {DataTablesModule} from 'angular-datatables';
     EditInformationComponent,
     SegurosComponent,
     MovementsComponent,
-    AlertComponent
+    AlertComponent,
+    AccountsComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +75,8 @@ import {DataTablesModule} from 'angular-datatables';
     ToastrModule.forRoot(),
     ModalModule.forRoot(),
     HttpClientModule,
-    DataTablesModule
+    DataTablesModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [
     UserService,
