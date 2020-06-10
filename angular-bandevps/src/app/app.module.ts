@@ -35,6 +35,12 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {reducers} from './state/reducers';
 import {ApplicationEffects} from './state/application/effects';
+import {MovementsComponent} from './movements/movements.component';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {AlertComponent} from './shared/modals/alert/alert.component';
+import {HttpClientModule} from '@angular/common/http';
+
+import {DataTablesModule} from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -47,7 +53,9 @@ import {ApplicationEffects} from './state/application/effects';
     UserDataEditorComponent,
     UserPasswordEditorComponent,
     EditInformationComponent,
-    SegurosComponent
+    SegurosComponent,
+    MovementsComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +70,10 @@ import {ApplicationEffects} from './state/application/effects';
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([ApplicationEffects]),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    ModalModule.forRoot(),
+    HttpClientModule,
+    DataTablesModule
   ],
   providers: [
     UserService,
@@ -74,6 +85,7 @@ import {ApplicationEffects} from './state/application/effects';
     SpinnerService,
     SegurosService
   ],
+  entryComponents: [AlertComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -11,6 +11,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ModalModule} from 'ngx-bootstrap/modal';
 
 describe('RegisterUserComponent', () => {
   let component: RegisterUserComponent;
@@ -75,7 +76,8 @@ describe('RegisterUserComponent', () => {
         NgxSpinnerModule,
         RouterTestingModule,
         ToastrModule.forRoot(),
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        ModalModule.forRoot()
       ],
       declarations: [UserPasswordEditorComponent, UserDataEditorComponent, RegisterUserComponent],
       providers: [
