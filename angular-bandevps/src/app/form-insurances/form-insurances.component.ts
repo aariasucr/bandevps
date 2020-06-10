@@ -41,9 +41,8 @@ export class FormInsurancesComponent implements OnInit {
 
   isSubmitted = false;
 
-  insurances: any = ['Viajero', 'Medico', 'Vida'];
+  insurances: String[] = ['Viajero', 'Medico', 'Vida'];
 
-  /*########### Form ###########*/
   registrationForm = this.fb.group({
     ins: ['', [Validators.required]]
   });
@@ -68,6 +67,8 @@ export class FormInsurancesComponent implements OnInit {
     } else {
 
       alert(this.registrationForm.get('ins').value);
+
+
       if(this.registrationForm.get('ins').value=="1: Viajero"){
         this.seguroViaje = true;
         this.seguroMedico=false;

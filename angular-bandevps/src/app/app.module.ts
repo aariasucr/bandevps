@@ -36,6 +36,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {reducers} from './state/reducers';
 import {ApplicationEffects} from './state/application/effects';
 import { FormInsurancesComponent } from './form-insurances/form-insurances.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { FormInsurancesComponent } from './form-insurances/form-insurances.compo
     UserPasswordEditorComponent,
     EditInformationComponent,
     SegurosComponent,
-    FormInsurancesComponent
+    FormInsurancesComponent,
+    AboutUsComponent
   ],
   imports: [
     BrowserModule,
