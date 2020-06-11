@@ -3,12 +3,15 @@ import {SegurosComponent} from './seguros.component';
 import { SegurosService } from '../shared/seguros.service';
 import { asyncScheduler, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 
 describe('SegurosComponent', () => {
   let component: SegurosComponent;
   let fixture: ComponentFixture<SegurosComponent>;
 
+
+  const mockRouter: any = {navigate(){}};
   // Mock de los datos de seguros
   const datosSeguros =  [
       {
@@ -80,7 +83,8 @@ describe('SegurosComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SegurosComponent],
-      providers: [{provide: SegurosService, useValue: mockSeguroService}]
+      providers: [{provide: SegurosService, useValue: mockSeguroService}, {provide: Router, useValue: mockRouter}]
+
     }).compileComponents();
   }));
 
