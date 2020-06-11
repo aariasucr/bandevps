@@ -28,7 +28,10 @@ export class FormInsurancesComponent implements OnInit {
       fechaDeRegreso: new FormControl('', [Validators.required]),
       numViajeros: new FormControl('', [Validators.required]),
       cantDiasEst:new FormControl('', [Validators.required]),
-      identifi:new FormControl('', [Validators.required])
+      identifi:new FormControl('', [Validators.required]),
+      numBeneficiarios:new FormControl('', [Validators.required]),
+      cantBenfSegVida:new FormControl('', [Validators.required])
+
     });
   }
   resetForm() {
@@ -78,6 +81,13 @@ export class FormInsurancesComponent implements OnInit {
           this.seguroViaje = false;
           this.seguroMedico=true;
           this.seguroVida=false;
+        }else{
+          if(this.registrationForm.get('ins').value=="3: Vida"){
+            this.seguroViaje = false;
+            this.seguroMedico=false;
+            this.seguroVida=true;
+          }
+
         }
       }
     }
