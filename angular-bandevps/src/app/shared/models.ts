@@ -1,3 +1,5 @@
+import {Timestamp} from 'rxjs/internal/operators/timestamp';
+
 export interface UserData {
   created: number;
   creationDate: string;
@@ -11,4 +13,46 @@ export interface UserInformation {
   address: string;
   occupation: string;
   phoneNumber: string;
+}
+
+export interface BankAccountData {
+  id: string;
+  number: string;
+  display: string;
+}
+
+export interface CreditCardData {
+  id: string;
+  number: string;
+  display: string;
+}
+
+export interface BankAccountInfo {
+  id: string;
+  number: string;
+  currency: string;
+  balance: number;
+}
+
+export interface CreditCardInfo {
+  id: string;
+  number: string;
+  limit_usd: number;
+  balance_usd: number;
+}
+
+// export interface MovementInfo {
+//   id: string;
+//   timestamp: number;
+//   date: string;
+//   type: number;
+//   detail: string;
+//   amount: number;
+// }
+
+export interface MovementInfo {
+  date: string;
+  type: number;
+  detail: string;
+  amount: number;
 }

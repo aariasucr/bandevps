@@ -1,16 +1,18 @@
 <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>First name</th>
-      <th>Last name</th>
+      <th>Fecha</th>
+      <th>Detalle</th>
+      <th>Tipo</th>
+      <th>Monto</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let person of persons">
-      <td>{{ person.id }}</td>
-      <td>{{ person.firstName }}</td>
-      <td>{{ person.lastName }}</td>
+    <tr *ngFor="let movement of movements">
+      <td>{{ movement.date }}</td>
+      <td>{{ movement.detail }}</td>
+      <td>{{ movement.type }}</td>
+      <td>{{ movement.amount }}</td>
     </tr>
   </tbody>
-  </table>
+</table>

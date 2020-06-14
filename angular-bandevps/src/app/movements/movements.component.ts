@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Person} from '../shared/person';
 import {Subject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {MovementInfo} from '../shared/models';
 
 @Component({
   selector: 'app-movements',
@@ -10,7 +10,8 @@ import {HttpClient} from '@angular/common/http';
 })
 export class MovementsComponent implements OnInit, OnDestroy {
   dtOptions: DataTables.Settings = {};
-  persons: Person[] = [];
+  // persons: Person[] = [];
+  movements: MovementInfo[] = [];
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
   dtTrigger = new Subject();
@@ -23,10 +24,9 @@ export class MovementsComponent implements OnInit, OnDestroy {
       pageLength: 2
     };
     this.get().subscribe((data) => {
-      this.persons = data.data as Person[];
+      this.movements = data.data as MovementInfo[];
       this.dtTrigger.next();
     });
-
   }
 
   get(): Observable<any> {

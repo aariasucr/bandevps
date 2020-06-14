@@ -12,50 +12,94 @@
   <div class="row">
     <div class="col-md-2 col-sm-1"></div>
     <div class="col-md-8 col-sm-10">
-      <div class="card">
-        <h5 class="card-header">Información de cuenta</h5>
-        <div class="card-body">
-          <h5 class="card-title">Número</h5>
-          <p class="card-text text-right">With supporting text below as a natural lead-in to additional content.</p>
-          <h5 class="card-title">Moneda</h5>
-          <p class="card-text text-right">With supporting text below as a natural lead-in to additional content.</p>
-          <h5 class="card-title">Saldo</h5>
-          <p class="card-text text-right">With supporting text below as a natural lead-in to additional content.</p>
+      <form [formGroup]="accountSelectionForm">
+        <div class="row">
+          <div class="col-4">
+            <label for="cuenta">Cuenta</label>
+          </div>
+
+          <div class="col-8">
+            <select
+              formControlName="selectedAccount"
+              id="cuenta"
+              name="account"
+              (change)="changeSelectedAccount($event)"
+            >
+              <option value="">Seleccione una cuenta</option>
+              <option *ngFor="let account of this.accounts | async" [ngValue]="account">
+                {{ account.display }}
+              </option>
+            </select>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 
   <br />
 
-  <div class="row">
-    <div class="col-md-2 col-sm-1"></div>
-    <div class="col-md-8 col-sm-10">
-      <div class="card">
-        <h5 class="card-header">Consulta de movimientos</h5>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-4"><label for="fechas">Período</label></div>
-            <div class="col-8"><input type="text" id="fechas" name="dates" placeholder="Fechas"
-                class="form-control" bsDatepicker bsDaterangepicker [bsConfig]="{ isAnimated: true }"></div>
+  <div *ngIf="this.isAccountSet && this.isAccountInfoSet">
+    <div class="row">
+      <div class="col-md-2 col-sm-1"></div>
+      <div class="col-md-8 col-sm-10">
+        <div class="card">
+          <h5 class="card-header">Información de cuenta</h5>
+          <div class="card-body">
+            <h5 class="card-title">Número</h5>
+            <p class="card-text text-right">
+              {{ this.account.number }}
+            </p>
+            <h5 class="card-title">Moneda</h5>
+            <p class="card-text text-right">
+              {{ this.account.currency }}
+            </p>
+            <h5 class="card-title">Saldo</h5>
+            <p class="card-text text-right">
+              {{ this.account.balance }}
+            </p>
           </div>
+        </div>
+      </div>
+    </div>
 
-          <br />
+    <br />
 
-          <div class="text-center">
-            <button type="button" class="btn btn-primary">Buscar</button>
+    <div class="row">
+      <div class="col-md-2 col-sm-1"></div>
+      <div class="col-md-8 col-sm-10">
+        <div class="card">
+          <h5 class="card-header">Consulta de movimientos</h5>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-4"><label for="fechas">Período</label></div>
+              <div class="col-8">
+                <input
+                  type="text"
+                  id="fechas"
+                  name="dates"
+                  placeholder="Fechas"
+                  class="form-control"
+                  bsDatepicker
+                  bsDaterangepicker
+                  [bsConfig]="{isAnimated: true}"
+                />
+              </div>
+            </div>
+
+            <br />
+
+            <div class="text-center">
+              <button type="button" class="btn btn-primary">Buscar</button>
+            </div>
+
+            <br />
+
+            <div class="row">
+              <app-movements></app-movements>
+            </div>
           </div>
-
-
-          <br />
-
-          <div class="row">
-            <app-movements></app-movements>
-          </div>
-
         </div>
       </div>
     </div>
   </div>
-
 </div>
