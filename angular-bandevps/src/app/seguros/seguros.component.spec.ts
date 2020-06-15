@@ -9,8 +9,7 @@ describe('SegurosComponent', () => {
   let component: SegurosComponent;
   let fixture: ComponentFixture<SegurosComponent>;
 
-  const mockRouter: any = {navigate(){}};
-
+  const mockRouter: any = {navigate() {}};
 
   // Mock de los datos de seguros
   const datosSeguros = [

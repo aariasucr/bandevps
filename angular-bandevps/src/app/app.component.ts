@@ -10,7 +10,6 @@ export const APP_TITLE = new InjectionToken<string>('AppTitle');
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
   constructor(
     private userService: UserService,
     private firebaseAuth: AngularFireAuth,

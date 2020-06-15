@@ -8,11 +8,19 @@ import {AngularFireDatabase} from '@angular/fire/database';
 })
 export class FormInsurancesComponent implements OnInit {
   public contactForm: FormGroup;
-  public seguroViaje: Boolean = false;
-  public seguroMedico: Boolean = false;
-  public seguroVida: Boolean = false;
-  public identificacion: Boolean;
+  public seguroViaje = false;
+  public seguroMedico = false;
+  public seguroVida = false;
+  public identificacion: boolean;
   seleccionado: number;
+
+  isSubmitted = false;
+
+  insurances: string[] = ['Viajero', 'Medico', 'Vida'];
+
+  registrationForm = this.fb.group({
+    ins: ['', [Validators.required]]
+  });
 
   constructor(public fb: FormBuilder, private af: AngularFireDatabase) {
     this.contactForm = this.createFormTrav();
@@ -36,14 +44,6 @@ export class FormInsurancesComponent implements OnInit {
   onSaveForm() {}
   ngOnInit() {}
 
-  isSubmitted = false;
-
-  insurances: String[] = ['Viajero', 'Medico', 'Vida'];
-
-  registrationForm = this.fb.group({
-    ins: ['', [Validators.required]]
-  });
-
   // Choose city using select dropdown
   changeCity(e) {
     console.log(e.value);
@@ -61,17 +61,17 @@ export class FormInsurancesComponent implements OnInit {
     if (!this.registrationForm.valid) {
       return false;
     } else {
-      if (this.registrationForm.get('ins').value == '1: Viajero') {
+      if (this.registrationForm.get('ins').value === '1: Viajero') {
         this.seguroViaje = true;
         this.seguroMedico = false;
         this.seguroVida = false;
       } else {
-        if (this.registrationForm.get('ins').value == '2: Medico') {
+        if (this.registrationForm.get('ins').value === '2: Medico') {
           this.seguroViaje = false;
           this.seguroMedico = true;
           this.seguroVida = false;
         } else {
-          if (this.registrationForm.get('ins').value == '3: Vida') {
+          if (this.registrationForm.get('ins').value === '3: Vida') {
             this.seguroViaje = false;
             this.seguroMedico = false;
             this.seguroVida = true;
@@ -81,7 +81,7 @@ export class FormInsurancesComponent implements OnInit {
     }
   }
   sendForm() {
-    if (this.seguroViaje == true) {
+    if (this.seguroViaje === true) {
       const datos = {
         numViajeros: this.contactForm.get('numViajeros').value,
         cantDias: this.contactForm.get('cantDiasEst').value,
@@ -94,11 +94,11 @@ export class FormInsurancesComponent implements OnInit {
         <div>Date: ${date}</div>
         <div>Message: ${datos.message}</div>
       `;
-      let formRequest = {datos, date, html};
+      const formRequest = {datos, date, html};
       this.af.list('/messages').push(formRequest);
       this.registrationForm.reset();
     } else {
-      if (this.seguroMedico == true) {
+      if (this.seguroMedico === true) {
         const datos = {
           numeroBeneficiarios: this.contactForm.get('numBeneficiarios').value,
           tipoIden: this.contactForm.get('identifi').value,
@@ -111,47 +111,47 @@ export class FormInsurancesComponent implements OnInit {
         <div>Date: ${date}</div>
         <div>Message: ${datos.message}</div>
       `;
-        let formRequest = {datos, date, html};
+        const formRequest = {datos, date, html};
         this.af.list('/messages').push(formRequest);
         this.registrationForm.reset();
         this.contactForm.reset();
       } else {
-        if (this.seguroVida == true) {
-      //     if (document.getElementById('planA').checked) {
-      //       const datos = {
-      //         cantBenfSegVid: this.contactForm.get('cantBenfSegVida').value,
-      //         plan: 'Plan A($500)',
-      //         message: 'solicitó el seguro médico'
-      //       };
-      //       const date = Date();
-      //       const html = `
-      //       <div>From: ${this.contactForm.get('nombreDeSolicitante')}</div>
-      //       <h1>Comprobante de solicitud
-      //       <div>Date: ${date}</div>
-      //       <div>Message: ${datos.message}</div>
-      //     `;
-      //       let formRequest = {datos, date, html};
-      //       this.af.list('/messages').push(formRequest);
-      //       this.registrationForm.reset();
-      //       this.contactForm.reset();
-      //     } else if (document.getElementById('planB').checked) {
-      //       const datos = {
-      //         cantBenfSegVid: this.contactForm.get('cantBenfSegVida').value,
-      //         plan: 'Plan B($1000)',
-      //         message: 'solicitó el seguro médico'
-      //       };
-      //       const date = Date();
-      //       const html = `
-      //   <div>From: ${this.contactForm.get('nombreDeSolicitante')}</div>
-      //   <h1>Comprobante de solicitud
-      //   <div>Date: ${date}</div>
-      //   <div>Message: ${datos.message}</div>
-      // `;
-      //       let formRequest = {datos, date, html};
-      //       this.af.list('/messages').push(formRequest);
-      //       this.registrationForm.reset();
-      //       this.contactForm.reset();
-      //     }
+        if (this.seguroVida === true) {
+          //     if (document.getElementById('planA').checked) {
+          //       const datos = {
+          //         cantBenfSegVid: this.contactForm.get('cantBenfSegVida').value,
+          //         plan: 'Plan A($500)',
+          //         message: 'solicitó el seguro médico'
+          //       };
+          //       const date = Date();
+          //       const html = `
+          //       <div>From: ${this.contactForm.get('nombreDeSolicitante')}</div>
+          //       <h1>Comprobante de solicitud
+          //       <div>Date: ${date}</div>
+          //       <div>Message: ${datos.message}</div>
+          //     `;
+          //       let formRequest = {datos, date, html};
+          //       this.af.list('/messages').push(formRequest);
+          //       this.registrationForm.reset();
+          //       this.contactForm.reset();
+          //     } else if (document.getElementById('planB').checked) {
+          //       const datos = {
+          //         cantBenfSegVid: this.contactForm.get('cantBenfSegVida').value,
+          //         plan: 'Plan B($1000)',
+          //         message: 'solicitó el seguro médico'
+          //       };
+          //       const date = Date();
+          //       const html = `
+          //   <div>From: ${this.contactForm.get('nombreDeSolicitante')}</div>
+          //   <h1>Comprobante de solicitud
+          //   <div>Date: ${date}</div>
+          //   <div>Message: ${datos.message}</div>
+          // `;
+          //       let formRequest = {datos, date, html};
+          //       this.af.list('/messages').push(formRequest);
+          //       this.registrationForm.reset();
+          //       this.contactForm.reset();
+          //     }
         }
       }
     }

@@ -7,8 +7,8 @@ import {RouteGuard} from './shared/route-guard';
 import {RegisterUserComponent} from './register-user/register-user.component';
 import {LoggedInUserRouteGuard} from './shared/logged-in-user-route-guard';
 import {EditInformationComponent} from './edit-information/edit-information.component';
-import { FormInsurancesComponent } from './form-insurances/form-insurances.component';
-import { AboutUsComponent } from './about-us/about-us.component';
+import {FormInsurancesComponent} from './form-insurances/form-insurances.component';
+import {AboutUsComponent} from './about-us/about-us.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [RouteGuard]},
@@ -18,7 +18,7 @@ export const routes: Routes = [
   {path: 'insurances', component: SegurosComponent, canActivate: [RouteGuard]},
   {path: 'registerUser', component: RegisterUserComponent, canActivate: [LoggedInUserRouteGuard]},
   {path: 'formInsurances', component: FormInsurancesComponent, canActivate: [RouteGuard]},
-  {path: 'AboutUs', component: AboutUsComponent}
+  {path: 'aboutUs', component: AboutUsComponent}
 ];
 
 @NgModule({
