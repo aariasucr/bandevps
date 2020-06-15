@@ -18,7 +18,7 @@ export const routes: Routes = [
   {path: 'insurances', component: SegurosComponent, canActivate: [RouteGuard]},
   {path: 'registerUser', component: RegisterUserComponent, canActivate: [LoggedInUserRouteGuard]},
   {path: 'formInsurances', component: FormInsurancesComponent, canActivate: [RouteGuard]},
-  {path: 'AboutUs', component: AboutUsComponent}
+  {path: 'aboutUs', component: AboutUsComponent}
 ];
 
 @NgModule({
