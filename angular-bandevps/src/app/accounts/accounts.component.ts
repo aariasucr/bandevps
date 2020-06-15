@@ -22,7 +22,7 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
   showAccountMovementsResults = false;
   accountHasMovements = false;
   maxDate: Date;
-  accountMovements: MovementInfo[]; //Observable<MovementInfo[]>;
+  accountMovements: MovementInfo[];
   private userSubscription: Subscription = null;
 
   constructor(
@@ -105,7 +105,7 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
         endTimestamp
       )
       .then((result: MovementInfo[]) => {
-        this.accountMovements = result; //of(result).pipe();
+        this.accountMovements = result;
         this.accountHasMovements = true;
       })
       .catch((error) => {

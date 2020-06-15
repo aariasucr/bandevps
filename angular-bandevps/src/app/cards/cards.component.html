@@ -1,0 +1,132 @@
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-md-2 col-sm-1"></div>
+    <div class="col-md-8 col-sm-10">
+      <h2>Tarjetas de crédito</h2>
+    </div>
+  </div>
+
+  <br />
+
+  <div class="row">
+    <div class="col-md-2 col-sm-1"></div>
+    <div class="col-md-8 col-sm-10">
+      <form [formGroup]="cardSelectionForm">
+        <div class="row">
+          <div class="col-4">
+            <label for="tarjeta">Tarjeta</label>
+          </div>
+
+          <div class="col-8">
+            <select
+              formControlName="selectedCard"
+              id="tarjeta"
+              name="card"
+              (change)="changeSelectedCard($event)"
+            >
+              <option value="">Seleccione una tarjeta</option>
+              <option *ngFor="let card of this.cards | async" [ngValue]="card">
+                {{ card.display }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <br />
+
+  <div *ngIf="this.isCardSet && this.isCardInfoSet">
+    <div class="row">
+      <div class="col-md-2 col-sm-1"></div>
+      <div class="col-md-8 col-sm-10">
+        <div class="card">
+          <h5 class="card-header">Información de tarjeta</h5>
+          <div class="card-body">
+            <h5 class="card-title">Número</h5>
+            <p class="card-text text-right">
+              {{ this.card.number }}
+            </p>
+            <h5 class="card-title">Límite</h5>
+            <p class="card-text text-right">
+              {{ this.card.limit_usd }}
+            </p>
+            <h5 class="card-title">Saldo</h5>
+            <p class="card-text text-right">
+              {{ this.card.balance_usd }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+      <div class="col-md-2 col-sm-1"></div>
+      <div class="col-md-8 col-sm-10">
+        <div class="card">
+          <h5 class="card-header">Consulta de movimientos</h5>
+          <div class="card-body">
+            <form [formGroup]="cardMovementsForm" (ngSubmit)="onSubmitCardMovementsForm()">
+              <div class="row">
+                <div class="col-4"><label for="fechas">Período</label></div>
+                <div class="col-8">
+                  <input
+                    type="text"
+                    id="fechas"
+                    name="dates"
+                    placeholder="Fechas"
+                    class="form-control"
+                    formControlName="dateRange"
+                    bsDaterangepicker
+                    [maxDate]="this.maxDate"
+                    [bsConfig]="{
+                      isAnimated: true,
+                      rangeInputFormat: 'DD/MM/YYYY'
+                    }"
+                    required
+                  />
+                </div>
+              </div>
+
+              <br />
+
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="cardMovementsForm.invalid"
+                >
+                  Buscar
+                </button>
+              </div>
+            </form>
+
+            <br />
+
+            <div class="row">
+              <div class="col-12">
+                <div *ngIf="this.showCardMovementsResults">
+                  <div
+                    class="text-center"
+                    *ngIf="this.cardHasMovements; then movementsBlock; else noMovementsBlock"
+                  ></div>
+                  <ng-template #movementsBlock>
+                    <app-movements [data]="this.cardMovements"></app-movements>
+                  </ng-template>
+                  <ng-template #noMovementsBlock>
+                    No existen movimientos para la tarjeta y el rango de fechas seleccionados.
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
