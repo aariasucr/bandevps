@@ -94,7 +94,10 @@ export class RegisterUserComponent implements OnInit, AfterContentChecked {
       })
       .finally(() => {
         if (!!errorMessage) {
-          this.notificationService.showErrorMessage('Error al recuperar los datos del usuario', errorMessage);
+          this.notificationService.showErrorMessage(
+            'Error al recuperar los datos del usuario',
+            errorMessage
+          );
         }
         this.spinnerService.hideMainSpinner();
       });
@@ -116,7 +119,10 @@ export class RegisterUserComponent implements OnInit, AfterContentChecked {
       })
       .finally(() => {
         if (!!errorMessage) {
-          this.notificationService.showErrorMessage('Error al crear al crear la cuenta de usuario', errorMessage);
+          this.notificationService.showErrorMessage(
+            'Error al crear al crear la cuenta de usuario',
+            errorMessage
+          );
         }
         this.spinnerService.hideMainSpinner();
       });

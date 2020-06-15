@@ -32,6 +32,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditInformationComponent} from './edit-information/edit-information.component';
 import {DataTablesModule} from 'angular-datatables';
 import {AccountsComponent} from './accounts/accounts.component';
+import {FormInsurancesComponent} from './form-insurances/form-insurances.component';
+import {AboutUsComponent} from './about-us/about-us.component';
 
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
@@ -60,7 +62,9 @@ defineLocale('es', esLocale);
     SegurosComponent,
     MovementsComponent,
     AlertComponent,
-    AccountsComponent
+    AccountsComponent,
+    FormInsurancesComponent,
+    AboutUsComponent
   ],
   imports: [
     BrowserModule,
