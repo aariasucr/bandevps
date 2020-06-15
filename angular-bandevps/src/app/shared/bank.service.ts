@@ -20,26 +20,47 @@ export class BankService {
   constructor(private firebaseDatabase: AngularFireDatabase) {}
 
   getBankAccountsFromFirebaseWithId(id: string) {
+    return this.getBankEntitiesFromFirebaseWithId('BankAccountData', this.accountsDbPath, id);
+  }
+
+  getCreditCardsFromFirebaseWithId(id: string) {
+    return this.getBankEntitiesFromFirebaseWithId('CreditCardData', this.cardsDbPath, id);
+  }
+
+  getBankEntitiesFromFirebaseWithId(targetClassName: string, path: string, id: string) {
     return new Promise((resolve, reject) => {
       this.firebaseDatabase.database
-        .ref(this.accountsDbPath)
+        .ref(path)
         .orderByChild('user_id')
         .equalTo(id)
         .once('value')
         .then((dataSnapshot: DataSnapshot) => {
           if (dataSnapshot.exists()) {
-            const accountsJSON = dataSnapshot.toJSON();
-            const accountsIds = Object.keys(dataSnapshot.exportVal());
-            const accounts: BankAccountData[] = accountsIds.map((accountId) => {
-              return {
-                id: accountId,
-                number: accountsJSON[accountId].number,
-                display: accountsJSON[accountId].number
-              };
+            const entitiesJSON = dataSnapshot.toJSON();
+            const jsonIds = Object.keys(dataSnapshot.exportVal());
+            let entities: any[];
+            entities = jsonIds.map((entityId) => {
+              if (targetClassName === 'BankAccountData') {
+                return {
+                  id: entityId,
+                  number: entitiesJSON[entityId].number,
+                  display: entitiesJSON[entityId].number
+                };
+              } else {
+                return {
+                  id: entityId,
+                  number: entitiesJSON[entityId].number,
+                  display: this.formatCreditCardNumber(entitiesJSON[entityId].number)
+                };
+              }
             });
-            resolve(accounts);
+            resolve(entities);
           } else {
-            reject('NO_ACCOUNTS');
+            if (targetClassName === 'BankAccountData') {
+              reject('NO_ACCOUNTS');
+            } else {
+              reject('NO_CARDS');
+            }
           }
         })
         .catch((error) => {
@@ -49,21 +70,39 @@ export class BankService {
   }
 
   getBankAccountInfoFromFirebaseWithAccountId(accountId: string) {
+    return this.getBankEntityInfoFromFirebaseWithBankEntityId(
+      'BankAccountInfo',
+      this.accountsInfoDbPath,
+      accountId
+    );
+  }
+
+  getCreditCardInfoFromFirebaseWithCardId(cardId: string) {
+    return this.getBankEntityInfoFromFirebaseWithBankEntityId(
+      'CreditCardInfo',
+      this.cardsInfoDbPath,
+      cardId
+    );
+  }
+
+  getBankEntityInfoFromFirebaseWithBankEntityId(
+    targetClassName: string,
+    path: string,
+    bankEntityId: string
+  ) {
     return new Promise((resolve, reject) => {
+      const rejectValue =
+        targetClassName === 'BankAccountInfo' ? 'INVALID_ACCOUNT_ID' : 'INVALID_CARD_ID';
+
       this.firebaseDatabase.database
-        .ref(this.accountsInfoDbPath)
-        .child(accountId)
+        .ref(path)
+        .child(bankEntityId)
         .once('value')
         .then((result) => {
-          if (
-            !!result &&
-            !!result.val() &&
-            'currency' in result.val() &&
-            'balance' in result.val()
-          ) {
+          if (!!result && !!result.val()) {
             resolve(result.val());
           } else {
-            reject('INVALID_CARD_ID');
+            reject(rejectValue);
           }
         })
         .catch((error) => {
@@ -77,88 +116,12 @@ export class BankService {
     startTimestamp: number,
     endTimestamp: number
   ) {
-    return new Promise((resolve, reject) => {
-      this.firebaseDatabase.database
-        .ref(`${this.accountsMovementsDbPath}/${accountId}`)
-        .orderByChild('timestamp')
-        .startAt(startTimestamp)
-        .endAt(endTimestamp)
-        .once('value')
-        .then((dataSnapshot: DataSnapshot) => {
-          if (dataSnapshot.exists()) {
-            const movementsJSON = dataSnapshot.toJSON();
-            const movementsIds = Object.keys(dataSnapshot.exportVal());
-            const movements: MovementInfo[] = movementsIds.map((movementId) => {
-              return {
-                date: this.formatDate(movementsJSON[movementId].date),
-                type: this.formatType(movementsJSON[movementId].credit),
-                detail: movementsJSON[movementId].detail,
-                amount: movementsJSON[movementId].amount
-              };
-            });
-            resolve(movements);
-          } else {
-            reject('NO_MOVEMENTS');
-          }
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  }
-
-  getCreditCardsFromFirebaseWithId(id: string) {
-    return new Promise((resolve, reject) => {
-      this.firebaseDatabase.database
-        .ref(this.cardsDbPath)
-        .orderByChild('user_id')
-        .equalTo(id)
-        .once('value')
-        .then((dataSnapshot: DataSnapshot) => {
-          if (dataSnapshot.exists()) {
-            const cardsJSON = dataSnapshot.toJSON();
-            const cardsIds = Object.keys(dataSnapshot.exportVal());
-            const cards: CreditCardData[] = cardsIds.map((cardId) => {
-              return {
-                id: cardId,
-                number: cardsJSON[cardId].number,
-                display: this.formatCreditCardNumber(cardsJSON[cardId].number)
-              };
-            });
-            resolve(cards);
-          } else {
-            reject('NO_CARDS');
-          }
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  }
-
-  getCreditCardInfoFromFirebaseWithCardId(cardId: string) {
-    return new Promise((resolve, reject) => {
-      this.firebaseDatabase.database
-        .ref(this.cardsInfoDbPath)
-        .child(cardId)
-        .once('value')
-        .then((result) => {
-          if (
-            !!result &&
-            !!result.val() &&
-            'balance_usd' in result.val() &&
-            'limit_usd' in result.val() &&
-            'type' in result.val()
-          ) {
-            resolve(result.val());
-          } else {
-            reject('INVALID_ACCOUNT_ID');
-          }
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
+    return this.getBankEntityMovementsFromFirebaseWithBankEntityIdAndDates(
+      this.accountsMovementsDbPath,
+      accountId,
+      startTimestamp,
+      endTimestamp
+    );
   }
 
   getCardMovementsFromFirebaseWithCardIdAndDates(
@@ -166,9 +129,23 @@ export class BankService {
     startTimestamp: number,
     endTimestamp: number
   ) {
+    return this.getBankEntityMovementsFromFirebaseWithBankEntityIdAndDates(
+      this.cardsMovementsDbPath,
+      cardId,
+      startTimestamp,
+      endTimestamp
+    );
+  }
+
+  getBankEntityMovementsFromFirebaseWithBankEntityIdAndDates(
+    path: string,
+    bankEntityId: string,
+    startTimestamp: number,
+    endTimestamp: number
+  ) {
     return new Promise((resolve, reject) => {
       this.firebaseDatabase.database
-        .ref(`${this.cardsMovementsDbPath}/${cardId}`)
+        .ref(`${path}/${bankEntityId}`)
         .orderByChild('timestamp')
         .startAt(startTimestamp)
         .endAt(endTimestamp)
@@ -180,7 +157,7 @@ export class BankService {
             const movements: MovementInfo[] = movementsIds.map((movementId) => {
               return {
                 date: this.formatDate(movementsJSON[movementId].date),
-                type: this.formatType(movementsJSON[movementId].credit),
+                type: this.formatMovementType(movementsJSON[movementId].credit),
                 detail: movementsJSON[movementId].detail,
                 amount: movementsJSON[movementId].amount
               };
@@ -196,7 +173,7 @@ export class BankService {
     });
   }
 
-  formatType(isCredit: boolean) {
+  formatMovementType(isCredit: boolean) {
     return isCredit ? 'Crédito' : 'Débito';
   }
 
