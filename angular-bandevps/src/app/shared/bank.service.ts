@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
-import {BankAccountData, BankAccountInfo} from './models';
+import {BankAccountData, MovementInfo} from './models';
 import {DataSnapshot} from '@angular/fire/database/interfaces';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import {DataSnapshot} from '@angular/fire/database/interfaces';
 export class BankService {
   private accountsDbPath = 'bank_accounts';
   private accountsInfoDbPath = 'bank_accounts_info';
+  private accountsMovementsDbPath = 'bank_accounts_movements';
 
   constructor(private firebaseDatabase: AngularFireDatabase) {}
 
@@ -63,5 +65,48 @@ export class BankService {
           reject(error);
         });
     });
+  }
+
+  getAccountMovementsFromFirebaseWithAccountIdAndDates(
+    accountId: string,
+    startTimestamp: number,
+    endTimestamp: number
+  ) {
+    return new Promise((resolve, reject) => {
+      this.firebaseDatabase.database
+        .ref(`${this.accountsMovementsDbPath}/${accountId}`)
+        .orderByChild('timestamp')
+        .startAt(startTimestamp)
+        .endAt(endTimestamp)
+        .once('value')
+        .then((dataSnapshot: DataSnapshot) => {
+          if (dataSnapshot.exists()) {
+            const movementsJSON = dataSnapshot.toJSON();
+            const movementsIds = Object.keys(dataSnapshot.exportVal());
+            const movements: MovementInfo[] = movementsIds.map((movementId) => {
+              return {
+                date: this.formatDate(movementsJSON[movementId].date),
+                type: this.formatType(movementsJSON[movementId].credit), // ? 'Crédito' : 'Débito',
+                detail: movementsJSON[movementId].detail,
+                amount: movementsJSON[movementId].amount
+              };
+            });
+            resolve(movements);
+          } else {
+            reject('NO_MOVEMENTS');
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  formatType(isCredit: boolean) {
+    return isCredit ? 'Crédito' : 'Débito';
+  }
+
+  formatDate(dateISOString: string) {
+    return moment(dateISOString).format('DD/MM/YYYY');
   }
 }

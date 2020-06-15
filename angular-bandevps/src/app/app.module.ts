@@ -42,6 +42,9 @@ import {ModalModule} from 'ngx-bootstrap/modal';
 import {AlertComponent} from './shared/modals/alert/alert.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {defineLocale} from 'ngx-bootstrap/chronos';
+import {esLocale} from 'ngx-bootstrap/locale';
+defineLocale('es', esLocale);
 
 @NgModule({
   declarations: [

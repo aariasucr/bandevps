@@ -70,33 +70,58 @@
         <div class="card">
           <h5 class="card-header">Consulta de movimientos</h5>
           <div class="card-body">
+            <form [formGroup]="accountMovementsForm" (ngSubmit)="onSubmitAccountMovementsForm()">
+              <div class="row">
+                <div class="col-4"><label for="fechas">Período</label></div>
+                <div class="col-8">
+                  <input
+                    type="text"
+                    id="fechas"
+                    name="dates"
+                    placeholder="Fechas"
+                    class="form-control"
+                    formControlName="dateRange"
+                    bsDaterangepicker
+                    [maxDate]="this.maxDate"
+                    [bsConfig]="{
+                      isAnimated: true,
+                      rangeInputFormat: 'DD/MM/YYYY'
+                    }"
+                    required
+                  />
+                </div>
+              </div>
+
+              <br />
+
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="accountMovementsForm.invalid"
+                >
+                  Buscar
+                </button>
+              </div>
+            </form>
+
+            <br />
+
             <div class="row">
-              <div class="col-4"><label for="fechas">Período</label></div>
-              <div class="col-8">
-                <input
-                  type="text"
-                  id="fechas"
-                  name="dates"
-                  placeholder="Fechas"
-                  class="form-control"
-                  bsDatepicker
-                  bsDaterangepicker
-                  [bsConfig]="{isAnimated: true}"
-                />
+              <div *ngIf="this.showAccountMovementsResults">
+                <div
+                  *ngIf="this.accountHasMovements; then movementsBlock; else noMovementsBlock"
+                ></div>
+                <ng-template #movementsBlock>
+                  <app-movements [data]=this.accountMovements></app-movements>
+                </ng-template>
+                <ng-template #noMovementsBlock>
+                  No existen movimientos para la cuenta y el rango de fechas seleccionados.
+                </ng-template>
               </div>
             </div>
 
             <br />
-
-            <div class="text-center">
-              <button type="button" class="btn btn-primary">Buscar</button>
-            </div>
-
-            <br />
-
-            <div class="row">
-              <app-movements></app-movements>
-            </div>
           </div>
         </div>
       </div>
