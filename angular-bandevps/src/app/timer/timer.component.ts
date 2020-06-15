@@ -34,7 +34,10 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.timerSubscription = this.timerService.timeout.subscribe(() => {
       // Solo es necesario responder al evento de que expiró la sesión si el usuario está logueado
       if (this.isLoggedIn) {
-        this.notificationService.showInfoMessageWithConfirmation('La sesión ha expirado');
+        this.notificationService.showAlert(
+          'La sesión ha expirado',
+          'Debe volver a iniciar la sesión para continuar.'
+        );
         this.userService.performLogout();
       }
     });

@@ -12,6 +12,7 @@ import {reducers} from './state/reducers';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {SpinnerService} from './shared/spinner.service';
 import {ToastrModule} from 'ngx-toastr';
+import {ModalModule} from 'ngx-bootstrap/modal';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -23,7 +24,8 @@ describe('AppComponent', () => {
         AngularFireAuthModule,
         StoreModule.forRoot(reducers),
         NgxSpinnerModule,
-        ToastrModule.forRoot()
+        ToastrModule.forRoot(),
+        ModalModule.forRoot()
       ],
       declarations: [AppComponent, HeaderComponent, TimerComponent],
       providers: [{provide: APP_TITLE, useValue: 'The Iron Bank'}, SpinnerService]

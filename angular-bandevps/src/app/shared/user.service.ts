@@ -9,7 +9,6 @@ import {BehaviorSubject} from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  // public statusChange: any = new EventEmitter<any>();
   private userSource = new BehaviorSubject<UserData>(null);
   public statusChange = this.userSource.asObservable();
 
@@ -19,7 +18,6 @@ export class UserService {
   ) {}
 
   performLogin(signInResult, userData) {
-    // this.statusChange.emit(userData);
     this.userSource.next(userData);
     console.log('userDataResult en performLogin', userData);
     console.log('signInResult en performLogin', signInResult);
@@ -29,7 +27,6 @@ export class UserService {
     this.getUserDataFromFirebaseWithEmail(email)
       .then((userData: UserData) => {
         console.log('result.val() en performLoginUid', userData);
-        // this.statusChange.emit(userData);
         this.userSource.next(userData);
       })
       .catch((error) => {
@@ -39,7 +36,6 @@ export class UserService {
 
   performLogout() {
     this.firebaseAuth.signOut().then(() => {
-      // this.statusChange.emit(null);
       this.userSource.next(null);
     });
   }

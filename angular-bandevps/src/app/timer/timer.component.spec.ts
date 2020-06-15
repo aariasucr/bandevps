@@ -7,6 +7,7 @@ import {EventEmitter} from '@angular/core';
 import {UserService} from '../shared/user.service';
 import {TimerService} from '../shared/timer.service';
 import {NotificationService} from '../shared/notification.service';
+import {ModalModule} from 'ngx-bootstrap/modal';
 
 describe('TimerComponent', () => {
   let component: TimerComponent;
@@ -32,7 +33,7 @@ describe('TimerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(reducers), ToastrModule.forRoot()],
+      imports: [StoreModule.forRoot(reducers), ToastrModule.forRoot(), ModalModule.forRoot()],
       declarations: [TimerComponent],
       providers: [
         {provide: UserService, useValue: mockUserService},
@@ -47,7 +48,7 @@ describe('TimerComponent', () => {
     fixture.detectChanges();
 
     notificationService = fixture.debugElement.injector.get(NotificationService);
-    notificationSpy = spyOn(notificationService, 'showInfoMessageWithConfirmation');
+    notificationSpy = spyOn(notificationService, 'showAlert');
   });
 
   it('should create', () => {

@@ -1,0 +1,19 @@
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+  <caption>Movimientos de la cuenta para el rango de fechas especificado</caption>
+  <thead>
+    <tr>
+      <th scope="col">Fecha</th>
+      <th scope="col">Detalle</th>
+      <th scope="col">Tipo</th>
+      <th scope="col">Monto</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let movement of this.movements">
+      <td>{{ movement.date }}</td>
+      <td>{{ movement.detail }}</td>
+      <td>{{ movement.type }}</td>
+      <td>{{ movement.amount }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -8,6 +8,7 @@ import {ReactiveFormsModule, FormGroup, FormControl} from '@angular/forms';
 import {SpinnerService} from '../shared/spinner.service';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ModalModule} from 'ngx-bootstrap/modal';
 
 describe('EditInformationComponent', () => {
   let component: EditInformationComponent;
@@ -46,7 +47,12 @@ describe('EditInformationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, ToastrModule.forRoot(), BrowserAnimationsModule],
+      imports: [
+        ReactiveFormsModule,
+        ToastrModule.forRoot(),
+        BrowserAnimationsModule,
+        ModalModule.forRoot()
+      ],
       declarations: [EditInformationComponent, UserDataEditorComponent],
       providers: [{provide: UserService, useValue: mockUserService}, SpinnerService]
     }).compileComponents();

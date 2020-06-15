@@ -1,0 +1,132 @@
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-md-2 col-sm-1"></div>
+    <div class="col-md-8 col-sm-10">
+      <h2>Cuentas bancarias</h2>
+    </div>
+  </div>
+
+  <br />
+
+  <div class="row">
+    <div class="col-md-2 col-sm-1"></div>
+    <div class="col-md-8 col-sm-10">
+      <form [formGroup]="accountSelectionForm">
+        <div class="row">
+          <div class="col-4">
+            <label for="cuenta">Cuenta</label>
+          </div>
+
+          <div class="col-8">
+            <select
+              formControlName="selectedAccount"
+              id="cuenta"
+              name="account"
+              (change)="changeSelectedAccount($event)"
+            >
+              <option value="">Seleccione una cuenta</option>
+              <option *ngFor="let account of this.accounts | async" [ngValue]="account">
+                {{ account.display }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <br />
+
+  <div *ngIf="this.isAccountSet && this.isAccountInfoSet">
+    <div class="row">
+      <div class="col-md-2 col-sm-1"></div>
+      <div class="col-md-8 col-sm-10">
+        <div class="card">
+          <h5 class="card-header">Información de cuenta</h5>
+          <div class="card-body">
+            <h5 class="card-title">Número</h5>
+            <p class="card-text text-right">
+              {{ this.account.number }}
+            </p>
+            <h5 class="card-title">Moneda</h5>
+            <p class="card-text text-right">
+              {{ this.account.currency }}
+            </p>
+            <h5 class="card-title">Saldo</h5>
+            <p class="card-text text-right">
+              {{ this.account.balance }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+      <div class="col-md-2 col-sm-1"></div>
+      <div class="col-md-8 col-sm-10">
+        <div class="card">
+          <h5 class="card-header">Consulta de movimientos</h5>
+          <div class="card-body">
+            <form [formGroup]="accountMovementsForm" (ngSubmit)="onSubmitAccountMovementsForm()">
+              <div class="row">
+                <div class="col-4"><label for="fechas">Período</label></div>
+                <div class="col-8">
+                  <input
+                    type="text"
+                    id="fechas"
+                    name="dates"
+                    placeholder="Fechas"
+                    class="form-control"
+                    formControlName="dateRange"
+                    bsDaterangepicker
+                    [maxDate]="this.maxDate"
+                    [bsConfig]="{
+                      isAnimated: true,
+                      rangeInputFormat: 'DD/MM/YYYY'
+                    }"
+                    required
+                  />
+                </div>
+              </div>
+
+              <br />
+
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="accountMovementsForm.invalid"
+                >
+                  Buscar
+                </button>
+              </div>
+            </form>
+
+            <br />
+
+            <div class="row">
+              <div class="col-12">
+                <div *ngIf="this.showAccountMovementsResults">
+                  <div
+                    class="text-center"
+                    *ngIf="this.accountHasMovements; then movementsBlock; else noMovementsBlock"
+                  ></div>
+                  <ng-template #movementsBlock>
+                    <app-movements [data]="this.accountMovements"></app-movements>
+                  </ng-template>
+                  <ng-template #noMovementsBlock>
+                    No existen movimientos para la cuenta y el rango de fechas seleccionados.
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

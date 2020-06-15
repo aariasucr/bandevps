@@ -30,13 +30,23 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 import {SpinnerService} from './shared/spinner.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditInformationComponent} from './edit-information/edit-information.component';
+import {DataTablesModule} from 'angular-datatables';
+import {AccountsComponent} from './accounts/accounts.component';
+import {FormInsurancesComponent} from './form-insurances/form-insurances.component';
+import {AboutUsComponent} from './about-us/about-us.component';
 
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {reducers} from './state/reducers';
 import {ApplicationEffects} from './state/application/effects';
-import {FormInsurancesComponent} from './form-insurances/form-insurances.component';
-import {AboutUsComponent} from './about-us/about-us.component';
+import {MovementsComponent} from './movements/movements.component';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {AlertComponent} from './shared/modals/alert/alert.component';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {defineLocale} from 'ngx-bootstrap/chronos';
+import {esLocale} from 'ngx-bootstrap/locale';
+import {BankService} from './shared/bank.service';
+defineLocale('es', esLocale);
 
 @NgModule({
   declarations: [
@@ -50,6 +60,9 @@ import {AboutUsComponent} from './about-us/about-us.component';
     UserPasswordEditorComponent,
     EditInformationComponent,
     SegurosComponent,
+    MovementsComponent,
+    AlertComponent,
+    AccountsComponent,
     FormInsurancesComponent,
     AboutUsComponent
   ],
@@ -66,7 +79,10 @@ import {AboutUsComponent} from './about-us/about-us.component';
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([ApplicationEffects]),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    ModalModule.forRoot(),
+    DataTablesModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [
     UserService,
@@ -76,8 +92,10 @@ import {AboutUsComponent} from './about-us/about-us.component';
     TimerService,
     NotificationService,
     SpinnerService,
-    SegurosService
+    SegurosService,
+    BankService
   ],
+  entryComponents: [AlertComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

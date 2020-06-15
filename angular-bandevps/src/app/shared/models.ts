@@ -12,3 +12,36 @@ export interface UserInformation {
   occupation: string;
   phoneNumber: string;
 }
+
+export interface BankAccountData {
+  id: string;
+  number: string;
+  display: string;
+}
+
+export interface CreditCardData {
+  id: string;
+  number: string;
+  display: string;
+}
+
+export interface BankAccountInfo {
+  id: string;
+  number: string;
+  currency: string;
+  balance: number;
+}
+
+export interface CreditCardInfo {
+  id: string;
+  number: string;
+  limit_usd: number;
+  balance_usd: number;
+}
+
+export interface MovementInfo {
+  date: string;
+  type: string;
+  detail: string;
+  amount: number;
+}

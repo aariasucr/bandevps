@@ -75,7 +75,7 @@ export class EditInformationComponent implements OnInit, OnDestroy, AfterContent
         this.spinnerService.hideMainSpinner();
       })
       .catch((error) => {
-        this.notificationService.showInfoMessageWithConfirmation(error);
+        this.notificationService.showErrorMessage('Error al actualizar la información', error);
         this.spinnerService.hideMainSpinner();
       });
   }
