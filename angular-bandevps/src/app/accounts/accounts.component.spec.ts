@@ -4,14 +4,21 @@ import {AccountsComponent} from './accounts.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {DataTablesModule} from 'angular-datatables';
-import {HttpClientModule} from '@angular/common/http';
-import {MovementsComponent} from '../movements/movements.component';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {environment} from '../../environments/environment';
+import {Component, Input} from '@angular/core';
 
-xdescribe('AccountsComponent', () => {
+@Component({
+  selector: 'app-movements',
+  template: '<p>Mock Movements Child Component</p>'
+})
+class MockMovementsComponent {
+  @Input() data: any;
+}
+
+describe('AccountsComponent', () => {
   let component: AccountsComponent;
   let fixture: ComponentFixture<AccountsComponent>;
 
@@ -21,12 +28,11 @@ xdescribe('AccountsComponent', () => {
         ReactiveFormsModule,
         BsDatepickerModule.forRoot(),
         DataTablesModule,
-        HttpClientModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireAuthModule,
         AngularFireDatabaseModule
       ],
-      declarations: [MovementsComponent, AccountsComponent]
+      declarations: [AccountsComponent, MockMovementsComponent]
     }).compileComponents();
   }));
 
