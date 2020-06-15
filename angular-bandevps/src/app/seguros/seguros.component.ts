@@ -9,14 +9,12 @@ import {Router} from '@angular/router';
 })
 export class SegurosComponent implements OnInit {
   items: Observable<any[]>;
-  constructor(private seguroService: SegurosService,private router: Router,) {
-
-  }
+  constructor(private seguroService: SegurosService, private router: Router) {}
   ngOnInit() {
     this.items = this.seguroService.getInsuranceList();
   }
-  navFormSol(){
+  navFormSol() {
     this.router.navigate(['/formInsurances']);
-    console.log("ENTRE")
+    console.log('ENTRE');
   }
 }
