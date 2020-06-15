@@ -47,7 +47,7 @@
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Ver campos</button>
           </form>
           <!-- Form ends -->
         </div>
@@ -197,7 +197,6 @@
     </div>
 
     <br />
-    <button type="submit" class="btn-send" [disabled]="!contactForm.valid">Send</button>
 
     <div [hidden]="!this.seguroVida">
       <div class="row">
@@ -214,10 +213,10 @@
                   class="form-check-input"
                   type="radio"
                   name="inlineRadioOptions"
-                  id="inlineRadio2"
+                  id="planA"
                   value="option2"
                 />
-                <label class="form-check-label" for="inlineRadio2">Plan B($1000)</label>
+                <label class="form-check-label" for="inlineRadio2">Plan A($500)</label>
               </div>
             </div>
             <div class="col-md-1"></div>
@@ -227,16 +226,16 @@
                   class="form-check-input"
                   type="radio"
                   name="inlineRadioOptions"
-                  id="inlineRadio1"
+                  id="planB"
                   value="option1"
                 />
-                <label class="form-check-label" for="inlineRadio1">Plan A($500)</label>
+                <label class="form-check-label" for="inlineRadio1">Plan B($1000)</label>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <br>
+      <br />
       <div class="form-group">
         <div class="row">
           <div class="col-2"></div>
@@ -255,7 +254,17 @@
           <div class="col-2"></div>
         </div>
       </div>
+    </div>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-2"></div>
+      <div class="col-4">
+        <!-- Submit Button -->
+        <button class="btn btn-primary btn-lg btn-block" (click)="sendForm()">Enviar solicitud</button>
 
+        <!-- Form ends -->
+      </div>
     </div>
   </form>
 </div>
+
