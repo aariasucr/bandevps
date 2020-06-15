@@ -117,41 +117,41 @@ export class FormInsurancesComponent implements OnInit {
         this.contactForm.reset();
       } else {
         if (this.seguroVida == true) {
-          if (document.getElementById('planA').checked) {
-            const datos = {
-              cantBenfSegVid: this.contactForm.get('cantBenfSegVida').value,
-              plan: 'Plan A($500)',
-              message: 'solicitó el seguro médico'
-            };
-            const date = Date();
-            const html = `
-            <div>From: ${this.contactForm.get('nombreDeSolicitante')}</div>
-            <h1>Comprobante de solicitud
-            <div>Date: ${date}</div>
-            <div>Message: ${datos.message}</div>
-          `;
-            let formRequest = {datos, date, html};
-            this.af.list('/messages').push(formRequest);
-            this.registrationForm.reset();
-            this.contactForm.reset();
-          } else if (document.getElementById('planB').checked) {
-            const datos = {
-              cantBenfSegVid: this.contactForm.get('cantBenfSegVida').value,
-              plan: 'Plan B($1000)',
-              message: 'solicitó el seguro médico'
-            };
-            const date = Date();
-            const html = `
-        <div>From: ${this.contactForm.get('nombreDeSolicitante')}</div>
-        <h1>Comprobante de solicitud
-        <div>Date: ${date}</div>
-        <div>Message: ${datos.message}</div>
-      `;
-            let formRequest = {datos, date, html};
-            this.af.list('/messages').push(formRequest);
-            this.registrationForm.reset();
-            this.contactForm.reset();
-          }
+      //     if (document.getElementById('planA').checked) {
+      //       const datos = {
+      //         cantBenfSegVid: this.contactForm.get('cantBenfSegVida').value,
+      //         plan: 'Plan A($500)',
+      //         message: 'solicitó el seguro médico'
+      //       };
+      //       const date = Date();
+      //       const html = `
+      //       <div>From: ${this.contactForm.get('nombreDeSolicitante')}</div>
+      //       <h1>Comprobante de solicitud
+      //       <div>Date: ${date}</div>
+      //       <div>Message: ${datos.message}</div>
+      //     `;
+      //       let formRequest = {datos, date, html};
+      //       this.af.list('/messages').push(formRequest);
+      //       this.registrationForm.reset();
+      //       this.contactForm.reset();
+      //     } else if (document.getElementById('planB').checked) {
+      //       const datos = {
+      //         cantBenfSegVid: this.contactForm.get('cantBenfSegVida').value,
+      //         plan: 'Plan B($1000)',
+      //         message: 'solicitó el seguro médico'
+      //       };
+      //       const date = Date();
+      //       const html = `
+      //   <div>From: ${this.contactForm.get('nombreDeSolicitante')}</div>
+      //   <h1>Comprobante de solicitud
+      //   <div>Date: ${date}</div>
+      //   <div>Message: ${datos.message}</div>
+      // `;
+      //       let formRequest = {datos, date, html};
+      //       this.af.list('/messages').push(formRequest);
+      //       this.registrationForm.reset();
+      //       this.contactForm.reset();
+      //     }
         }
       }
     }
