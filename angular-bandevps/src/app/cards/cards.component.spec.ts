@@ -1,14 +1,13 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {AccountsComponent} from './accounts.component';
+import {CardsComponent} from './cards.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
-import {DataTablesModule} from 'angular-datatables';
+import {Input, Component} from '@angular/core';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {environment} from '../../environments/environment';
-import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-movements',
@@ -18,26 +17,25 @@ class MockMovementsComponent {
   @Input() data: any;
 }
 
-describe('AccountsComponent', () => {
-  let component: AccountsComponent;
-  let fixture: ComponentFixture<AccountsComponent>;
+describe('CardsComponent', () => {
+  let component: CardsComponent;
+  let fixture: ComponentFixture<CardsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         BsDatepickerModule.forRoot(),
-        DataTablesModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireAuthModule,
         AngularFireDatabaseModule
       ],
-      declarations: [AccountsComponent, MockMovementsComponent]
+      declarations: [CardsComponent, MockMovementsComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountsComponent);
+    fixture = TestBed.createComponent(CardsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

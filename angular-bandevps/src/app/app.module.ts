@@ -46,6 +46,7 @@ import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {defineLocale} from 'ngx-bootstrap/chronos';
 import {esLocale} from 'ngx-bootstrap/locale';
 import {BankService} from './shared/bank.service';
+import {CardsComponent} from './cards/cards.component';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -63,6 +64,7 @@ defineLocale('es', esLocale);
     MovementsComponent,
     AlertComponent,
     AccountsComponent,
+    CardsComponent,
     FormInsurancesComponent,
     AboutUsComponent
   ],

@@ -35,8 +35,10 @@ export interface BankAccountInfo {
 export interface CreditCardInfo {
   id: string;
   number: string;
+  display: string;
   limit_usd: number;
   balance_usd: number;
+  type: string;
 }
 
 export interface MovementInfo {
