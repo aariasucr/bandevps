@@ -11,12 +11,13 @@ import {AccountsComponent} from './accounts/accounts.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [RouteGuard]},
-  {path: '', redirectTo: '/movements', pathMatch: 'full'},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'editInformation', component: EditInformationComponent, canActivate: [RouteGuard]},
   {path: 'insurances', component: SegurosComponent, canActivate: [RouteGuard]},
   {path: 'registerUser', component: RegisterUserComponent, canActivate: [LoggedInUserRouteGuard]},
-  {path: 'accounts', component: AccountsComponent, canActivate: [LoggedInUserRouteGuard]}
+  {path: 'accounts', component: AccountsComponent, canActivate: [LoggedInUserRouteGuard]},
+  {path: 'cards', component: AccountsComponent, canActivate: [LoggedInUserRouteGuard]}
 ];
 
 @NgModule({

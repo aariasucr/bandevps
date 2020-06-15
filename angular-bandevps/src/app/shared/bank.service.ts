@@ -11,6 +11,9 @@ export class BankService {
   private accountsDbPath = 'bank_accounts';
   private accountsInfoDbPath = 'bank_accounts_info';
   private accountsMovementsDbPath = 'bank_accounts_movements';
+  private cardsDbPath = 'credit_cards';
+  private cardsInfoDbPath = 'credit_cards_info';
+  private cardsMovementsDbPath = 'credit_cards_movements';
 
   constructor(private firebaseDatabase: AngularFireDatabase) {}
 
