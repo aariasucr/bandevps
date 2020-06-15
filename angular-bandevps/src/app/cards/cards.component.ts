@@ -73,10 +73,8 @@ export class CardsComponent implements OnInit, OnDestroy, AfterContentChecked {
     if (!!value) {
       const cardId = this.cardSelectionForm.get('selectedCard').value.id;
       const cardNumber = this.cardSelectionForm.get('selectedCard').value.number;
+      const cardDisplay = this.cardSelectionForm.get('selectedCard').value.display;
       this.isCardSet = true;
-
-      console.log(cardId);
-      console.log(cardNumber);
 
       this.bankService
         .getCreditCardInfoFromFirebaseWithCardId(cardId)
@@ -84,8 +82,10 @@ export class CardsComponent implements OnInit, OnDestroy, AfterContentChecked {
           this.card = {
             id: cardId,
             number: cardNumber,
+            display: cardDisplay,
             limit_usd: result.limit_usd,
-            balance_usd: result.balance_usd
+            balance_usd: result.balance_usd,
+            type: result.type
           };
           this.isCardInfoSet = true;
           this.cardMovementsForm.reset();
@@ -111,6 +111,8 @@ export class CardsComponent implements OnInit, OnDestroy, AfterContentChecked {
         this.cardHasMovements = true;
       })
       .catch((error) => {
+        this.cardMovements = [];
+        this.cardHasMovements = false;
         console.log('error', error);
       })
       .finally(() => {

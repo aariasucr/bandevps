@@ -32,6 +32,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditInformationComponent} from './edit-information/edit-information.component';
 import {DataTablesModule} from 'angular-datatables';
 import {AccountsComponent} from './accounts/accounts.component';
+import {FormInsurancesComponent} from './form-insurances/form-insurances.component';
+import {AboutUsComponent} from './about-us/about-us.component';
 
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
@@ -44,7 +46,7 @@ import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {defineLocale} from 'ngx-bootstrap/chronos';
 import {esLocale} from 'ngx-bootstrap/locale';
 import {BankService} from './shared/bank.service';
-import { CardsComponent } from './cards/cards.component';
+import {CardsComponent} from './cards/cards.component';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -62,7 +64,9 @@ defineLocale('es', esLocale);
     MovementsComponent,
     AlertComponent,
     AccountsComponent,
-    CardsComponent
+    CardsComponent,
+    FormInsurancesComponent,
+    AboutUsComponent
   ],
   imports: [
     BrowserModule,

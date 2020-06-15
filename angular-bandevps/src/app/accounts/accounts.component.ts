@@ -109,6 +109,8 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
         this.accountHasMovements = true;
       })
       .catch((error) => {
+        this.accountMovements = [];
+        this.accountHasMovements = false;
         console.log('error', error);
       })
       .finally(() => {

@@ -25,6 +25,7 @@ export class MovementsComponent implements OnInit, OnDestroy, AfterViewInit, OnC
   dtTrigger = new Subject();
 
   @Input() data = null;
+  private dataKey = 'data';
   movements: MovementInfo[] = [];
 
   constructor() {}
@@ -45,7 +46,7 @@ export class MovementsComponent implements OnInit, OnDestroy, AfterViewInit, OnC
 
   ngOnChanges(changes: SimpleChanges) {
     // only run when property "data" changed
-    if (changes['data']) {
+    if (changes[this.dataKey]) {
       if (this.isDtInitialized) {
         this.rerender();
       } else {

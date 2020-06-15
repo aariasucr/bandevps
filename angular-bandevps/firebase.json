@@ -1,0 +1,16 @@
+{
+  "functions": {
+    "predeploy": [],
+    "source": "functions"
+  },
+  "hosting": {
+    "public": "dist/angular-bandevps",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
