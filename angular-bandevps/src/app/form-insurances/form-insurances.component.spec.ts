@@ -1,7 +1,11 @@
-import { async, ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, tick} from '@angular/core/testing';
 
-import { FormInsurancesComponent } from './form-insurances.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {FormInsurancesComponent} from './form-insurances.component';
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {environment} from '../../environments/environment';
 
 describe('FormInsurancesComponent', () => {
   let component: FormInsurancesComponent;
@@ -9,10 +13,15 @@ describe('FormInsurancesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule,FormsModule],
-      declarations: [ FormInsurancesComponent]
-    })
-    .compileComponents();
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireDatabaseModule,
+        AngularFireAuthModule
+      ],
+      declarations: [FormInsurancesComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
