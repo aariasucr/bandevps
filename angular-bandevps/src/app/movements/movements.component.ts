@@ -8,7 +8,7 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core';
-import {Subject, Observable} from 'rxjs';
+import {Subject} from 'rxjs';
 import {MovementInfo} from '../shared/models';
 import {DataTableDirective} from 'angular-datatables';
 
@@ -24,40 +24,21 @@ export class MovementsComponent implements OnInit, OnDestroy, AfterViewInit, OnC
   dtOptions: DataTables.Settings;
   dtTrigger = new Subject();
 
-  @Input() data = null; //: Observable<MovementInfo[]>;
+  @Input() data = null;
   movements: MovementInfo[] = [];
 
-  constructor() {} // private http: HttpClient
+  constructor() {}
 
   ngOnInit(): void {
     this.dtOptions = {
       searching: false,
       paging: true,
       pagingType: 'full_numbers',
-      pageLength: 2
+      pageLength: 10,
+      autoWidth: true
     };
-
-    // this.data.subscribe((value) => {
-    //   console.log(value);
-    // });
-    // this.get().subscribe((data) => {
-    //   this.movements = data.data as MovementInfo[];
-    //   this.dtTrigger.next();
-    // });
   }
 
-  // rerender(): void {
-  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //     // Destroy the table first
-  //     dtInstance.destroy();
-  //     // Call the dtTrigger to rerender again
-  //     this.dtTrigger.next();
-  //   });
-  // }
-
-  // get(): Observable<any> {
-  //   return this.http.get('./assets/data.json');
-  // }
   ngAfterViewInit(): void {
     this.dtTrigger.next();
   }
@@ -65,17 +46,11 @@ export class MovementsComponent implements OnInit, OnDestroy, AfterViewInit, OnC
   ngOnChanges(changes: SimpleChanges) {
     // only run when property "data" changed
     if (changes['data']) {
-      console.log(this.data);
-      this.movements = this.data as MovementInfo[];
-
       if (this.isDtInitialized) {
-        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.destroy();
-          this.dtTrigger.next();
-        });
+        this.rerender();
       } else {
+        this.movements = this.data;
         this.isDtInitialized = true;
-        this.dtTrigger.next();
       }
     }
   }
@@ -83,5 +58,23 @@ export class MovementsComponent implements OnInit, OnDestroy, AfterViewInit, OnC
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
+  }
+
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+
+      // reload your data
+      this.reloadData(() => {
+        // Call the dtTrigger to rerender **on callback**
+        this.dtTrigger.next();
+      });
+    });
+  }
+
+  reloadData(callback) {
+    this.movements = this.data;
+    callback();
   }
 }

@@ -108,19 +108,21 @@
             <br />
 
             <div class="row">
-              <div *ngIf="this.showAccountMovementsResults">
-                <div
-                  *ngIf="this.accountHasMovements; then movementsBlock; else noMovementsBlock"
-                ></div>
-                <ng-template #movementsBlock>
-                  <app-movements [data]=this.accountMovements></app-movements>
-                </ng-template>
-                <ng-template #noMovementsBlock>
-                  No existen movimientos para la cuenta y el rango de fechas seleccionados.
-                </ng-template>
+              <div class="col-12">
+                <div *ngIf="this.showAccountMovementsResults">
+                  <div
+                    class="text-center"
+                    *ngIf="this.accountHasMovements; then movementsBlock; else noMovementsBlock"
+                  ></div>
+                  <ng-template #movementsBlock>
+                    <app-movements [data]="this.accountMovements"></app-movements>
+                  </ng-template>
+                  <ng-template #noMovementsBlock>
+                    No existen movimientos para la cuenta y el rango de fechas seleccionados.
+                  </ng-template>
+                </div>
               </div>
             </div>
-
             <br />
           </div>
         </div>

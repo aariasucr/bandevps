@@ -95,24 +95,8 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
 
   onSubmitAccountMovementsForm() {
     const dateRangeField = this.accountMovementsForm.get('dateRange').value;
-
-    console.log(dateRangeField[0]);
-    console.log(dateRangeField[1]);
-
-    const startDateMoment = moment(dateRangeField[0]).set({
-      hour: 0,
-      minute: 0,
-      second: 0,
-      millisecond: 0
-    });
-    const endDateMoment = moment(dateRangeField[1]).set({
-      hour: 23,
-      minute: 59,
-      second: 59,
-      millisecond: 999
-    });
-    const startTimestamp = startDateMoment.valueOf();
-    const endTimestamp = endDateMoment.valueOf();
+    const startTimestamp = this.getDateTimestamp(dateRangeField[0], true);
+    const endTimestamp = this.getDateTimestamp(dateRangeField[1], false);
 
     this.bankService
       .getAccountMovementsFromFirebaseWithAccountIdAndDates(
@@ -123,11 +107,9 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
       .then((result: MovementInfo[]) => {
         this.accountMovements = result; //of(result).pipe();
         this.accountHasMovements = true;
-        // this.showAccountMovementsResults = true;
       })
       .catch((error) => {
         console.log('error', error);
-        // this.showAccountMovementsResults = true;
       })
       .finally(() => {
         this.showAccountMovementsResults = true;
@@ -138,5 +120,15 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+  }
+
+  getDateTimestamp(date: string, isStartDate: boolean) {
+    const momentDate = moment(date).set({
+      hour: isStartDate ? 0 : 23,
+      minute: isStartDate ? 0 : 59,
+      second: isStartDate ? 0 : 59,
+      millisecond: isStartDate ? 0 : 999
+    });
+    return momentDate.valueOf();
   }
 }
