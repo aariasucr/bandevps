@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const {SENDER_EMAIL, SENDER_PASSWORD} = process.env;
 
-exports.sendEmailNotification = functions.firestore
+exports.sendEmailNotification = functions.database
   .document('messages/{docId}')
   .onWrite((snap, ctx) => {
     const data = snap.data();
