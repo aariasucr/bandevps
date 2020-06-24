@@ -11,6 +11,7 @@ import {AccountsComponent} from './accounts/accounts.component';
 import {CardsComponent} from './cards/cards.component';
 import {FormInsurancesComponent} from './form-insurances/form-insurances.component';
 import {AboutUsComponent} from './about-us/about-us.component';
+import {ResetPasswordRequestComponent} from './reset-password-request/reset-password-request.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [RouteGuard]},
@@ -22,7 +23,12 @@ export const routes: Routes = [
   {path: 'accounts', component: AccountsComponent, canActivate: [RouteGuard]},
   {path: 'cards', component: CardsComponent, canActivate: [RouteGuard]},
   {path: 'formInsurances', component: FormInsurancesComponent, canActivate: [RouteGuard]},
-  {path: 'aboutUs', component: AboutUsComponent}
+  {path: 'aboutUs', component: AboutUsComponent},
+  {
+    path: 'resetPassword',
+    component: ResetPasswordRequestComponent,
+    canActivate: [LoggedInUserRouteGuard]
+  }
 ];
 
 @NgModule({

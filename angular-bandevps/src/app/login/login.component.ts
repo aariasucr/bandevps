@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {UserService} from '../shared/user.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
 import {NotificationService} from '../shared/notification.service';
 import {UserData} from '../shared/models';
+import {APP_TITLE} from '../app.component';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private firebaseAuth: AngularFireAuth,
     private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    @Inject(APP_TITLE) private appTitle: string
   ) {}
 
   ngOnInit() {}
@@ -42,5 +44,9 @@ export class LoginComponent implements OnInit {
         console.log('error', error);
         this.notificationService.showErrorMessage('Error al iniciar sesión', error.message);
       });
+  }
+
+  getAppTitle() {
+    return this.appTitle;
   }
 }
