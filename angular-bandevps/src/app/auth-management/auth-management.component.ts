@@ -80,13 +80,13 @@ export class AuthManagementComponent implements OnInit, OnDestroy {
             })
             .catch((error) => {
               // El código es inválido o expiró. Se debe solicitar al usuario que intente de nuevo el password reset
-              errorMessage = 'El código para reestablecer la contraseña es inválido o expiró.';
+              errorMessage = 'El código para restablecer la contraseña es inválido o expiró.';
               this.router.navigate(['/login']);
             })
             .finally(() => {
               if (!!errorMessage) {
                 this.notificationService.showAlert(
-                  'Error al intentar reestablecer la contraseña',
+                  'Error al intentar restablecer la contraseña',
                   errorMessage
                 );
               }
@@ -120,7 +120,7 @@ export class AuthManagementComponent implements OnInit, OnDestroy {
       .confirmPasswordReset(this.actionCode, this.userPasswordForm.get('newPassword').value)
       .then((resp) => {
         this.notificationService.showAlert(
-          'Contraseña reestablecida',
+          'Contraseña restablecida',
           'Se creó una nueva contraseña para su cuenta de usuario.'
         );
         this.router.navigate(['/login']);
@@ -128,12 +128,12 @@ export class AuthManagementComponent implements OnInit, OnDestroy {
       .catch((error) => {
         // console.log(error);
         let errorMessage;
-        const errorMessageTitle = 'Error al intentar reestablecer la contraseña';
+        const errorMessageTitle = 'Error al intentar restablecer la contraseña';
         if (error.code === 'auth/weak-password') {
           errorMessage = 'La contraseña debe ser más segura. Incluya al menos seis caracteres.';
           this.notificationService.showErrorMessage(errorMessageTitle, errorMessage);
         } else {
-          errorMessage = 'El código para reestablecer la contraseña es inválido o expiró.';
+          errorMessage = 'El código para restablecer la contraseña es inválido o expiró.';
           this.notificationService.showAlert(errorMessageTitle, errorMessage);
           this.router.navigate(['/login']);
         }

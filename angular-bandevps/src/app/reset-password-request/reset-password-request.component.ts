@@ -71,7 +71,7 @@ export class ResetPasswordRequestComponent implements OnInit {
       .finally(() => {
         if (!!errorMessage) {
           this.notificationService.showErrorMessage(
-            'Error al intentar reestablecer la contraseña',
+            'Error al intentar restablecer la contraseña',
             errorMessage
           );
         }
