@@ -98,13 +98,6 @@ export class AuthManagementComponent implements OnInit, OnDestroy {
         // no se puede realizar ninguna acción de administración y por lo tanto se navega a login
         this.router.navigate(['/login']);
       }
-
-      switch (this.mode) {
-        case AuthManagementActions.RESET_PASSWORD:
-          break;
-        default:
-          break;
-      }
     });
   }
 
