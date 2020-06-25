@@ -64,41 +64,45 @@ export class AuthManagementComponent implements OnInit, OnDestroy {
 
       this.mode = params[this.modeParamKey];
 
+      if (this.mode === AuthManagementActions.RESET_PASSWORD) {
+        // Si el parámetro oobCode no está en el URL, no se puede realizar la acción de reset password y por lo tanto se navega a login
+        if (!(this.actionCodeParamKey in params)) {
+          this.router.navigate(['/login']);
+        } else {
+          this.actionCode = params[this.actionCodeParamKey];
+          this.spinnerService.showMainSpinner();
+          let errorMessage;
+          // Verificar que el código de password reset es válido
+          this.firebaseAuth
+            .verifyPasswordResetCode(this.actionCode)
+            .then((email) => {
+              this.actionCodeChecked = true;
+            })
+            .catch((error) => {
+              // El código es inválido o expiró. Se debe solicitar al usuario que intente de nuevo el password reset
+              errorMessage = 'El código para reestablecer la contraseña es inválido o expiró.';
+              this.router.navigate(['/login']);
+            })
+            .finally(() => {
+              if (!!errorMessage) {
+                this.notificationService.showAlert(
+                  'Error al intentar reestablecer la contraseña',
+                  errorMessage
+                );
+              }
+              this.spinnerService.hideMainSpinner();
+            });
+        }
+      } else {
+        // Si el parámetro mode en el URL no tiene un valor que pertenezca al conjunto de modos válidos,
+        // no se puede realizar ninguna acción de administración y por lo tanto se navega a login
+        this.router.navigate(['/login']);
+      }
+
       switch (this.mode) {
         case AuthManagementActions.RESET_PASSWORD:
-          // Si el parámetro oobCode no está en el URL, no se puede realizar la acción de reset password y por lo tanto se navega a login
-          if (!(this.actionCodeParamKey in params)) {
-            this.router.navigate(['/login']);
-          } else {
-            this.actionCode = params[this.actionCodeParamKey];
-            this.spinnerService.showMainSpinner();
-            let errorMessage;
-            // Verificar que el código de password reset es válido
-            this.firebaseAuth
-              .verifyPasswordResetCode(this.actionCode)
-              .then((email) => {
-                this.actionCodeChecked = true;
-              })
-              .catch((error) => {
-                // El código es inválido o expiró. Se debe solicitar al usuario que intente de nuevo el password reset
-                errorMessage = 'El código para reestablecer la contraseña es inválido o expiró.';
-                this.router.navigate(['/login']);
-              })
-              .finally(() => {
-                if (!!errorMessage) {
-                  this.notificationService.showAlert(
-                    'Error al intentar reestablecer la contraseña',
-                    errorMessage
-                  );
-                }
-                this.spinnerService.hideMainSpinner();
-              });
-          }
           break;
         default:
-          // Si el parámetro mode en el URL no tiene un valor que pertenezca al conjunto de modos válidos,
-          // no se puede realizar ninguna acción de administración y por lo tanto se navega a login
-          this.router.navigate(['/login']);
           break;
       }
     });
