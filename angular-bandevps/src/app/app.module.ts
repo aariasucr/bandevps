@@ -10,6 +10,7 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {environment} from '../environments/environment';
+import {AngularFirePerformanceModule} from '@angular/fire/performance';
 
 import {UserService} from './shared/user.service';
 import {HomeComponent} from './home/home.component';
@@ -75,6 +76,7 @@ defineLocale('es', esLocale);
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
+    AngularFirePerformanceModule,
     FormsModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
