@@ -6,6 +6,7 @@ import {UserData} from '../shared/models';
 import {Router} from '@angular/router';
 import {NotificationService} from '../shared/notification.service';
 import {SpinnerService} from '../shared/spinner.service';
+import {UtilsService} from '../shared/utils.service';
 
 enum ResetPasswordError {
   INVALID_CLIENT,
@@ -26,7 +27,8 @@ export class ResetPasswordRequestComponent implements OnInit {
     private firebaseAuth: AngularFireAuth,
     private notificationService: NotificationService,
     private spinnerService: SpinnerService,
-    private router: Router
+    private router: Router,
+    private utilsService: UtilsService
   ) {}
 
   ngOnInit() {
@@ -43,7 +45,7 @@ export class ResetPasswordRequestComponent implements OnInit {
       .then((userData: UserData) => {
         console.log('result', userData);
         console.log('email', userData.email);
-        maskedEmail = this.getMaskedEmail(userData.email);
+        maskedEmail = this.utilsService.getMaskedEmail(userData.email);
         return this.firebaseAuth.sendPasswordResetEmail(userData.email);
       })
       .then(() => {
@@ -105,12 +107,5 @@ export class ResetPasswordRequestComponent implements OnInit {
           }
         });
     });
-  }
-
-  getMaskedEmail(email) {
-    const regexp = /(?<first>[^@])(?<middle>[^@]+)(?<last>@[\w-]+\.+[\w-]+)/;
-    const {first, middle, last} = email.match(regexp).groups;
-    const mask = middle.replace(/[^@]/gi, '*');
-    return `${first}${mask}${last}`;
   }
 }

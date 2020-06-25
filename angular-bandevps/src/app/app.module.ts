@@ -48,6 +48,7 @@ import {esLocale} from 'ngx-bootstrap/locale';
 import {BankService} from './shared/bank.service';
 import {CardsComponent} from './cards/cards.component';
 import {ResetPasswordRequestComponent} from './reset-password-request/reset-password-request.component';
+import {UtilsService} from './shared/utils.service';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -97,7 +98,8 @@ defineLocale('es', esLocale);
     NotificationService,
     SpinnerService,
     SegurosService,
-    BankService
+    BankService,
+    UtilsService
   ],
   entryComponents: [AlertComponent],
   bootstrap: [AppComponent]
