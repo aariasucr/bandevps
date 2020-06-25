@@ -49,14 +49,13 @@ export class ResetPasswordRequestComponent implements OnInit {
         return this.firebaseAuth.sendPasswordResetEmail(userData.email);
       })
       .then(() => {
-        // Modal
         if (!!maskedEmail) {
           this.notificationService.showAlert(
             'Correo electrónico enviado',
             `Se envió el correo para restablecimiento de contraseña a la dirección ${maskedEmail}.`
           );
         }
-        this.router.navigate(['/home']);
+        this.router.navigate(['/login']);
       })
       .catch((error) => {
         if (error === ResetPasswordError.INVALID_CLIENT) {
