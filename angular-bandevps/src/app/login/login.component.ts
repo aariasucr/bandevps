@@ -74,7 +74,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         console.log('error', error);
 
         if (!firstStepCompleted) {
+          this.trackLoginTraceAttribute(this.clientLoginAttemptTrace, 'error', `${error}`);
+          this.trackLoginTraceAttribute(this.userLoginTrace, 'error', `${error}`);
           this.stopLoginTrace(this.clientLoginAttemptTrace);
+        } else {
+          this.trackLoginTraceAttribute(this.userLoginTrace, 'errorCode', `${error.code}`);
         }
 
         this.stopLoginTrace(this.userLoginTrace);
