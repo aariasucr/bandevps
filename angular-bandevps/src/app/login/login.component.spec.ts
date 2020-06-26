@@ -9,6 +9,7 @@ import {NgForm} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ToastrModule} from 'ngx-toastr';
 import {ModalModule} from 'ngx-bootstrap/modal';
+import {AngularFirePerformance} from '@angular/fire/performance';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -24,7 +25,8 @@ describe('LoginComponent', () => {
         ToastrModule.forRoot(),
         ModalModule.forRoot()
       ],
-      declarations: [LoginComponent, NgForm]
+      declarations: [LoginComponent, NgForm],
+      providers: [{provide: AngularFirePerformance, useValue: null}]
     }).compileComponents();
   }));
 
