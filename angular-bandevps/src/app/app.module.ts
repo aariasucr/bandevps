@@ -50,6 +50,7 @@ import {CardsComponent} from './cards/cards.component';
 import {ResetPasswordRequestComponent} from './reset-password-request/reset-password-request.component';
 import {UtilsService} from './shared/utils.service';
 import {AuthManagementComponent} from './auth-management/auth-management.component';
+import {TransfersComponent} from './transfers/transfers.component';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -71,7 +72,8 @@ defineLocale('es', esLocale);
     FormInsurancesComponent,
     AboutUsComponent,
     ResetPasswordRequestComponent,
-    AuthManagementComponent
+    AuthManagementComponent,
+    TransfersComponent
   ],
   imports: [
     BrowserModule,
