@@ -1,8 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { AgmCoreModule } from '@agm/core';
-
+import {GoogleMapsModule} from '@angular/google-maps';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent, APP_TITLE} from './app.component';
@@ -49,8 +48,8 @@ import {defineLocale} from 'ngx-bootstrap/chronos';
 import {esLocale} from 'ngx-bootstrap/locale';
 import {BankService} from './shared/bank.service';
 import {CardsComponent} from './cards/cards.component';
-import { UbicacionesComponent } from './ubicaciones/ubicaciones.component';
-import { LocationsService } from './shared/locations.service';
+import {UbicacionesComponent} from './ubicaciones/ubicaciones.component';
+import {LocationsService} from './shared/locations.service';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -75,9 +74,7 @@ defineLocale('es', esLocale);
   ],
   imports: [
     BrowserModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBc7KQyytb83_NVarnutRLHzax32Q2FcBk'
-    }),
+    GoogleMapsModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,

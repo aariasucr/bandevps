@@ -11,7 +11,7 @@ import {AccountsComponent} from './accounts/accounts.component';
 import {CardsComponent} from './cards/cards.component';
 import {FormInsurancesComponent} from './form-insurances/form-insurances.component';
 import {AboutUsComponent} from './about-us/about-us.component';
-import { UbicacionesComponent } from './ubicaciones/ubicaciones.component';
+import {UbicacionesComponent} from './ubicaciones/ubicaciones.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [RouteGuard]},
@@ -24,7 +24,7 @@ export const routes: Routes = [
   {path: 'cards', component: CardsComponent, canActivate: [RouteGuard]},
   {path: 'formInsurances', component: FormInsurancesComponent, canActivate: [RouteGuard]},
   {path: 'aboutUs', component: AboutUsComponent},
-  {path:'ubicaciones',component:UbicacionesComponent}
+  {path: 'ubicaciones', component: UbicacionesComponent}
 ];
 
 @NgModule({
