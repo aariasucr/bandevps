@@ -100,98 +100,49 @@
 
             <br />
 
-            <form [formGroup]="transferForm">
-              <div class="row">
-                <div class="col-4">
-                  <label for="identificación">Identificación del propietario</label>
+            <div *ngIf="this.isDestinationAccountSet && this.isDestinationAccountInfoSet">
+              <h5 class="card-title">Identificación del propietario</h5>
+              <p class="card-text text-right">
+                {{ this.destinationAccount.userId }}
+              </p>
+              <h5 class="card-title">Nombre del propietario</h5>
+              <p class="card-text text-right">
+                {{ this.destinationAccount.userFullName }}
+              </p>
+              <h5 class="card-title">Moneda</h5>
+              <p class="card-text text-right">
+                {{ this.destinationAccount.currency }}
+              </p>
+
+              <form [formGroup]="transferForm">
+                <div class="row">
+                  <div class="col-4">
+                    <label for="monto">Monto</label>
+                  </div>
+
+                  <div class="col-8">
+                    <input class="form-control" formControlName="amount" id="monto" name="amount" />
+                  </div>
                 </div>
 
-                <div class="col-8">
-                  <input
-                    class="form-control"
-                    formControlName="id"
-                    id="identificación"
-                    name="id"
-                    required
-                    readonly
-                  />
+                <br />
+
+                <div class="row">
+                  <div class="col-4">
+                    <label for="detalle">Detalle</label>
+                  </div>
+
+                  <div class="col-8">
+                    <input
+                      class="form-control"
+                      formControlName="detail"
+                      id="detalle"
+                      name="detail"
+                    />
+                  </div>
                 </div>
-              </div>
-
-              <br />
-
-              <div class="row">
-                <div class="col-4">
-                  <label for="nombre">Nombre del propietario</label>
-                </div>
-
-                <div class="col-8">
-                  <input
-                    class="form-control"
-                    formControlName="name"
-                    id="nombre"
-                    name="name"
-                    required
-                    readonly
-                  />
-                </div>
-              </div>
-
-              <br />
-
-              <div class="row">
-                <div class="col-4">
-                  <label for="moneda">Moneda</label>
-                </div>
-
-                <div class="col-8">
-                  <input
-                    class="form-control"
-                    formControlName="currency"
-                    id="moneda"
-                    name="currency"
-                    required
-                    readonly
-                  />
-                </div>
-              </div>
-
-              <br />
-
-              <div class="row">
-                <div class="col-4">
-                  <label for="monto">Monto</label>
-                </div>
-
-                <div class="col-8">
-                  <input
-                    class="form-control"
-                    formControlName="amount"
-                    id="monto"
-                    name="amount"
-                    required
-                  />
-                </div>
-              </div>
-
-              <br />
-
-              <div class="row">
-                <div class="col-4">
-                  <label for="detalle">Detalle</label>
-                </div>
-
-                <div class="col-8">
-                  <input
-                    class="form-control"
-                    formControlName="detail"
-                    id="detalle"
-                    name="detail"
-                    required
-                  />
-                </div>
-              </div>
-            </form>
+              </form>
+            </div>
 
             <br />
           </div>

@@ -33,6 +33,14 @@ export interface BankAccountInfo {
   balance: number;
 }
 
+export interface DestinationBankAccountInfo {
+  id: string;
+  userId: string;
+  userFullName: string;
+  number: string;
+  currency: string;
+}
+
 export interface CreditCardInfo {
   id: string;
   number: string;

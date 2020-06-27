@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {UserService} from '../shared/user.service';
 import {BankService} from '../shared/bank.service';
 import {FormGroup, FormControl} from '@angular/forms';
-import {BankAccountData, BankAccountInfo} from '../shared/models';
+import {BankAccountData, BankAccountInfo, DestinationBankAccountInfo} from '../shared/models';
 import {Observable, Subscription, of} from 'rxjs';
 
 @Component({
@@ -21,7 +21,7 @@ export class TransfersComponent implements OnInit, OnDestroy {
   isSourceAccountInfoSet = false;
 
   destinationAccounts: Observable<BankAccountData[]>;
-  destinationAccount: BankAccountInfo;
+  destinationAccount: DestinationBankAccountInfo;
   isDestinationAccountSet = false;
   isDestinationAccountInfoSet = false;
 
@@ -52,9 +52,6 @@ export class TransfersComponent implements OnInit, OnDestroy {
     });
 
     this.transferForm = new FormGroup({
-      id: new FormControl(''),
-      name: new FormControl(''),
-      currency: new FormControl(''),
       amount: new FormControl(''),
       detail: new FormControl('')
     });
@@ -70,6 +67,11 @@ export class TransfersComponent implements OnInit, OnDestroy {
       console.log(accountId);
       console.log(accountNumber);
 
+      this.destinationAccountSelectionForm.reset();
+      this.isDestinationAccountSet = false;
+      this.isDestinationAccountInfoSet = false;
+      this.transferForm.reset();
+
       this.bankService
         .getBankAccountInfoFromFirebaseWithAccountId(accountId, ['destinationAccounts'])
         .then((result: any) => {
@@ -79,10 +81,8 @@ export class TransfersComponent implements OnInit, OnDestroy {
             currency: result.currency,
             balance: result.balance
           };
-          this.destinationAccountSelectionForm.reset();
           this.destinationAccounts = of(result.destinationAccounts).pipe();
           this.isSourceAccountInfoSet = true;
-          this.transferForm.reset();
         })
         .catch((error) => {
           console.log('error', error);
@@ -99,6 +99,36 @@ export class TransfersComponent implements OnInit, OnDestroy {
         'cuenta destino seleccionada',
         this.destinationAccountSelectionForm.get('destinationAccount').value
       );
+      const accountId = this.destinationAccountSelectionForm.get('destinationAccount').value.id;
+      const ownerId = this.destinationAccountSelectionForm.get('destinationAccount').value.userId;
+      const accountNumber = this.destinationAccountSelectionForm.get('destinationAccount').value
+        .number;
+      this.isDestinationAccountSet = true;
+
+      console.log(accountId);
+      console.log(ownerId);
+      console.log(accountNumber);
+
+      this.transferForm.reset();
+
+      this.bankService
+        .getBankAccountInfoFromFirebaseWithAccountId(accountId)
+        .then((result: any) => {
+          console.log(result);
+          this.destinationAccount = {
+            id: accountId,
+            userId: ownerId,
+            userFullName: 'Nombre Apellido Apellido',
+            number: accountNumber,
+            currency: result.currency
+          };
+          this.isDestinationAccountInfoSet = true;
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
+    } else {
+      this.isDestinationAccountSet = false;
     }
   }
 
