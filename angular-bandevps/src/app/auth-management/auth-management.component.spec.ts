@@ -1,37 +1,45 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {LoginComponent} from './login.component';
+import {AuthManagementComponent} from './auth-management.component';
+import {ReactiveFormsModule} from '@angular/forms';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from '../../environments/environment';
-import {NgForm} from '@angular/forms';
-import {RouterTestingModule} from '@angular/router/testing';
 import {ToastrModule} from 'ngx-toastr';
 import {ModalModule} from 'ngx-bootstrap/modal';
-import {APP_TITLE} from '../app.component';
+import {Router, ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+describe('AuthManagementComponent', () => {
+  let component: AuthManagementComponent;
+  let fixture: ComponentFixture<AuthManagementComponent>;
+
+  const mockRouter: any = {navigate() {}};
+  const mockActivatedRoute: any = {
+    queryParams: of({param: 123})
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        ReactiveFormsModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
-        RouterTestingModule,
         ToastrModule.forRoot(),
         ModalModule.forRoot()
       ],
-      declarations: [LoginComponent, NgForm],
-      providers: [{provide: APP_TITLE, useValue: 'The Iron Bank'}]
+      declarations: [AuthManagementComponent],
+      providers: [
+        {provide: Router, useValue: mockRouter},
+        {provide: ActivatedRoute, useValue: mockActivatedRoute}
+      ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LoginComponent);
+    fixture = TestBed.createComponent(AuthManagementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

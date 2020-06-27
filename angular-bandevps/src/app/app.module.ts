@@ -47,6 +47,9 @@ import {defineLocale} from 'ngx-bootstrap/chronos';
 import {esLocale} from 'ngx-bootstrap/locale';
 import {BankService} from './shared/bank.service';
 import {CardsComponent} from './cards/cards.component';
+import {ResetPasswordRequestComponent} from './reset-password-request/reset-password-request.component';
+import {UtilsService} from './shared/utils.service';
+import {AuthManagementComponent} from './auth-management/auth-management.component';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -66,7 +69,9 @@ defineLocale('es', esLocale);
     AccountsComponent,
     CardsComponent,
     FormInsurancesComponent,
-    AboutUsComponent
+    AboutUsComponent,
+    ResetPasswordRequestComponent,
+    AuthManagementComponent
   ],
   imports: [
     BrowserModule,
@@ -95,7 +100,8 @@ defineLocale('es', esLocale);
     NotificationService,
     SpinnerService,
     SegurosService,
-    BankService
+    BankService,
+    UtilsService
   ],
   entryComponents: [AlertComponent],
   bootstrap: [AppComponent]

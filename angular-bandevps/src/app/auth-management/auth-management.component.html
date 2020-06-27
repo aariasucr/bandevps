@@ -1,0 +1,64 @@
+<div class="container">
+  <ng-container [ngSwitch]="mode">
+    <!-- Reset Password -->
+    <ng-container *ngSwitchCase="'resetPassword'">
+      <div class="row">
+        <div class="col-md-2 col-sm-1"></div>
+        <div class="col-md-8 col-sm-10">
+          <form [formGroup]="userPasswordForm" (ngSubmit)="handleResetPassword()">
+            <br />
+            <div class="form-group">
+              <div class="row">
+                <div class="col-5">
+                  <label for="contraseña">Nueva contraseña</label>
+                </div>
+                <div class="col-7">
+                  <input
+                    class="form-control"
+                    formControlName="newPassword"
+                    type="password"
+                    id="contraseña"
+                    name="new-password"
+                    placeholder="Contraseña"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="form-group">
+              <div class="row">
+                <div class="col-5">
+                  <label for="confirmación contraseña">Confirmación de la nueva contraseña</label>
+                </div>
+                <div class="col-7">
+                  <input
+                    class="form-control"
+                    formControlName="confirmNewPassword"
+                    type="password"
+                    id="confirmación contraseña"
+                    name="confirm-new-password"
+                    placeholder="Contraseña"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary" [disabled]="userPasswordForm.invalid">
+                Confirmar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Recover Email -->
+    <ng-container *ngSwitchCase="'recoverEmail'"></ng-container>
+
+    <!-- Verify Email -->
+    <ng-container *ngSwitchCase="'verifyEmail'"></ng-container>
+  </ng-container>
+</div>
