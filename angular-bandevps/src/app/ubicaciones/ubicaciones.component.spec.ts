@@ -1,9 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UbicacionesComponent } from './ubicaciones.component';
-import { AgmMap } from '@agm/core';
-import { AngularFireDatabase, AngularFireDatabaseModule } from '@angular/fire/database';
-
+import { AgmMap, AgmCoreModule } from '@agm/core';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 describe('UbicacionesComponent', () => {
   let component: UbicacionesComponent;
   let fixture: ComponentFixture<UbicacionesComponent>;
@@ -11,7 +10,7 @@ describe('UbicacionesComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UbicacionesComponent],
-      imports:[AgmMap,AngularFireDatabaseModule ]
+      imports:[AgmCoreModule,AngularFireDatabaseModule, ]
     })
     .compileComponents();
   }));

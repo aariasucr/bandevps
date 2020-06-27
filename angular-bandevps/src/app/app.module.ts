@@ -76,7 +76,7 @@ defineLocale('es', esLocale);
   imports: [
     BrowserModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDBgAtTVn8YXQGnYStbz0jNwDgLb5Bks-Y'
+      apiKey: 'AIzaSyBc7KQyytb83_NVarnutRLHzax32Q2FcBk'
     }),
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),

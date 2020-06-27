@@ -18,8 +18,8 @@ export class UbicacionesComponent implements OnInit {
   }
 
 
-lat = 6.05246325;
-log = 9.01555559;
+lat = 9.951309;
+log = -84.046914;
 
 positions = [{
     "post_country": "Vietnam",
