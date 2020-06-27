@@ -11,6 +11,7 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {environment} from '../environments/environment';
+import {AngularFirePerformanceModule} from '@angular/fire/performance';
 
 import {UserService} from './shared/user.service';
 import {HomeComponent} from './home/home.component';
@@ -50,6 +51,9 @@ import {BankService} from './shared/bank.service';
 import {CardsComponent} from './cards/cards.component';
 import {UbicacionesComponent} from './ubicaciones/ubicaciones.component';
 import {LocationsService} from './shared/locations.service';
+import {ResetPasswordRequestComponent} from './reset-password-request/reset-password-request.component';
+import {UtilsService} from './shared/utils.service';
+import {AuthManagementComponent} from './auth-management/auth-management.component';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -70,7 +74,9 @@ defineLocale('es', esLocale);
     CardsComponent,
     FormInsurancesComponent,
     AboutUsComponent,
-    UbicacionesComponent
+    UbicacionesComponent,
+    ResetPasswordRequestComponent,
+    AuthManagementComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +86,7 @@ defineLocale('es', esLocale);
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
+    AngularFirePerformanceModule,
     FormsModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
@@ -101,7 +108,8 @@ defineLocale('es', esLocale);
     SpinnerService,
     SegurosService,
     BankService,
-    LocationsService
+    LocationsService,
+    UtilsService
   ],
   entryComponents: [AlertComponent],
   bootstrap: [AppComponent]
