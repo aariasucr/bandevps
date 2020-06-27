@@ -1,6 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
+
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent, APP_TITLE} from './app.component';
@@ -47,6 +49,8 @@ import {defineLocale} from 'ngx-bootstrap/chronos';
 import {esLocale} from 'ngx-bootstrap/locale';
 import {BankService} from './shared/bank.service';
 import {CardsComponent} from './cards/cards.component';
+import { UbicacionesComponent } from './ubicaciones/ubicaciones.component';
+import { LocationsService } from './shared/locations.service';
 defineLocale('es', esLocale);
 
 @NgModule({
@@ -66,10 +70,14 @@ defineLocale('es', esLocale);
     AccountsComponent,
     CardsComponent,
     FormInsurancesComponent,
-    AboutUsComponent
+    AboutUsComponent,
+    UbicacionesComponent
   ],
   imports: [
     BrowserModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDBgAtTVn8YXQGnYStbz0jNwDgLb5Bks-Y'
+    }),
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
@@ -95,7 +103,8 @@ defineLocale('es', esLocale);
     NotificationService,
     SpinnerService,
     SegurosService,
-    BankService
+    BankService,
+    LocationsService
   ],
   entryComponents: [AlertComponent],
   bootstrap: [AppComponent]

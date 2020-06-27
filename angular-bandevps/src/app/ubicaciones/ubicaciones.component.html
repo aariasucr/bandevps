@@ -1,0 +1,7 @@
+
+
+
+
+<agm-map  [latitude]="lat" [longitude]="log" >
+  <agm-marker  *ngFor = "let post of items | async" [latitude]="post.post_latitude" [longitude]="post.post_longitude" [label]="post.post_country"></agm-marker>
+</agm-map>
