@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {UserService} from '../shared/user.service';
 import {AngularFireAuth} from '@angular/fire/auth';
@@ -7,6 +7,7 @@ import {NotificationService} from '../shared/notification.service';
 import {UserData} from '../shared/models';
 import {AngularFirePerformance} from '@angular/fire/performance';
 import * as firebase from 'firebase';
+import {APP_TITLE} from '../app.component';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private firebaseAuth: AngularFireAuth,
     private router: Router,
     private notificationService: NotificationService,
-    private firebasePerf: AngularFirePerformance
+    private firebasePerf: AngularFirePerformance,
+    @Inject(APP_TITLE) private appTitle: string
   ) {}
 
   ngOnInit() {
@@ -127,5 +129,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (!!this.firebasePerf && !!traceInstance) {
       traceInstance.putAttribute(attributeName, value);
     }
+  }
+
+  getAppTitle() {
+    return this.appTitle;
   }
 }
