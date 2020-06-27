@@ -1,14 +1,15 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {LocationsService} from '../shared/locations.service';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {MapInfoWindow, MapMarker} from '@angular/google-maps';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-ubicaciones',
   templateUrl: './ubicaciones.component.html',
   styleUrls: ['./ubicaciones.component.css']
 })
-export class UbicacionesComponent implements OnInit {
+export class UbicacionesComponent implements OnInit, OnDestroy {
   @ViewChild(MapInfoWindow, {static: false}) infoWindow: MapInfoWindow;
 
   items: Observable<any[]>;
@@ -42,16 +43,30 @@ export class UbicacionesComponent implements OnInit {
   display?: google.maps.LatLngLiteral;
   markerOptions = {draggable: false};
   markerPositions: google.maps.LatLngLiteral[] = [];
-
+  locationsSuscription:Subscription
   constructor(private locationsService: LocationsService) {}
 
+
   ngOnInit() {
-    this.items = this.locationsService.getLocationsList();
-    console.log(this.items);
+  this.locationsSuscription=this.locationsService.getLocationsList().subscribe((result)=>{
+    console.log(result);
+    result.forEach((elemt)=>{
+      this.markerPositions.push({lat:elemt.post_latitude,lng:elemt.post_longitude});
+    })
+    });
+
+  }
+
+  ngOnDestroy(): void {
+    if(!!this.locationsSuscription){
+      this.locationsSuscription.unsubscribe()
+    }
   }
 
   addMarker(event: google.maps.MouseEvent) {
+
     this.markerPositions.push(event.latLng.toJSON());
+    console.log(event.latLng.toJSON())
   }
 
   move(event: google.maps.MouseEvent) {
