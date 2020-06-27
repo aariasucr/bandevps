@@ -15,6 +15,7 @@ export interface UserInformation {
 
 export interface BankAccountData {
   id: string;
+  userId: string;
   number: string;
   display: string;
 }

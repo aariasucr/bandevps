@@ -1,1 +1,204 @@
-<p>transfers works!</p>
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-md-2 col-sm-1"></div>
+    <div class="col-md-8 col-sm-10">
+      <h2>Transferencias</h2>
+    </div>
+  </div>
+
+  <br />
+
+  <div class="row">
+    <div class="col-md-2 col-sm-1"></div>
+    <div class="col-md-8 col-sm-10">
+      <form [formGroup]="sourceAccountSelectionForm">
+        <div class="row">
+          <div class="col-4">
+            <label for="cuenta origen">Cuenta origen</label>
+          </div>
+
+          <div class="col-8">
+            <select
+              formControlName="sourceAccount"
+              id="cuenta origen"
+              name="sourceAccount"
+              (change)="changeSelectedSourceAccount($event)"
+            >
+              <option value="">Seleccione una cuenta</option>
+              <option
+                *ngFor="let sourceAccount of this.sourceAccounts | async"
+                [ngValue]="sourceAccount"
+              >
+                {{ sourceAccount.display }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <br />
+
+  <div *ngIf="this.isSourceAccountSet && this.isSourceAccountInfoSet">
+    <div class="row">
+      <div class="col-md-2 col-sm-1"></div>
+      <div class="col-md-8 col-sm-10">
+        <div class="card">
+          <h5 class="card-header">Información de cuenta origen</h5>
+          <div class="card-body">
+            <h5 class="card-title">Número</h5>
+            <p class="card-text text-right">
+              {{ this.sourceAccount.number }}
+            </p>
+            <h5 class="card-title">Moneda</h5>
+            <p class="card-text text-right">
+              {{ this.sourceAccount.currency }}
+            </p>
+            <h5 class="card-title">Saldo</h5>
+            <p class="card-text text-right">
+              {{ this.sourceAccount.balance }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+      <div class="col-md-2 col-sm-1"></div>
+      <div class="col-md-8 col-sm-10">
+        <div class="card">
+          <h5 class="card-header">Transferencia</h5>
+          <div class="card-body">
+            <form [formGroup]="destinationAccountSelectionForm">
+              <div class="row">
+                <div class="col-4">
+                  <label for="cuenta destino">Cuenta destino</label>
+                </div>
+
+                <div class="col-8">
+                  <select
+                    formControlName="destinationAccount"
+                    id="cuenta destino"
+                    name="destinationAccount"
+                    (change)="changeSelectedDestinationAccount($event)"
+                  >
+                    <option value="">Seleccione una cuenta</option>
+                    <option
+                      *ngFor="let destinationAccount of this.destinationAccounts | async"
+                      [ngValue]="destinationAccount"
+                    >
+                      {{ destinationAccount.display }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </form>
+
+            <br />
+
+            <form [formGroup]="transferForm">
+              <div class="row">
+                <div class="col-4">
+                  <label for="identificación">Identificación del propietario</label>
+                </div>
+
+                <div class="col-8">
+                  <input
+                    class="form-control"
+                    formControlName="id"
+                    id="identificación"
+                    name="id"
+                    required
+                    readonly
+                  />
+                </div>
+              </div>
+
+              <br />
+
+              <div class="row">
+                <div class="col-4">
+                  <label for="nombre">Nombre del propietario</label>
+                </div>
+
+                <div class="col-8">
+                  <input
+                    class="form-control"
+                    formControlName="name"
+                    id="nombre"
+                    name="name"
+                    required
+                    readonly
+                  />
+                </div>
+              </div>
+
+              <br />
+
+              <div class="row">
+                <div class="col-4">
+                  <label for="moneda">Moneda</label>
+                </div>
+
+                <div class="col-8">
+                  <input
+                    class="form-control"
+                    formControlName="currency"
+                    id="moneda"
+                    name="currency"
+                    required
+                    readonly
+                  />
+                </div>
+              </div>
+
+              <br />
+
+              <div class="row">
+                <div class="col-4">
+                  <label for="monto">Monto</label>
+                </div>
+
+                <div class="col-8">
+                  <input
+                    class="form-control"
+                    formControlName="amount"
+                    id="monto"
+                    name="amount"
+                    required
+                  />
+                </div>
+              </div>
+
+              <br />
+
+              <div class="row">
+                <div class="col-4">
+                  <label for="detalle">Detalle</label>
+                </div>
+
+                <div class="col-8">
+                  <input
+                    class="form-control"
+                    formControlName="detail"
+                    id="detalle"
+                    name="detail"
+                    required
+                  />
+                </div>
+              </div>
+            </form>
+
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+  </div>
+</div>

@@ -13,6 +13,7 @@ import {FormInsurancesComponent} from './form-insurances/form-insurances.compone
 import {AboutUsComponent} from './about-us/about-us.component';
 import {ResetPasswordRequestComponent} from './reset-password-request/reset-password-request.component';
 import {AuthManagementComponent} from './auth-management/auth-management.component';
+import {TransfersComponent} from './transfers/transfers.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [RouteGuard]},
@@ -30,7 +31,12 @@ export const routes: Routes = [
     component: ResetPasswordRequestComponent,
     canActivate: [LoggedInUserRouteGuard]
   },
-  {path: 'authManagement', component: AuthManagementComponent}
+  {
+    path: 'authManagement',
+    component: AuthManagementComponent,
+    canActivate: [LoggedInUserRouteGuard]
+  },
+  {path: 'transfers', component: TransfersComponent, canActivate: [RouteGuard]}
 ];
 
 @NgModule({

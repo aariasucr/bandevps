@@ -43,6 +43,7 @@ export class BankService {
               if (targetClassName === 'BankAccountData') {
                 return {
                   id: entityId,
+                  userId: entitiesJSON[entityId].user_id,
                   number: entitiesJSON[entityId].number,
                   display: entitiesJSON[entityId].number
                 };
@@ -69,30 +70,60 @@ export class BankService {
     });
   }
 
-  getBankAccountInfoFromFirebaseWithAccountId(accountId: string) {
+  getBankAccountInfo(bankAccountValue, optionalAttributes) {
+    if (Array.isArray(optionalAttributes) && optionalAttributes.length) {
+      if (optionalAttributes.includes('destinationAccounts')) {
+        let destinationAccounts = [];
+        if ('destination_accounts' in bankAccountValue) {
+          const rawDestinationAccounts = bankAccountValue.destination_accounts;
+          const destinationAccountsIds = Object.keys(rawDestinationAccounts);
+          destinationAccounts = destinationAccountsIds.map((destinationAccountId) => {
+            return {
+              id: destinationAccountId,
+              userId: rawDestinationAccounts[destinationAccountId].user_id,
+              number: rawDestinationAccounts[destinationAccountId].number,
+              display: rawDestinationAccounts[destinationAccountId].number
+            };
+          });
+        }
+        bankAccountValue.destinationAccounts = destinationAccounts;
+        return bankAccountValue;
+      }
+    }
+
+    return bankAccountValue;
+  }
+
+  getBankAccountInfoFromFirebaseWithAccountId(
+    accountId: string,
+    optionalAttributes: Array<string> = []
+  ) {
     return this.getBankEntityInfoFromFirebaseWithBankEntityId(
       'BankAccountInfo',
       this.accountsInfoDbPath,
-      accountId
+      accountId,
+      optionalAttributes
     );
   }
 
-  getCreditCardInfoFromFirebaseWithCardId(cardId: string) {
+  getCreditCardInfoFromFirebaseWithCardId(cardId: string, optionalAttributes: Array<string> = []) {
     return this.getBankEntityInfoFromFirebaseWithBankEntityId(
       'CreditCardInfo',
       this.cardsInfoDbPath,
-      cardId
+      cardId,
+      optionalAttributes
     );
   }
 
   getBankEntityInfoFromFirebaseWithBankEntityId(
     targetClassName: string,
     path: string,
-    bankEntityId: string
+    bankEntityId: string,
+    optionalAttributes
   ) {
     return new Promise((resolve, reject) => {
-      const rejectValue =
-        targetClassName === 'BankAccountInfo' ? 'INVALID_ACCOUNT_ID' : 'INVALID_CARD_ID';
+      const bankEntityIsBankAccountInfo = targetClassName === 'BankAccountInfo';
+      const rejectValue = bankEntityIsBankAccountInfo ? 'INVALID_ACCOUNT_ID' : 'INVALID_CARD_ID';
 
       this.firebaseDatabase.database
         .ref(path)
@@ -100,7 +131,12 @@ export class BankService {
         .once('value')
         .then((result) => {
           if (!!result && !!result.val()) {
-            resolve(result.val());
+            if (bankEntityIsBankAccountInfo) {
+              const bankAccountInfo = this.getBankAccountInfo(result.val(), optionalAttributes);
+              resolve(bankAccountInfo);
+            } else {
+              resolve(result.val());
+            }
           } else {
             reject(rejectValue);
           }
