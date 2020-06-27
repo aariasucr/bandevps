@@ -9,6 +9,7 @@ import {NgForm} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ToastrModule} from 'ngx-toastr';
 import {ModalModule} from 'ngx-bootstrap/modal';
+import {AngularFirePerformance} from '@angular/fire/performance';
 import {APP_TITLE} from '../app.component';
 
 describe('LoginComponent', () => {
@@ -26,7 +27,10 @@ describe('LoginComponent', () => {
         ModalModule.forRoot()
       ],
       declarations: [LoginComponent, NgForm],
-      providers: [{provide: APP_TITLE, useValue: 'The Iron Bank'}]
+      providers: [
+        {provide: APP_TITLE, useValue: 'The Iron Bank'},
+        {provide: AngularFirePerformance, useValue: null}
+      ]
     }).compileComponents();
   }));
 
