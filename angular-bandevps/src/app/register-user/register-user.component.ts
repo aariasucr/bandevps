@@ -6,6 +6,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {UserData, UserInformation} from '../shared/models';
 import {NotificationService} from '../shared/notification.service';
 import {Router} from '@angular/router';
+import {UtilsService} from '../shared/utils.service';
 
 enum RegistrationError {
   INVALID_CLIENT,
@@ -42,7 +43,8 @@ export class RegisterUserComponent implements OnInit, AfterContentChecked {
     private firebaseAuth: AngularFireAuth,
     private notificationService: NotificationService,
     private router: Router,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private utilsService: UtilsService
   ) {}
 
   ngOnInit() {
@@ -73,7 +75,7 @@ export class RegisterUserComponent implements OnInit, AfterContentChecked {
     this.checkUserCanRegister()
       .then((userData: UserData) => {
         this.userData = userData;
-        const maskedEmail = this.getMaskedEmail(this.userData.email);
+        const maskedEmail = this.utilsService.getMaskedEmail(this.userData.email);
         this.userCanRegister = true;
         this.userIdForm.get('id').disable();
         this.userRegistrationForm.get('name').patchValue(this.userData.fullName);
@@ -205,12 +207,5 @@ export class RegisterUserComponent implements OnInit, AfterContentChecked {
           reject(registrationError);
         });
     });
-  }
-
-  getMaskedEmail(email) {
-    const regexp = /(?<first>[^@])(?<middle>[^@]+)(?<last>@[\w-]+\.+[\w-]+)/;
-    const {first, middle, last} = email.match(regexp).groups;
-    const mask = middle.replace(/[^@]/gi, '*');
-    return `${first}${mask}${last}`;
   }
 }
