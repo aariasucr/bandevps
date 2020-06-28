@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed, fakeAsync} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {TimerComponent} from './timer.component';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from '../state/reducers';
