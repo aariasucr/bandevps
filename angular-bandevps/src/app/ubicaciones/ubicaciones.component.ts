@@ -44,11 +44,7 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
     }
   }
 
-  addMarker(event: google.maps.MouseEvent) {
 
-    this.markerPositions.push(event.latLng.toJSON());
-    console.log(event.latLng.toJSON())
-  }
 
   move(event: google.maps.MouseEvent) {
     this.display = event.latLng.toJSON();
