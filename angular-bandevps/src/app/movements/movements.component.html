@@ -1,5 +1,7 @@
 <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-  <caption>Movimientos para el rango de fechas especificado</caption>
+  <caption>
+    Movimientos para el rango de fechas especificado
+  </caption>
   <thead>
     <tr>
       <th scope="col">Fecha</th>
@@ -13,7 +15,7 @@
       <td>{{ movement.date }}</td>
       <td>{{ movement.detail }}</td>
       <td>{{ movement.type }}</td>
-      <td>{{ movement.amount }}</td>
+      <td>{{ movement.amount | number: '1.2':'en' }}</td>
     </tr>
   </tbody>
 </table>

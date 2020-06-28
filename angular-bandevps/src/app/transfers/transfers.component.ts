@@ -2,8 +2,15 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {UserService} from '../shared/user.service';
 import {BankService} from '../shared/bank.service';
 import {FormGroup, FormControl} from '@angular/forms';
-import {BankAccountData, BankAccountInfo, DestinationBankAccountInfo} from '../shared/models';
+import {BankAccountData, BankAccountInfo, DestinationBankAccountInfo  } from '../shared/models';
 import {Observable, Subscription, of} from 'rxjs';
+import {NotificationService} from '../shared/notification.service';
+
+enum TransferError {
+  INVALID_AMOUNT,
+  INSUFFICIENT_FUNDS,
+  ERROR
+}
 
 @Component({
   selector: 'app-transfers',
@@ -27,7 +34,11 @@ export class TransfersComponent implements OnInit, OnDestroy {
 
   private userSubscription: Subscription = null;
 
-  constructor(private userService: UserService, private bankService: BankService) {}
+  constructor(
+    private userService: UserService,
+    private bankService: BankService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {
     this.userSubscription = this.userService.statusChange.subscribe((userData) => {
@@ -112,13 +123,12 @@ export class TransfersComponent implements OnInit, OnDestroy {
       this.transferForm.reset();
 
       this.bankService
-        .getBankAccountInfoFromFirebaseWithAccountId(accountId)
+        .getDestinationBankAccountInfoFromFirebase(ownerId, accountId)
         .then((result: any) => {
-          console.log(result);
           this.destinationAccount = {
             id: accountId,
             userId: ownerId,
-            userFullName: 'Nombre Apellido Apellido',
+            userFullName: result.userFullName,
             number: accountNumber,
             currency: result.currency
           };
@@ -130,6 +140,29 @@ export class TransfersComponent implements OnInit, OnDestroy {
     } else {
       this.isDestinationAccountSet = false;
     }
+  }
+
+  onSubmitTransferForm() {
+    // Se deshabilita el botón para evitar una segunda transferencia mientras se realiza el procesamiento
+    this.transferForm.setErrors({invalid: true});
+
+    this.bankService
+      .processTransfer(
+        this.transferForm.get('amount').value,
+        this.transferForm.get('detail').value,
+        this.destinationAccount,
+        this.sourceAccount
+      )
+      .then((result) => {
+        console.log('result', result);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      })
+      .finally(() => {
+        // Se rehabilita el botón para permitir más transferencias
+        this.transferForm.setErrors(null);
+      });
   }
 
   ngOnDestroy(): void {

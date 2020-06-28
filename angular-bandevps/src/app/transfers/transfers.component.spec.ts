@@ -6,6 +6,8 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {environment} from '../../environments/environment';
 import {ReactiveFormsModule} from '@angular/forms';
+import {ToastrModule} from 'ngx-toastr';
+import {ModalModule} from 'ngx-bootstrap/modal';
 
 describe('TransfersComponent', () => {
   let component: TransfersComponent;
@@ -17,7 +19,9 @@ describe('TransfersComponent', () => {
         ReactiveFormsModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireAuthModule,
-        AngularFireDatabaseModule
+        AngularFireDatabaseModule,
+        ToastrModule.forRoot(),
+        ModalModule.forRoot()
       ],
       declarations: [TransfersComponent]
     }).compileComponents();

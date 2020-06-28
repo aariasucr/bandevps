@@ -1,8 +1,15 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
-import {BankAccountData, MovementInfo, CreditCardData} from './models';
+import {MovementInfo, UserData, DestinationBankAccountInfo, BankAccountInfo} from './models';
 import {DataSnapshot} from '@angular/fire/database/interfaces';
 import * as moment from 'moment';
+import {UserService} from './user.service';
+
+enum TransferError {
+  INVALID_AMOUNT,
+  INSUFFICIENT_FUNDS,
+  ERROR
+}
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +23,9 @@ export class BankService {
   private cardsDbPath = 'credit_cards';
   private cardsInfoDbPath = `${this.cardsDbPath}_${this.info}`;
   private cardsMovementsDbPath = `${this.cardsDbPath}_${this.movements}`;
+  private DOLLAR_EXCHANGE_RATE = 590;
 
-  constructor(private firebaseDatabase: AngularFireDatabase) {}
+  constructor(private firebaseDatabase: AngularFireDatabase, private userService: UserService) {}
 
   getBankAccountsFromFirebaseWithId(id: string) {
     return this.getBankEntitiesFromFirebaseWithId('BankAccountData', this.accountsDbPath, id);
@@ -147,6 +155,36 @@ export class BankService {
     });
   }
 
+  getDestinationBankAccountInfoFromFirebase(userId: string, accountId: string) {
+    return new Promise((resolve, reject) => {
+      const finalResult = {
+        userFullName: null,
+        currency: null
+      };
+
+      this.userService
+        .getUserDataFromFirebaseWithId(userId)
+        .then((result: UserData) => {
+          finalResult.userFullName = result.fullName;
+          return this.firebaseDatabase.database
+            .ref(this.accountsInfoDbPath)
+            .child(accountId)
+            .once('value');
+        })
+        .then((result) => {
+          if (!!result && !!result.val()) {
+            finalResult.currency = result.val().currency;
+            resolve(finalResult);
+          } else {
+            reject('INVALID_ACCOUNT_ID');
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
   getAccountMovementsFromFirebaseWithAccountIdAndDates(
     accountId: string,
     startTimestamp: number,
@@ -221,5 +259,56 @@ export class BankService {
     const first = cardNumber.slice(0, -4).replace(/\d/g, '*');
     const last = cardNumber.slice(-4);
     return `${first}${last}`;
+  }
+
+  getExchangeRate(from: string, to: string) {
+    if (from === 'USD' && to === 'CRC') {
+      return this.DOLLAR_EXCHANGE_RATE;
+    } else if (from === 'CRC' && to === 'USD') {
+      return 1 / this.DOLLAR_EXCHANGE_RATE;
+    }
+  }
+
+  processTransfer(
+    amountString: string,
+    transferDetail: string,
+    destinationAccount: DestinationBankAccountInfo,
+    sourceAccount: BankAccountInfo
+  ) {
+    return new Promise((resolve, reject) => {
+      // Paso 1: Verificar que el monto se pueda parsear a float y que no sea negativo o igual a cero
+      const parsedAmount = Number.parseFloat(amountString);
+      if (Number.isNaN(parsedAmount) || parsedAmount <= 0) {
+        reject(TransferError.INVALID_AMOUNT);
+      }
+      const calculatedCreditAmount = Number.parseFloat(parsedAmount.toFixed(2));
+
+      // Paso 2: Convertir el monto de la transferencia a la moneda de la cuenta de origen. Eso es el monto del debito
+      const conversionFactor =
+        destinationAccount.currency === sourceAccount.currency
+          ? 1
+          : this.getExchangeRate(destinationAccount.currency, sourceAccount.currency);
+      const calculatedDebitAmount = Number.parseFloat((parsedAmount * conversionFactor).toFixed(2));
+
+      // Paso 3: Verificar que el monto calculado no excede el saldo de la cuenta de origen
+      if (calculatedDebitAmount > sourceAccount.balance) {
+        reject(TransferError.INSUFFICIENT_FUNDS);
+      }
+
+      // Paso 4: Procesar la transferencia
+
+      console.log('id cuenta origen', sourceAccount.number);
+      console.log('número cuenta origen', sourceAccount.number);
+      console.log('moneda cuenta origen', sourceAccount.currency);
+      console.log('saldo cuenta origen', sourceAccount.balance);
+      console.log('monto quitar a cuenta origen', calculatedDebitAmount);
+      console.log('id cuenta destino', destinationAccount.number);
+      console.log('número cuenta destino', destinationAccount.number);
+      console.log('moneda cuenta destino', destinationAccount.currency);
+      console.log('monto poner en cuenta destino', calculatedCreditAmount);
+      console.log('detalle transferencia', transferDetail);
+
+      resolve(true);
+    });
   }
 }
