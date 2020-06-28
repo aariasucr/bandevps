@@ -13,7 +13,7 @@ import {BankService} from '../shared/bank.service';
 import {EventEmitter} from '@angular/core';
 import {By} from '@angular/platform-browser';
 
-fdescribe('TransfersComponent', () => {
+describe('TransfersComponent', () => {
   let component: TransfersComponent;
   let fixture: ComponentFixture<TransfersComponent>;
 

@@ -26,7 +26,11 @@
               (change)="changeSelectedAccount($event)"
             >
               <option value="">Seleccione una cuenta</option>
-              <option *ngFor="let account of this.accounts | async" [ngValue]="account">
+              <option
+                *ngFor="let account of this.accounts | async"
+                [ngValue]="account"
+                class="accountOption"
+              >
                 {{ account.display }}
               </option>
             </select>
