@@ -28,7 +28,7 @@ export const routes: Routes = [
   {path: 'cards', component: CardsComponent, canActivate: [RouteGuard]},
   {path: 'formInsurances', component: FormInsurancesComponent, canActivate: [RouteGuard]},
   {path: 'aboutUs', component: AboutUsComponent},
-  {path: 'ubicaciones', component: UbicacionesComponent},
+  {path: 'ubicaciones', component: UbicacionesComponent, canActivate: [RouteGuard]},
   {
     path: 'resetPassword',
     component: ResetPasswordRequestComponent,

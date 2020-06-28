@@ -1,17 +1,36 @@
-<google-map
+<br />
+<h1>Ubicaciones</h1>
+<br />
+<div class="container">
+
+  <google-map
   height="400px"
   width="750px"
   [center]="center"
   [zoom]="zoom"
   (mapMousemove)="move($event)"
-
 >
   <map-marker
     #marker
     *ngFor="let markerPosition of markerPositions"
     [position]="markerPosition"
     [options]="markerOptions"
-    (mapClick)="openInfoWindow(marker)"
+    (mapClick)="openModal(template, marker)"
   ></map-marker>
   <map-info-window>Info Window content</map-info-window>
 </google-map>
+</div>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Información</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Teléfono: {{ phone }}</p>
+    <p>Ubicación: {{ descripcion }}</p>
+  </div>
+</ng-template>
