@@ -55,7 +55,7 @@
             </p>
             <h5 class="card-title">Saldo</h5>
             <p class="card-text text-right">
-              {{ this.account.balance }}
+              {{ this.account.balance | number: '1.2':'en' }}
             </p>
           </div>
         </div>
@@ -128,5 +128,7 @@
         </div>
       </div>
     </div>
+
+    <br />
   </div>
 </div>

@@ -57,11 +57,11 @@
             <p class="card-text text-right">USD</p>
             <h5 class="card-title">Límite</h5>
             <p class="card-text text-right">
-              {{ this.card.limit_usd }}
+              {{ this.card.limit_usd | number: '1.2':'en' }}
             </p>
             <h5 class="card-title">Saldo</h5>
             <p class="card-text text-right">
-              {{ this.card.balance_usd }}
+              {{ this.card.balance_usd | number: '1.2':'en' }}
             </p>
           </div>
         </div>
@@ -134,5 +134,7 @@
         </div>
       </div>
     </div>
+
+    <br />
   </div>
 </div>

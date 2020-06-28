@@ -6,6 +6,7 @@ import {BankService} from '../shared/bank.service';
 import {Subscription, Observable, of} from 'rxjs';
 import * as moment from 'moment';
 import {BsLocaleService} from 'ngx-bootstrap/datepicker';
+import {SpinnerService} from '../shared/spinner.service';
 
 @Component({
   selector: 'app-accounts',
@@ -29,7 +30,8 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
     private userService: UserService,
     private bankService: BankService,
     private cdRef: ChangeDetectorRef,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    private spinnerService: SpinnerService
   ) {}
 
   ngOnInit() {
@@ -44,7 +46,7 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
             this.accounts = of(result).pipe();
           })
           .catch((error) => {
-            console.log('error', error);
+            // console.log('error', error);
           });
       }
     });
@@ -69,8 +71,7 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
       const accountNumber = this.accountSelectionForm.get('selectedAccount').value.number;
       this.isAccountSet = true;
 
-      console.log(accountId);
-      console.log(accountNumber);
+      this.spinnerService.showMainSpinner();
 
       this.bankService
         .getBankAccountInfoFromFirebaseWithAccountId(accountId)
@@ -79,14 +80,18 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
             id: accountId,
             number: accountNumber,
             currency: result.currency,
-            balance: result.balance
+            balance: result.balance,
+            balanceRef: result.balanceRef
           };
           this.isAccountInfoSet = true;
           this.accountMovementsForm.reset();
           this.showAccountMovementsResults = false;
         })
         .catch((error) => {
-          console.log('error', error);
+          // console.log('error', error);
+        })
+        .finally(() => {
+          this.spinnerService.hideMainSpinner();
         });
     } else {
       this.isAccountSet = false;
@@ -97,6 +102,8 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
     const dateRangeField = this.accountMovementsForm.get('dateRange').value;
     const startTimestamp = this.getDateTimestamp(dateRangeField[0], true);
     const endTimestamp = this.getDateTimestamp(dateRangeField[1], false);
+
+    this.spinnerService.showMainSpinner();
 
     this.bankService
       .getAccountMovementsFromFirebaseWithAccountIdAndDates(
@@ -111,9 +118,10 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
       .catch((error) => {
         this.accountMovements = [];
         this.accountHasMovements = false;
-        console.log('error', error);
+        // console.log('error', error);
       })
       .finally(() => {
+        this.spinnerService.hideMainSpinner();
         this.showAccountMovementsResults = true;
       });
   }
