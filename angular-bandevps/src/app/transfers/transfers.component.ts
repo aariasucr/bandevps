@@ -6,10 +6,12 @@ import {
   BankAccountData,
   BankAccountInfo,
   DestinationBankAccountInfo,
-  BankAccountsTransfer
+  BankAccountsTransfer,
+  UserData
 } from '../shared/models';
 import {Observable, Subscription, of} from 'rxjs';
 import {NotificationService} from '../shared/notification.service';
+import {SpinnerService} from '../shared/spinner.service';
 
 enum TransferError {
   INVALID_AMOUNT,
@@ -19,7 +21,7 @@ enum TransferError {
 
 enum TransferModes {
   COMPLETING = 'completing',
-  VERIFIED = 'verified',
+  VERIFYING = 'verifying',
   CONFIRMED = 'confirmed'
 }
 
@@ -45,25 +47,30 @@ export class TransfersComponent implements OnInit, OnDestroy {
   isDestinationAccountInfoSet = false;
 
   transfer: BankAccountsTransfer;
+  transferDateTime: string;
+
+  userData: UserData;
 
   private userSubscription: Subscription = null;
 
   constructor(
     private userService: UserService,
     private bankService: BankService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private spinnerService: SpinnerService
   ) {}
 
   ngOnInit() {
     this.userSubscription = this.userService.statusChange.subscribe((userData) => {
       if (userData) {
+        this.userData = userData;
         this.bankService
           .getBankAccountsFromFirebaseWithId(userData.id)
           .then((result: BankAccountData[]) => {
             this.sourceAccounts = of(result).pipe();
           })
           .catch((error) => {
-            console.log('error', error);
+            // console.log('error', error);
           });
       }
     });
@@ -80,6 +87,8 @@ export class TransfersComponent implements OnInit, OnDestroy {
       amount: new FormControl(''),
       detail: new FormControl('')
     });
+
+    this.restartTransfer();
   }
 
   changeSelectedSourceAccount(event) {
@@ -89,13 +98,12 @@ export class TransfersComponent implements OnInit, OnDestroy {
       const accountNumber = this.sourceAccountSelectionForm.get('sourceAccount').value.number;
       this.isSourceAccountSet = true;
 
-      console.log(accountId);
-      console.log(accountNumber);
-
       this.destinationAccountSelectionForm.reset();
       this.isDestinationAccountSet = false;
       this.isDestinationAccountInfoSet = false;
       this.transferForm.reset();
+
+      this.spinnerService.showMainSpinner();
 
       this.bankService
         .getBankAccountInfoFromFirebaseWithAccountId(accountId, ['destinationAccounts'])
@@ -111,7 +119,10 @@ export class TransfersComponent implements OnInit, OnDestroy {
           this.isSourceAccountInfoSet = true;
         })
         .catch((error) => {
-          console.log('error', error);
+          // console.log('error', error);
+        })
+        .finally(() => {
+          this.spinnerService.hideMainSpinner();
         });
     } else {
       this.isSourceAccountSet = false;
@@ -121,21 +132,15 @@ export class TransfersComponent implements OnInit, OnDestroy {
   changeSelectedDestinationAccount(event) {
     const value = event.target.value;
     if (!!value) {
-      console.log(
-        'cuenta destino seleccionada',
-        this.destinationAccountSelectionForm.get('destinationAccount').value
-      );
       const accountId = this.destinationAccountSelectionForm.get('destinationAccount').value.id;
       const ownerId = this.destinationAccountSelectionForm.get('destinationAccount').value.userId;
       const accountNumber = this.destinationAccountSelectionForm.get('destinationAccount').value
         .number;
       this.isDestinationAccountSet = true;
 
-      console.log(accountId);
-      console.log(ownerId);
-      console.log(accountNumber);
-
       this.transferForm.reset();
+
+      this.spinnerService.showMainSpinner();
 
       this.bankService
         .getDestinationBankAccountInfoFromFirebase(ownerId, accountId)
@@ -151,7 +156,10 @@ export class TransfersComponent implements OnInit, OnDestroy {
           this.isDestinationAccountInfoSet = true;
         })
         .catch((error) => {
-          console.log('error', error);
+          // console.log('error', error);
+        })
+        .finally(() => {
+          this.spinnerService.hideMainSpinner();
         });
     } else {
       this.isDestinationAccountSet = false;
@@ -161,7 +169,7 @@ export class TransfersComponent implements OnInit, OnDestroy {
   verifyTransfer() {
     // Se deshabilita el botón para evitar una segunda transferencia mientras se realiza el procesamiento
     this.transferForm.setErrors({invalid: true});
-
+    this.spinnerService.showMainSpinner();
     this.bankService
       .verifyTransfer(
         this.transferForm.get('amount').value,
@@ -172,14 +180,27 @@ export class TransfersComponent implements OnInit, OnDestroy {
       .then((result: BankAccountsTransfer) => {
         console.log('result', result);
         this.transfer = result;
-        this.mode = TransferModes.VERIFIED;
+        this.mode = TransferModes.VERIFYING;
       })
       .catch((error) => {
-        console.log('error', error);
+        // console.log('error', error);
+        let errorMessage;
+        if (error === TransferError.INVALID_AMOUNT) {
+          errorMessage = 'El monto ingresado es inválido.';
+        } else if (error === TransferError.INSUFFICIENT_FUNDS) {
+          errorMessage = 'Los fondos de la cuenta son insuficientes.';
+        } else {
+          errorMessage = 'Ha ocurrido un error. Por favor verifique los datos e intente de nuevo.';
+        }
+        this.notificationService.showErrorMessage(
+          'Error al verificar la transferencia',
+          errorMessage
+        );
       })
       .finally(() => {
         // Se rehabilita el botón para permitir más transferencias
         this.transferForm.setErrors(null);
+        this.spinnerService.hideMainSpinner();
       });
   }
 
@@ -189,16 +210,89 @@ export class TransfersComponent implements OnInit, OnDestroy {
   }
 
   processTransfer() {
-    console.log('PROCESS');
-    this.mode = TransferModes.CONFIRMED;
+    this.spinnerService.showMainSpinner();
     this.bankService
       .processTransfer(this.transfer)
-      .then((result) => {
+      .then((result: string) => {
         console.log('result', result);
+        this.transferDateTime = result;
+        this.mode = TransferModes.CONFIRMED;
       })
       .catch((error) => {
-        console.log('error', error);
+        // console.log('error', error);
+        this.notificationService.showErrorMessage(
+          'Error al procesar la transferencia',
+          'Ha ocurrido un error. Por favor verifique los datos e intente de nuevo.'
+        );
+      })
+      .finally(() => {
+        this.spinnerService.hideMainSpinner();
       });
+  }
+
+  newTransfer() {
+    this.restartTransfer();
+  }
+
+  restartTransfer() {
+    this.mode = TransferModes.COMPLETING;
+    this.isSourceAccountSet = false;
+    this.isSourceAccountInfoSet = false;
+    this.isDestinationAccountSet = false;
+    this.isDestinationAccountInfoSet = false;
+    this.transfer = null;
+    this.transferDateTime = null;
+    this.sourceAccountSelectionForm.reset();
+    this.destinationAccountSelectionForm.reset();
+    this.transferForm.reset();
+  }
+
+  getTransferModeTitle() {
+    let title;
+    switch (this.mode) {
+      case TransferModes.COMPLETING:
+        title = 'Transferencia';
+        break;
+      case TransferModes.VERIFYING:
+        title = 'Verificación';
+        break;
+      case TransferModes.CONFIRMED:
+        title = 'Confirmación';
+        break;
+    }
+    return title;
+  }
+
+  getTransferModeText() {
+    let text;
+    switch (this.mode) {
+      case TransferModes.COMPLETING:
+        text = '';
+        break;
+      case TransferModes.VERIFYING:
+        text = 'Por favor verifique los datos y confirme la transferencia';
+        break;
+      case TransferModes.CONFIRMED:
+        text = 'La transferencia de fondos ha concluido satisfactoriamente';
+        break;
+    }
+    return text;
+  }
+
+  getTransferModeAmountText(credit) {
+    let text;
+    switch (this.mode) {
+      case TransferModes.COMPLETING:
+        text = '';
+        break;
+      case TransferModes.VERIFYING:
+        text = credit ? 'Monto que será transferido' : 'Monto que será debitado';
+        break;
+      case TransferModes.CONFIRMED:
+        text = credit ? 'Monto transferido' : 'Monto debitado';
+        break;
+    }
+    return text;
   }
 
   ngOnDestroy(): void {

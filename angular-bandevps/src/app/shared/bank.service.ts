@@ -149,8 +149,6 @@ export class BankService {
         .once('value')
         .then((result) => {
           if (!!result && !!result.val()) {
-            console.log(result);
-            console.log(result.val());
             if (bankEntityIsBankAccountInfo) {
               const bankAccountInfo = this.getBankAccountInfo(
                 bankEntityId,
@@ -247,7 +245,6 @@ export class BankService {
         .then((dataSnapshot: DataSnapshot) => {
           if (dataSnapshot.exists()) {
             const movementsJSON = dataSnapshot.toJSON();
-            console.log(movementsJSON);
             const movementsIds = Object.keys(dataSnapshot.exportVal());
             const movements: MovementInfo[] = movementsIds.map((movementId) => {
               return {
@@ -272,8 +269,10 @@ export class BankService {
     return isCredit ? 'Crédito' : 'Débito';
   }
 
-  formatDate(dateISOString: string) {
-    return moment(dateISOString).format('DD/MM/YYYY');
+  formatDate(dateISOString: string, isDateTime = false) {
+    return isDateTime
+      ? moment(dateISOString).format('DD/MM/YYYY HH:mm:ss')
+      : moment(dateISOString).format('DD/MM/YYYY');
   }
 
   formatCreditCardNumber(cardNumber: string) {
@@ -333,57 +332,46 @@ export class BankService {
     const date = momentDate.toISOString(true);
     const timestamp = momentDate.valueOf();
 
-    console.log('date', momentDate);
-    console.log('date ISO', date);
-    console.log('timestamp', timestamp);
-
     return new Promise((resolve, reject) => {
       this.getBankAccountInfoFromFirebaseWithAccountId(transfer.sourceAccount.id)
         .then((result: any) => {
           // Comparar saldo actual en cuenta de origen para verificar integridad de los datos que ya se tenían
           if (result.balance === transfer.sourceAccount.balance) {
-            console.log(transfer.sourceAccount.balanceRef);
             return transfer.sourceAccount.balanceRef.transaction((balance) => {
               const newBalance = balance - transfer.debitAmount;
               return newBalance;
             });
-
-            // return Promise.resolve(true);
           } else {
             reject(TransferError.ERROR);
           }
         })
         .then((result) => {
-          console.log('result', result);
+          // console.log('result', result);
           return transfer.destinationAccount.balanceRef.transaction((balance) => {
             const newBalance = balance + transfer.creditAmount;
             return newBalance;
           });
         })
         .then((result) => {
-          console.log('result', result);
-          const newCreditMovementKey = this.firebaseDatabase.database
-            .ref()
-            .child(`${this.accountsMovementsDbPath}/${transfer.destinationAccount.id}`)
-            .push().key;
-          const newDebitMovementKey = this.firebaseDatabase.database
-            .ref()
-            .child(`${this.accountsMovementsDbPath}/${transfer.sourceAccount.id}`)
-            .push().key;
-          const newCreditMovement = {
-            amount: transfer.creditAmount,
-            credit: true,
+          // console.log('result', result);
+          const newCreditMovementKey = this.getBankAccountMovementKey(
+            transfer.destinationAccount.id
+          );
+          const newDebitMovementKey = this.getBankAccountMovementKey(transfer.sourceAccount.id);
+          const newCreditMovement = this.prepareBankAccountMovement(
+            transfer.creditAmount,
+            true,
             date,
             timestamp,
-            detail: `${this.TRANSFER_DETAIL_PRE_MESSAGE} - ${transfer.detail}`
-          };
-          const newDebitMovement = {
-            amount: transfer.debitAmount,
-            credit: false,
+            transfer.detail
+          );
+          const newDebitMovement = this.prepareBankAccountMovement(
+            transfer.debitAmount,
+            false,
             date,
             timestamp,
-            detail: `${this.TRANSFER_DETAIL_PRE_MESSAGE} - ${transfer.detail}`
-          };
+            transfer.detail
+          );
           const updates = {};
           updates[
             `${this.accountsMovementsDbPath}/${transfer.destinationAccount.id}/${newCreditMovementKey}`
@@ -394,13 +382,36 @@ export class BankService {
           return this.firebaseDatabase.database.ref().update(updates);
         })
         .then((result) => {
-          console.log('result', result);
-          resolve(true);
+          // console.log('result', result);
+          resolve(this.formatDate(date, true));
         })
         .catch((error) => {
-          console.log('error', error);
+          // console.log('error', error);
           reject(TransferError.ERROR);
         });
     });
+  }
+
+  getBankAccountMovementKey(accountId) {
+    return this.firebaseDatabase.database
+      .ref()
+      .child(`${this.accountsMovementsDbPath}/${accountId}`)
+      .push().key;
+  }
+
+  prepareBankAccountMovement(
+    amount: number,
+    credit: boolean,
+    date: string,
+    timestamp: number,
+    detailPostMessage: string
+  ) {
+    return {
+      amount,
+      credit,
+      date,
+      timestamp,
+      detail: `${this.TRANSFER_DETAIL_PRE_MESSAGE} - ${detailPostMessage}`
+    };
   }
 }

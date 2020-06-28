@@ -6,6 +6,7 @@ import {UserService} from '../shared/user.service';
 import {BankService} from '../shared/bank.service';
 import {BsLocaleService} from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
+import {SpinnerService} from '../shared/spinner.service';
 
 @Component({
   selector: 'app-cards',
@@ -29,7 +30,8 @@ export class CardsComponent implements OnInit, OnDestroy, AfterContentChecked {
     private userService: UserService,
     private bankService: BankService,
     private cdRef: ChangeDetectorRef,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    private spinnerService: SpinnerService
   ) {}
 
   ngOnInit() {
@@ -44,7 +46,7 @@ export class CardsComponent implements OnInit, OnDestroy, AfterContentChecked {
             this.cards = of(result).pipe();
           })
           .catch((error) => {
-            console.log('error', error);
+            // console.log('error', error);
           });
       }
     });
@@ -76,6 +78,8 @@ export class CardsComponent implements OnInit, OnDestroy, AfterContentChecked {
       const cardDisplay = this.cardSelectionForm.get('selectedCard').value.display;
       this.isCardSet = true;
 
+      this.spinnerService.showMainSpinner();
+
       this.bankService
         .getCreditCardInfoFromFirebaseWithCardId(cardId)
         .then((result: any) => {
@@ -92,7 +96,10 @@ export class CardsComponent implements OnInit, OnDestroy, AfterContentChecked {
           this.showCardMovementsResults = false;
         })
         .catch((error) => {
-          console.log('error', error);
+          // console.log('error', error);
+        })
+        .finally(() => {
+          this.spinnerService.hideMainSpinner();
         });
     } else {
       this.isCardSet = false;
@@ -104,6 +111,8 @@ export class CardsComponent implements OnInit, OnDestroy, AfterContentChecked {
     const startTimestamp = this.getDateTimestamp(dateRangeField[0], true);
     const endTimestamp = this.getDateTimestamp(dateRangeField[1], false);
 
+    this.spinnerService.showMainSpinner();
+
     this.bankService
       .getCardMovementsFromFirebaseWithCardIdAndDates(this.card.id, startTimestamp, endTimestamp)
       .then((result: MovementInfo[]) => {
@@ -113,9 +122,10 @@ export class CardsComponent implements OnInit, OnDestroy, AfterContentChecked {
       .catch((error) => {
         this.cardMovements = [];
         this.cardHasMovements = false;
-        console.log('error', error);
+        // console.log('error', error);
       })
       .finally(() => {
+        this.spinnerService.hideMainSpinner();
         this.showCardMovementsResults = true;
       });
   }
