@@ -16,11 +16,11 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
 
   latValue = 9.951309;
   lngValue = -84.046914;
-
-
+  phone:String
+  descripcion:String
 
   center = {lat: this.latValue, lng: this.lngValue};
-  zoom = 8;
+  zoom = 10;
   display?: google.maps.LatLngLiteral;
   markerOptions = {draggable: false};
   markerPositions: google.maps.LatLngLiteral[] = [];
@@ -60,6 +60,19 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
   modalRef: BsModalRef;
 
   openModal(template: TemplateRef<any>,marker:MapMarker) {
+    var lat = marker.getPosition().lat();
+    var lng = marker.getPosition().lng();
+    console.log(lat,lng)
+    this.locationsSuscription=this.locationsService.getLocationsList().subscribe((result)=>{
+      console.log(result);
+      result.forEach((elemt)=>{
+        if(lat==elemt.post_latitude && lng==elemt.post_longitude){
+          this.descripcion=elemt.post_description
+          this.phone=elemt.phone
+        }
+
+      })
+      });
     this.modalRef = this.modalService.show(template);
   }
 }
