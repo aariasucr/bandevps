@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import {Component, OnInit, ViewChild, OnDestroy, TemplateRef} from '@angular/core';
 import {LocationsService} from '../shared/locations.service';
 import {Observable, Subscription} from 'rxjs';
 import {MapInfoWindow, MapMarker} from '@angular/google-maps';
-
+import { ModalModule, BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-ubicaciones',
@@ -25,7 +25,7 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
   markerOptions = {draggable: false};
   markerPositions: google.maps.LatLngLiteral[] = [];
   locationsSuscription:Subscription
-  constructor(private locationsService: LocationsService) {}
+  constructor(private locationsService: LocationsService,private modalService: BsModalService) {}
 
 
   ngOnInit() {
@@ -56,5 +56,10 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
 
   removeLastMarker() {
     this.markerPositions.pop();
+  }
+  modalRef: BsModalRef;
+
+  openModal(template: TemplateRef<any>,marker:MapMarker) {
+    this.modalRef = this.modalService.show(template);
   }
 }
