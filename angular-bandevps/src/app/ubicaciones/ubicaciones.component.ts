@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {LocationsService} from '../shared/locations.service';
 import {Observable, Subscription} from 'rxjs';
 import {MapInfoWindow, MapMarker} from '@angular/google-maps';
-import { async } from '@angular/core/testing';
+
 
 @Component({
   selector: 'app-ubicaciones',
@@ -17,26 +17,7 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
   latValue = 9.951309;
   lngValue = -84.046914;
 
-  positions = [
-    {
-      post_country: 'Vietnam',
-      post_latitude: 10.4452129,
-      post_longitude: 106.4729811,
-      post_description: 'lorem '
-    },
-    {
-      post_country: 'Kyrgyzstan',
-      post_latitude: 41.1694718,
-      post_longitude: 75.8098141,
-      post_description: 'lorem '
-    },
-    {
-      post_country: 'China',
-      post_latitude: 34.2456501,
-      post_longitude: 108.9877602,
-      post_description: 'lorem '
-    }
-  ];
+
 
   center = {lat: this.latValue, lng: this.lngValue};
   zoom = 8;
