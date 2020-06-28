@@ -111,14 +111,18 @@ describe('CardsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  const getCardOptions = () => {
+    return fixture.debugElement.queryAll(By.css('.cardOption'));
+  };
+
   it('should load cards in card form field', fakeAsync(() => {
     mockUserService.statusChange.emit(mockUserData);
-    let selectOptions = fixture.debugElement.queryAll(By.css('.cardOption'));
-    expect(selectOptions).toEqual(Array());
+    let selectCardOptions = getCardOptions();
+    expect(selectCardOptions).toEqual(Array());
     tick();
     fixture.detectChanges();
-    selectOptions = fixture.debugElement.queryAll(By.css('.cardOption'));
-    expect(selectOptions).not.toEqual(Array());
+    selectCardOptions = getCardOptions();
+    expect(selectCardOptions).not.toEqual(Array());
   }));
 
   it('should detect card selection in card form field', fakeAsync(() => {

@@ -12,7 +12,7 @@ import {Component, Input, EventEmitter} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {UserService} from '../shared/user.service';
 import {BankService} from '../shared/bank.service';
-import { SpinnerService } from '../shared/spinner.service';
+import {SpinnerService} from '../shared/spinner.service';
 
 @Component({
   selector: 'app-movements',
@@ -113,14 +113,18 @@ describe('AccountsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  const getAccountOptions = () => {
+    return fixture.debugElement.queryAll(By.css('.accountOption'));
+  };
+
   it('should load accounts in account form field', fakeAsync(() => {
     mockUserService.statusChange.emit(mockUserData);
-    let selectOptions = fixture.debugElement.queryAll(By.css('.accountOption'));
-    expect(selectOptions).toEqual(Array());
+    let selectAccountOptions = getAccountOptions();
+    expect(selectAccountOptions).toEqual(Array());
     tick();
     fixture.detectChanges();
-    selectOptions = fixture.debugElement.queryAll(By.css('.accountOption'));
-    expect(selectOptions).not.toEqual(Array());
+    selectAccountOptions = getAccountOptions();
+    expect(selectAccountOptions).not.toEqual(Array());
   }));
 
   it('should detect account selection in account form field', fakeAsync(() => {

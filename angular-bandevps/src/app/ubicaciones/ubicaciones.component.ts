@@ -46,8 +46,4 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
   openInfoWindow(marker: MapMarker) {
     this.infoWindow.open(marker);
   }
-
-  removeLastMarker() {
-    this.markerPositions.pop();
-  }
 }
