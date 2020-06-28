@@ -31,6 +31,7 @@ export interface BankAccountInfo {
   number: string;
   currency: string;
   balance: number;
+  balanceRef: firebase.database.Reference;
 }
 
 export interface DestinationBankAccountInfo {
@@ -39,6 +40,7 @@ export interface DestinationBankAccountInfo {
   userFullName: string;
   number: string;
   currency: string;
+  balanceRef: firebase.database.Reference;
 }
 
 export interface CreditCardInfo {
@@ -55,4 +57,12 @@ export interface MovementInfo {
   type: string;
   detail: string;
   amount: number;
+}
+
+export interface BankAccountsTransfer {
+  sourceAccount: BankAccountInfo;
+  destinationAccount: DestinationBankAccountInfo;
+  creditAmount: number;
+  debitAmount: number;
+  detail: string;
 }

@@ -12,159 +12,214 @@
   <div class="row">
     <div class="col-md-2 col-sm-1"></div>
     <div class="col-md-8 col-sm-10">
-      <form [formGroup]="sourceAccountSelectionForm">
-        <div class="row">
-          <div class="col-4">
-            <label for="cuenta origen">Cuenta origen</label>
-          </div>
+      <ng-container [ngSwitch]="mode">
+        <ng-container *ngSwitchCase="'completing'">
+          <form [formGroup]="sourceAccountSelectionForm">
+            <div class="row">
+              <div class="col-4">
+                <label for="cuenta origen">Cuenta origen</label>
+              </div>
 
-          <div class="col-8">
-            <select
-              formControlName="sourceAccount"
-              id="cuenta origen"
-              name="sourceAccount"
-              (change)="changeSelectedSourceAccount($event)"
-            >
-              <option value="">Seleccione una cuenta</option>
-              <option
-                *ngFor="let sourceAccount of this.sourceAccounts | async"
-                [ngValue]="sourceAccount"
-              >
-                {{ sourceAccount.display }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <br />
-
-  <div *ngIf="this.isSourceAccountSet && this.isSourceAccountInfoSet">
-    <div class="row">
-      <div class="col-md-2 col-sm-1"></div>
-      <div class="col-md-8 col-sm-10">
-        <div class="card">
-          <h5 class="card-header">Información de cuenta origen</h5>
-          <div class="card-body">
-            <h5 class="card-title">Número</h5>
-            <p class="card-text text-right">
-              {{ this.sourceAccount.number }}
-            </p>
-            <h5 class="card-title">Moneda</h5>
-            <p class="card-text text-right">
-              {{ this.sourceAccount.currency }}
-            </p>
-            <h5 class="card-title">Saldo</h5>
-            <p class="card-text text-right">
-              {{ this.sourceAccount.balance | number: '1.2':'en' }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <br />
-
-    <div class="row">
-      <div class="col-md-2 col-sm-1"></div>
-      <div class="col-md-8 col-sm-10">
-        <div class="card">
-          <h5 class="card-header">Transferencia</h5>
-          <div class="card-body">
-            <form [formGroup]="destinationAccountSelectionForm">
-              <div class="row">
-                <div class="col-4">
-                  <label for="cuenta destino">Cuenta destino</label>
-                </div>
-
-                <div class="col-8">
-                  <select
-                    formControlName="destinationAccount"
-                    id="cuenta destino"
-                    name="destinationAccount"
-                    (change)="changeSelectedDestinationAccount($event)"
+              <div class="col-8">
+                <select
+                  formControlName="sourceAccount"
+                  id="cuenta origen"
+                  name="sourceAccount"
+                  (change)="changeSelectedSourceAccount($event)"
+                >
+                  <option value="">Seleccione una cuenta</option>
+                  <option
+                    *ngFor="let sourceAccount of this.sourceAccounts | async"
+                    [ngValue]="sourceAccount"
                   >
-                    <option value="">Seleccione una cuenta</option>
-                    <option
-                      *ngFor="let destinationAccount of this.destinationAccounts | async"
-                      [ngValue]="destinationAccount"
-                    >
-                      {{ destinationAccount.display }}
-                    </option>
-                  </select>
+                    {{ sourceAccount.display }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </form>
+          <div *ngIf="this.isSourceAccountSet && this.isSourceAccountInfoSet">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <h5 class="card-header">Información de cuenta origen</h5>
+                  <div class="card-body">
+                    <h5 class="card-title">Número</h5>
+                    <p class="card-text text-right">
+                      {{ this.sourceAccount.number }}
+                    </p>
+                    <h5 class="card-title">Moneda</h5>
+                    <p class="card-text text-right">
+                      {{ this.sourceAccount.currency }}
+                    </p>
+                    <h5 class="card-title">Saldo</h5>
+                    <p class="card-text text-right">
+                      {{ this.sourceAccount.balance | number: '1.2':'en' }}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </form>
-
-            <br />
-
-            <div *ngIf="this.isDestinationAccountSet && this.isDestinationAccountInfoSet">
-              <h5 class="card-title">Identificación del propietario</h5>
-              <p class="card-text text-right">
-                {{ this.destinationAccount.userId }}
-              </p>
-              <h5 class="card-title">Nombre del propietario</h5>
-              <p class="card-text text-right">
-                {{ this.destinationAccount.userFullName }}
-              </p>
-              <h5 class="card-title">Moneda</h5>
-              <p class="card-text text-right">
-                {{ this.destinationAccount.currency }}
-              </p>
-
-              <form [formGroup]="transferForm" (ngSubmit)="onSubmitTransferForm()">
-                <div class="row">
-                  <div class="col-4">
-                    <label for="monto">Monto</label>
-                  </div>
-
-                  <div class="col-8">
-                    <input
-                      class="form-control"
-                      formControlName="amount"
-                      id="monto"
-                      name="amount"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <br />
-
-                <div class="row">
-                  <div class="col-4">
-                    <label for="detalle">Detalle</label>
-                  </div>
-
-                  <div class="col-8">
-                    <input
-                      class="form-control"
-                      formControlName="detail"
-                      id="detalle"
-                      name="detail"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <br />
-
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary" [disabled]="transferForm.invalid">
-                    Verificar
-                  </button>
-                </div>
-              </form>
             </div>
 
             <br />
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <br />
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <h5 class="card-header">Transferencia</h5>
+                  <div class="card-body">
+                    <form [formGroup]="destinationAccountSelectionForm">
+                      <div class="row">
+                        <div class="col-4">
+                          <label for="cuenta destino">Cuenta destino</label>
+                        </div>
+
+                        <div class="col-8">
+                          <select
+                            formControlName="destinationAccount"
+                            id="cuenta destino"
+                            name="destinationAccount"
+                            (change)="changeSelectedDestinationAccount($event)"
+                          >
+                            <option value="">Seleccione una cuenta</option>
+                            <option
+                              *ngFor="let destinationAccount of this.destinationAccounts | async"
+                              [ngValue]="destinationAccount"
+                            >
+                              {{ destinationAccount.display }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </form>
+
+                    <br />
+
+                    <div *ngIf="this.isDestinationAccountSet && this.isDestinationAccountInfoSet">
+                      <h5 class="card-title">Identificación del propietario</h5>
+                      <p class="card-text text-right">
+                        {{ this.destinationAccount.userId }}
+                      </p>
+                      <h5 class="card-title">Nombre del propietario</h5>
+                      <p class="card-text text-right">
+                        {{ this.destinationAccount.userFullName }}
+                      </p>
+                      <h5 class="card-title">Moneda</h5>
+                      <p class="card-text text-right">
+                        {{ this.destinationAccount.currency }}
+                      </p>
+
+                      <form [formGroup]="transferForm" (ngSubmit)="verifyTransfer()">
+                        <div class="row">
+                          <div class="col-4">
+                            <label for="monto">Monto</label>
+                          </div>
+
+                          <div class="col-8">
+                            <input
+                              class="form-control"
+                              formControlName="amount"
+                              id="monto"
+                              name="amount"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                          <div class="col-4">
+                            <label for="detalle">Detalle</label>
+                          </div>
+
+                          <div class="col-8">
+                            <input
+                              class="form-control"
+                              formControlName="detail"
+                              id="detalle"
+                              name="detail"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <br />
+
+                        <div class="text-center">
+                          <button
+                            type="submit"
+                            class="btn btn-primary"
+                            [disabled]="transferForm.invalid"
+                          >
+                            Verificar
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'verified'">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <h5 class="card-header">Verificación</h5>
+                <div class="card-body">
+                  <h5 class="card-title">Cuenta origen</h5>
+                  <p class="card-text text-right">
+                    {{ this.transfer.sourceAccount.number }}
+                  </p>
+                  <h5 class="card-title">Identificación del propietario de la cuenta destino</h5>
+                  <p class="card-text text-right">
+                    {{ this.transfer.destinationAccount.userId }}
+                  </p>
+                  <h5 class="card-title">Nombre del propietario de la cuenta destino</h5>
+                  <p class="card-text text-right">
+                    {{ this.transfer.destinationAccount.userFullName }}
+                  </p>
+                  <h5 class="card-title">Cuenta destino</h5>
+                  <p class="card-text text-right">
+                    {{ this.transfer.destinationAccount.number }}
+                  </p>
+                  <h5 class="card-title">Moneda</h5>
+                  <p class="card-text text-right">
+                    {{ this.transfer.destinationAccount.currency }}
+                  </p>
+                  <h5 class="card-title">Monto</h5>
+                  <p class="card-text text-right">
+                    {{ this.transfer.creditAmount | number: '1.2':'en' }}
+                  </p>
+                  <h5 class="card-title">Detalle</h5>
+                  <p class="card-text text-right">
+                    {{ this.transfer.detail }}
+                  </p>
+
+                  <div class="btn-toolbar justify-content-between">
+                    <div class="btn-group" role="group">
+                      <button type="button" class="btn btn-danger" (click)="returnToTransferForm()">
+                        Corregir
+                      </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                      <button type="button" class="btn btn-success" (click)="processTransfer()">
+                        Confirmar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'confirmed'"> </ng-container>
+      </ng-container>
+    </div>
   </div>
+  <br />
 </div>

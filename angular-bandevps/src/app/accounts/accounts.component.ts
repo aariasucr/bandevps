@@ -79,7 +79,8 @@ export class AccountsComponent implements OnInit, OnDestroy, AfterContentChecked
             id: accountId,
             number: accountNumber,
             currency: result.currency,
-            balance: result.balance
+            balance: result.balance,
+            balanceRef: result.balanceRef
           };
           this.isAccountInfoSet = true;
           this.accountMovementsForm.reset();

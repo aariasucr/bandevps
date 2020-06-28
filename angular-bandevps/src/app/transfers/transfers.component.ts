@@ -2,7 +2,12 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {UserService} from '../shared/user.service';
 import {BankService} from '../shared/bank.service';
 import {FormGroup, FormControl} from '@angular/forms';
-import {BankAccountData, BankAccountInfo, DestinationBankAccountInfo  } from '../shared/models';
+import {
+  BankAccountData,
+  BankAccountInfo,
+  DestinationBankAccountInfo,
+  BankAccountsTransfer
+} from '../shared/models';
 import {Observable, Subscription, of} from 'rxjs';
 import {NotificationService} from '../shared/notification.service';
 
@@ -10,6 +15,12 @@ enum TransferError {
   INVALID_AMOUNT,
   INSUFFICIENT_FUNDS,
   ERROR
+}
+
+enum TransferModes {
+  COMPLETING = 'completing',
+  VERIFIED = 'verified',
+  CONFIRMED = 'confirmed'
 }
 
 @Component({
@@ -21,6 +32,7 @@ export class TransfersComponent implements OnInit, OnDestroy {
   sourceAccountSelectionForm: FormGroup;
   destinationAccountSelectionForm: FormGroup;
   transferForm: FormGroup;
+  mode = TransferModes.COMPLETING;
 
   sourceAccounts: Observable<BankAccountData[]>;
   sourceAccount: BankAccountInfo;
@@ -31,6 +43,8 @@ export class TransfersComponent implements OnInit, OnDestroy {
   destinationAccount: DestinationBankAccountInfo;
   isDestinationAccountSet = false;
   isDestinationAccountInfoSet = false;
+
+  transfer: BankAccountsTransfer;
 
   private userSubscription: Subscription = null;
 
@@ -90,7 +104,8 @@ export class TransfersComponent implements OnInit, OnDestroy {
             id: accountId,
             number: accountNumber,
             currency: result.currency,
-            balance: result.balance
+            balance: result.balance,
+            balanceRef: result.balanceRef
           };
           this.destinationAccounts = of(result.destinationAccounts).pipe();
           this.isSourceAccountInfoSet = true;
@@ -130,7 +145,8 @@ export class TransfersComponent implements OnInit, OnDestroy {
             userId: ownerId,
             userFullName: result.userFullName,
             number: accountNumber,
-            currency: result.currency
+            currency: result.currency,
+            balanceRef: result.balanceRef
           };
           this.isDestinationAccountInfoSet = true;
         })
@@ -142,19 +158,21 @@ export class TransfersComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmitTransferForm() {
+  verifyTransfer() {
     // Se deshabilita el botón para evitar una segunda transferencia mientras se realiza el procesamiento
     this.transferForm.setErrors({invalid: true});
 
     this.bankService
-      .processTransfer(
+      .verifyTransfer(
         this.transferForm.get('amount').value,
         this.transferForm.get('detail').value,
         this.destinationAccount,
         this.sourceAccount
       )
-      .then((result) => {
+      .then((result: BankAccountsTransfer) => {
         console.log('result', result);
+        this.transfer = result;
+        this.mode = TransferModes.VERIFIED;
       })
       .catch((error) => {
         console.log('error', error);
@@ -162,6 +180,24 @@ export class TransfersComponent implements OnInit, OnDestroy {
       .finally(() => {
         // Se rehabilita el botón para permitir más transferencias
         this.transferForm.setErrors(null);
+      });
+  }
+
+  returnToTransferForm() {
+    this.transfer = null;
+    this.mode = TransferModes.COMPLETING;
+  }
+
+  processTransfer() {
+    console.log('PROCESS');
+    this.mode = TransferModes.CONFIRMED;
+    this.bankService
+      .processTransfer(this.transfer)
+      .then((result) => {
+        console.log('result', result);
+      })
+      .catch((error) => {
+        console.log('error', error);
       });
   }
 

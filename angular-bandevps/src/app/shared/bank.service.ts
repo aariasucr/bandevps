@@ -1,6 +1,12 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
-import {MovementInfo, UserData, DestinationBankAccountInfo, BankAccountInfo} from './models';
+import {
+  MovementInfo,
+  UserData,
+  DestinationBankAccountInfo,
+  BankAccountInfo,
+  BankAccountsTransfer
+} from './models';
 import {DataSnapshot} from '@angular/fire/database/interfaces';
 import * as moment from 'moment';
 import {UserService} from './user.service';
@@ -24,6 +30,7 @@ export class BankService {
   private cardsInfoDbPath = `${this.cardsDbPath}_${this.info}`;
   private cardsMovementsDbPath = `${this.cardsDbPath}_${this.movements}`;
   private DOLLAR_EXCHANGE_RATE = 590;
+  private TRANSFER_DETAIL_PRE_MESSAGE = 'TRANSFERENCIAS IRON BANK ONLINE';
 
   constructor(private firebaseDatabase: AngularFireDatabase, private userService: UserService) {}
 
@@ -78,12 +85,12 @@ export class BankService {
     });
   }
 
-  getBankAccountInfo(bankAccountValue, optionalAttributes) {
+  getBankAccountInfo(accountId, accountValue, optionalAttributes) {
     if (Array.isArray(optionalAttributes) && optionalAttributes.length) {
       if (optionalAttributes.includes('destinationAccounts')) {
         let destinationAccounts = [];
-        if ('destination_accounts' in bankAccountValue) {
-          const rawDestinationAccounts = bankAccountValue.destination_accounts;
+        if ('destination_accounts' in accountValue) {
+          const rawDestinationAccounts = accountValue.destination_accounts;
           const destinationAccountsIds = Object.keys(rawDestinationAccounts);
           destinationAccounts = destinationAccountsIds.map((destinationAccountId) => {
             return {
@@ -94,12 +101,15 @@ export class BankService {
             };
           });
         }
-        bankAccountValue.destinationAccounts = destinationAccounts;
-        return bankAccountValue;
+        accountValue.destinationAccounts = destinationAccounts;
+        accountValue.balanceRef = this.firebaseDatabase.database.ref(
+          `${this.accountsInfoDbPath}/${accountId}/balance`
+        );
+        return accountValue;
       }
     }
 
-    return bankAccountValue;
+    return accountValue;
   }
 
   getBankAccountInfoFromFirebaseWithAccountId(
@@ -139,8 +149,14 @@ export class BankService {
         .once('value')
         .then((result) => {
           if (!!result && !!result.val()) {
+            console.log(result);
+            console.log(result.val());
             if (bankEntityIsBankAccountInfo) {
-              const bankAccountInfo = this.getBankAccountInfo(result.val(), optionalAttributes);
+              const bankAccountInfo = this.getBankAccountInfo(
+                bankEntityId,
+                result.val(),
+                optionalAttributes
+              );
               resolve(bankAccountInfo);
             } else {
               resolve(result.val());
@@ -159,7 +175,8 @@ export class BankService {
     return new Promise((resolve, reject) => {
       const finalResult = {
         userFullName: null,
-        currency: null
+        currency: null,
+        balanceRef: null
       };
 
       this.userService
@@ -174,6 +191,9 @@ export class BankService {
         .then((result) => {
           if (!!result && !!result.val()) {
             finalResult.currency = result.val().currency;
+            finalResult.balanceRef = this.firebaseDatabase.database.ref(
+              `${this.accountsInfoDbPath}/${accountId}/balance`
+            );
             resolve(finalResult);
           } else {
             reject('INVALID_ACCOUNT_ID');
@@ -227,6 +247,7 @@ export class BankService {
         .then((dataSnapshot: DataSnapshot) => {
           if (dataSnapshot.exists()) {
             const movementsJSON = dataSnapshot.toJSON();
+            console.log(movementsJSON);
             const movementsIds = Object.keys(dataSnapshot.exportVal());
             const movements: MovementInfo[] = movementsIds.map((movementId) => {
               return {
@@ -269,7 +290,7 @@ export class BankService {
     }
   }
 
-  processTransfer(
+  verifyTransfer(
     amountString: string,
     transferDetail: string,
     destinationAccount: DestinationBankAccountInfo,
@@ -295,20 +316,91 @@ export class BankService {
         reject(TransferError.INSUFFICIENT_FUNDS);
       }
 
-      // Paso 4: Procesar la transferencia
+      // Paso 4: Devolver la transferencia
+      const transfer: BankAccountsTransfer = {
+        sourceAccount,
+        destinationAccount,
+        creditAmount: calculatedCreditAmount,
+        debitAmount: calculatedDebitAmount,
+        detail: transferDetail
+      };
+      resolve(transfer);
+    });
+  }
 
-      console.log('id cuenta origen', sourceAccount.number);
-      console.log('número cuenta origen', sourceAccount.number);
-      console.log('moneda cuenta origen', sourceAccount.currency);
-      console.log('saldo cuenta origen', sourceAccount.balance);
-      console.log('monto quitar a cuenta origen', calculatedDebitAmount);
-      console.log('id cuenta destino', destinationAccount.number);
-      console.log('número cuenta destino', destinationAccount.number);
-      console.log('moneda cuenta destino', destinationAccount.currency);
-      console.log('monto poner en cuenta destino', calculatedCreditAmount);
-      console.log('detalle transferencia', transferDetail);
+  processTransfer(transfer: BankAccountsTransfer) {
+    const momentDate = moment();
+    const date = momentDate.toISOString(true);
+    const timestamp = momentDate.valueOf();
 
-      resolve(true);
+    console.log('date', momentDate);
+    console.log('date ISO', date);
+    console.log('timestamp', timestamp);
+
+    return new Promise((resolve, reject) => {
+      this.getBankAccountInfoFromFirebaseWithAccountId(transfer.sourceAccount.id)
+        .then((result: any) => {
+          // Comparar saldo actual en cuenta de origen para verificar integridad de los datos que ya se tenían
+          if (result.balance === transfer.sourceAccount.balance) {
+            console.log(transfer.sourceAccount.balanceRef);
+            return transfer.sourceAccount.balanceRef.transaction((balance) => {
+              const newBalance = balance - transfer.debitAmount;
+              return newBalance;
+            });
+
+            // return Promise.resolve(true);
+          } else {
+            reject(TransferError.ERROR);
+          }
+        })
+        .then((result) => {
+          console.log('result', result);
+          return transfer.destinationAccount.balanceRef.transaction((balance) => {
+            const newBalance = balance + transfer.creditAmount;
+            return newBalance;
+          });
+        })
+        .then((result) => {
+          console.log('result', result);
+          const newCreditMovementKey = this.firebaseDatabase.database
+            .ref()
+            .child(`${this.accountsMovementsDbPath}/${transfer.destinationAccount.id}`)
+            .push().key;
+          const newDebitMovementKey = this.firebaseDatabase.database
+            .ref()
+            .child(`${this.accountsMovementsDbPath}/${transfer.sourceAccount.id}`)
+            .push().key;
+          const newCreditMovement = {
+            amount: transfer.creditAmount,
+            credit: true,
+            date,
+            timestamp,
+            detail: `${this.TRANSFER_DETAIL_PRE_MESSAGE} - ${transfer.detail}`
+          };
+          const newDebitMovement = {
+            amount: transfer.debitAmount,
+            credit: false,
+            date,
+            timestamp,
+            detail: `${this.TRANSFER_DETAIL_PRE_MESSAGE} - ${transfer.detail}`
+          };
+          const updates = {};
+          updates[
+            `${this.accountsMovementsDbPath}/${transfer.destinationAccount.id}/${newCreditMovementKey}`
+          ] = newCreditMovement;
+          updates[
+            `${this.accountsMovementsDbPath}/${transfer.sourceAccount.id}/${newDebitMovementKey}`
+          ] = newDebitMovement;
+          return this.firebaseDatabase.database.ref().update(updates);
+        })
+        .then((result) => {
+          console.log('result', result);
+          resolve(true);
+        })
+        .catch((error) => {
+          console.log('error', error);
+          reject(TransferError.ERROR);
+        });
     });
   }
 }
