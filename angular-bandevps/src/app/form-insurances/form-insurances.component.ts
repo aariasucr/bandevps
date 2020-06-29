@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators, FormBuilder} from '@angular/forms';
 import {AngularFireDatabase} from '@angular/fire/database';
+import {UserService} from '../shared/user.service';
+import {Subscription} from 'rxjs';
 @Component({
   selector: 'app-form-insurances',
   templateUrl: './form-insurances.component.html',
@@ -18,11 +20,18 @@ export class FormInsurancesComponent implements OnInit {
 
   insurances: string[] = ['Viajero', 'Medico', 'Vida'];
 
+  private userSubscription: Subscription = null;
+  private userId: string;
+
   registrationForm = this.fb.group({
     ins: ['', [Validators.required]]
   });
 
-  constructor(public fb: FormBuilder, private af: AngularFireDatabase) {
+  constructor(
+    public fb: FormBuilder,
+    private af: AngularFireDatabase,
+    private userService: UserService
+  ) {
     this.contactForm = this.createFormTrav();
   }
 
@@ -42,7 +51,13 @@ export class FormInsurancesComponent implements OnInit {
     this.contactForm.reset();
   }
   onSaveForm() {}
-  ngOnInit() {}
+  ngOnInit() {
+    this.userSubscription = this.userService.statusChange.subscribe((userData) => {
+      if (userData) {
+        this.userId = userData.id;
+      }
+    });
+  }
 
   // Choose city using select dropdown
   changeCity(e) {
@@ -95,7 +110,7 @@ export class FormInsurancesComponent implements OnInit {
         <div>Message: ${datos.message}</div>
       `;
       const formRequest = {datos, date, html};
-      this.af.list('/messages').push(formRequest);
+      this.af.list(`/messages/${this.userId}`).push(formRequest);
       this.registrationForm.reset();
     } else {
       if (this.seguroMedico === true) {
@@ -112,7 +127,7 @@ export class FormInsurancesComponent implements OnInit {
         <div>Message: ${datos.message}</div>
       `;
         const formRequest = {datos, date, html};
-        this.af.list('/messages').push(formRequest);
+        this.af.list(`/messages/${this.userId}`).push(formRequest);
         this.registrationForm.reset();
         this.contactForm.reset();
       } else {
