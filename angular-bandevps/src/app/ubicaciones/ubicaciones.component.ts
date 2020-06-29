@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild, OnDestroy, TemplateRef} from '@angular/cor
 import {LocationsService} from '../shared/locations.service';
 import {Observable, Subscription} from 'rxjs';
 import {MapInfoWindow, MapMarker} from '@angular/google-maps';
-import {ModalModule, BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-ubicaciones',
@@ -16,8 +16,8 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
 
   latValue = 9.951309;
   lngValue = -84.046914;
-  phone: String;
-  descripcion: String;
+  phone: string;
+  descripcion: string;
 
   center = {lat: this.latValue, lng: this.lngValue};
   zoom = 10;
@@ -25,6 +25,8 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
   markerOptions = {draggable: false};
   markerPositions: google.maps.LatLngLiteral[] = [];
   locationsSuscription: Subscription;
+
+  modalRef: BsModalRef;
 
   constructor(private locationsService: LocationsService, private modalService: BsModalService) {}
 
@@ -51,16 +53,14 @@ export class UbicacionesComponent implements OnInit, OnDestroy {
     this.infoWindow.open(marker);
   }
 
-  modalRef: BsModalRef;
-
   openModal(template: TemplateRef<any>, marker: MapMarker) {
-    var lat = marker.getPosition().lat();
-    var lng = marker.getPosition().lng();
+    const lat = marker.getPosition().lat();
+    const lng = marker.getPosition().lng();
     console.log(lat, lng);
     this.locationsSuscription = this.locationsService.getLocationsList().subscribe((result) => {
       console.log(result);
       result.forEach((elemt) => {
-        if (lat == elemt.post_latitude && lng == elemt.post_longitude) {
+        if (lat === elemt.post_latitude && lng === elemt.post_longitude) {
           this.descripcion = elemt.post_description;
           this.phone = elemt.phone;
         }
