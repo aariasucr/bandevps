@@ -46,7 +46,6 @@ describe('ResetPasswordRequestComponent', () => {
   };
 
   let mockUserIdForm: FormGroup;
-  // let checkUserCanResetPasswordSpy: jasmine.Spy;
   let auth: AngularFireAuth;
   let notification: NotificationService;
   let resetPasswordSpy: jasmine.Spy;

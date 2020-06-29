@@ -21,4 +21,14 @@ describe('BankService', () => {
     const service: BankService = TestBed.get(BankService);
     expect(service).toBeTruthy();
   });
+
+  it('should hide first credit card digits', () => {
+    const service: BankService = TestBed.get(BankService);
+    const creditCard1 = '1234';
+    const creditCard2 = '12345678';
+    const maskedCreditCard1 = service.formatCreditCardNumber(creditCard1);
+    const maskedCreditCard2 = service.formatCreditCardNumber(creditCard2);
+    expect(maskedCreditCard1).toBe('1234');
+    expect(maskedCreditCard2).toBe('****5678');
+  });
 });
