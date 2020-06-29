@@ -12,7 +12,6 @@ import {UserService} from '../shared/user.service';
 import {BankService} from '../shared/bank.service';
 import {By} from '@angular/platform-browser';
 import {SpinnerService} from '../shared/spinner.service';
-import {not} from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-movements',
