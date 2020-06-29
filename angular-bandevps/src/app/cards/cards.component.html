@@ -26,7 +26,7 @@
               (change)="changeSelectedCard($event)"
             >
               <option value="">Seleccione una tarjeta</option>
-              <option *ngFor="let card of this.cards | async" [ngValue]="card">
+              <option *ngFor="let card of this.cards | async" [ngValue]="card" class="cardOption">
                 {{ card.display }}
               </option>
             </select>

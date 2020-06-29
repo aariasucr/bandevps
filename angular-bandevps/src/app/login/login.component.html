@@ -10,12 +10,15 @@
           <label for="identificación usuario">Identificación</label>
         </div>
 
-
-
         <div class="col-6">
-          <input class="form-control" id="identificación usuario" name="identificacion" placeholder="Identificación"
-            ngModel required />
-
+          <input
+            class="form-control"
+            id="identificación usuario"
+            name="identificacion"
+            placeholder="Identificación"
+            ngModel
+            required
+          />
         </div>
       </div>
       <div class="form-group">
@@ -23,23 +26,31 @@
           <label for="password">Contraseña</label>
         </div>
 
-
-
         <div class="col-6">
-          <input type="password" name="password" id="password" class="form-control" ngModel required
-            placeholder="Password" />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            class="form-control"
+            ngModel
+            required
+            placeholder="Contraseña"
+          />
         </div>
       </div>
 
-
-      <br>
+      <br />
       <button type="submit" class="btn btn-primary btn-block" [disabled]="!f.valid">
         Ingresar
       </button>
       <br />
-
     </form>
-    <p>¿Olvidó su contraseña o desea restablecerla? <a routerLink="/resetPassword">Ingrese aquí</a></p>
-    <p>¿No tiene cuenta de {{ this.getAppTitle() }} en línea? Para activar la cuenta de usuario <a routerLink="/registerUser">ingrese aquí</a></p>
+    <p>
+      ¿Olvidó su contraseña o desea restablecerla? <a routerLink="/resetPassword">Ingrese aquí</a>
+    </p>
+    <p>
+      ¿No tiene cuenta de {{ this.getAppTitle() }} en línea? Para activar la cuenta de usuario
+      <a routerLink="/registerUser">ingrese aquí</a>
+    </p>
   </div>
 </div>

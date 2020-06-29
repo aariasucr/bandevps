@@ -57,8 +57,10 @@ export class MovementsComponent implements OnInit, OnDestroy, AfterViewInit, OnC
   }
 
   ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
+    if (!!this.dtTrigger) {
+      // Do not forget to unsubscribe the event
+      this.dtTrigger.unsubscribe();
+    }
   }
 
   rerender(): void {

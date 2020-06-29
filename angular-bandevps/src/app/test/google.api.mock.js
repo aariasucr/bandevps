@@ -29,7 +29,8 @@ window.google = {
     InfoWindow: function () {
       return {
         addListener() {},
-        setOptions() {}
+        setOptions() {},
+        close() {}
       };
     },
     Marker: function () {

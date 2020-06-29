@@ -14,7 +14,7 @@
     <div class="col-md-8 col-sm-10">
       <ng-container [ngSwitch]="mode">
         <ng-container *ngSwitchCase="'completing'">
-          <form [formGroup]="sourceAccountSelectionForm">
+          <form [formGroup]="sourceAccountSelectionForm" name="sourceAccountSelectionForm">
             <div class="row">
               <div class="col-4">
                 <label for="cuenta origen">Cuenta origen</label>
@@ -31,6 +31,7 @@
                   <option
                     *ngFor="let sourceAccount of this.sourceAccounts | async"
                     [ngValue]="sourceAccount"
+                    class="sourceAccountOption"
                   >
                     {{ sourceAccount.display }}
                   </option>
@@ -68,7 +69,10 @@
                 <div class="card">
                   <h5 class="card-header">Transferencia</h5>
                   <div class="card-body">
-                    <form [formGroup]="destinationAccountSelectionForm">
+                    <form
+                      [formGroup]="destinationAccountSelectionForm"
+                      name="destinationAccountSelectionForm"
+                    >
                       <div class="row">
                         <div class="col-4">
                           <label for="cuenta destino">Cuenta destino</label>
@@ -85,6 +89,7 @@
                             <option
                               *ngFor="let destinationAccount of this.destinationAccounts | async"
                               [ngValue]="destinationAccount"
+                              class="destinationAccountOption"
                             >
                               {{ destinationAccount.display }}
                             </option>
@@ -109,7 +114,11 @@
                         {{ this.destinationAccount.currency }}
                       </p>
 
-                      <form [formGroup]="transferForm" (ngSubmit)="verifyTransfer()">
+                      <form
+                        [formGroup]="transferForm"
+                        (ngSubmit)="verifyTransfer()"
+                        name="transferForm"
+                      >
                         <div class="row">
                           <div class="col-4">
                             <label for="monto">Monto</label>

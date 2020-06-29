@@ -16,7 +16,6 @@ import {ResetPasswordRequestComponent} from './reset-password-request/reset-pass
 import {AuthManagementComponent} from './auth-management/auth-management.component';
 import {TransfersComponent} from './transfers/transfers.component';
 
-
 export const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [RouteGuard]},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
