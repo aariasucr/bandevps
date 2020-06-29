@@ -7,6 +7,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from '../../environments/environment';
 import {LocationsService} from '../shared/locations.service';
 import {GoogleMapsModule} from '@angular/google-maps';
+import { ModalModule, BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 describe('UbicacionesComponent', () => {
   let component: UbicacionesComponent;
@@ -19,9 +20,11 @@ describe('UbicacionesComponent', () => {
         GoogleMapsModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireDatabaseModule,
-        AngularFireAuthModule
+        AngularFireAuthModule,
+        ModalModule.forRoot()
       ],
-      providers: [LocationsService]
+      providers: [LocationsService, BsModalService,
+        BsModalRef,]
     }).compileComponents();
   }));
 
