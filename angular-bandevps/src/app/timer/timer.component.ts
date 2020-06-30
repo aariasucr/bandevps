@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, NgZone} from '@angular/core';
 import {UserService} from '../shared/user.service';
 import {TimerService} from '../shared/timer.service';
 import {Subscription} from 'rxjs';
@@ -13,14 +13,18 @@ export class TimerComponent implements OnInit, OnDestroy {
   private isLoggedIn = false;
   private timerSubscription: Subscription = null;
   private userSubscription: Subscription = null;
+  // private zone: NgZone;
 
   constructor(
     private userService: UserService,
     private timerService: TimerService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit() {
+    // this.zone = NgZone();
+
     this.userSubscription = this.userService.statusChange.subscribe((userData) => {
       if (userData) {
         this.isLoggedIn = true;
@@ -38,7 +42,9 @@ export class TimerComponent implements OnInit, OnDestroy {
           'La sesión ha expirado',
           'Debe volver a iniciar la sesión para continuar.'
         );
-        this.userService.performLogout();
+        this.ngZone.run(() => {
+          this.userService.performLogout();
+        });
       }
     });
   }
